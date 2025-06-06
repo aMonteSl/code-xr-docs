@@ -1,0 +1,210 @@
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 1000;
+  padding: var(--space-sm) 0;
+}
+
+.nav-container {
+  max-width: 1400px; /* Aumentado para aprovechar más espacio */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-md);
+  width: 100%; /* Asegurar uso completo del ancho */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0; /* No se comprime */
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  transition: all var(--transition-base);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px;
+}
+
+.logo-container:hover .logo-icon {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm); /* Reducido de --space-md */
+  flex-wrap: nowrap; /* Evitar wrap en desktop */
+  justify-content: flex-end;
+  flex: 1; /* Ocupa todo el espacio disponible */
+  margin-left: var(--space-md); /* Separación del logo */
+}
+
+/* Enlaces de navegación base - MÁS COMPACTOS */
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem; /* Reducido de 0.9rem */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.6rem; /* Reducido padding */
+  border-radius: 6px;
+  font-family: inherit;
+  white-space: nowrap; /* Evitar wrap del texto */
+  flex-shrink: 0; /* No comprimirse */
+}
+
+/* Enlaces internos */
+.nav-link.internal {
+  padding: 0.4rem 0.5rem; /* Aún más compacto para internos */
+}
+
+.nav-link.internal:hover {
+  color: var(--accent-secondary);
+  background: rgba(78, 205, 196, 0.1);
+}
+
+/* Enlaces externos - MÁS COMPACTOS */
+.nav-link.external {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(4px);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  padding: 0.35rem 0.5rem; /* Padding más pequeño */
+  font-size: 0.8rem; /* Texto más pequeño */
+  min-width: auto; /* Sin ancho mínimo */
+}
+
+.nav-link.external::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-link.external:hover::before {
+  left: 100%;
+}
+
+.nav-link.external:hover {
+  border-color: var(--border-active);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Icono de enlace externo - MÁS PEQUEÑO */
+.external-icon {
+  font-size: 0.65rem; /* Reducido */
+  opacity: 0.7;
+  transition: all var(--transition-base);
+  margin-left: 0.1rem; /* Menor separación */
+}
+
+.nav-link.external:hover .external-icon {
+  opacity: 1;
+  transform: translateX(1px) translateY(-1px); /* Movimiento más sutil */
+}
+
+/* Separador visual - MÁS PEQUEÑO */
+.nav-separator {
+  width: 1px;
+  height: 16px; /* Reducido de 20px */
+  background: var(--border-subtle);
+  margin: 0 var(--space-xs);
+  flex-shrink: 0;
+}
+
+/* Texto del enlace */
+.nav-text {
+  transition: all var(--transition-base);
+}
+
+/* Mantener compatibilidad con clase antigua */
+.logo {
+  display: none;
+}
+
+/* Slide Navigation */
+.slide-navigation {
+  position: fixed;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border-medium);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.nav-dot.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: scale(1.25);
+}
+
+.nav-dot:hover {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Slide Counter */
+.slide-counter {
+  position: fixed;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  z-index: 1000;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.slide-counter .divider {
+  margin: 0 0.5rem;
+  color: var(--border-medium);
+}

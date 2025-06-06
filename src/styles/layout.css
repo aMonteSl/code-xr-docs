@@ -1,0 +1,65 @@
+/* filepath: /home/adrian/web_code_xr/src/styles/layout.css */
+/* Slide System */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  padding: var(--space-xl) var(--space-md);
+}
+
+/* Progress Bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  transform-origin: 0%;
+  z-index: 2000;
+}
+
+/* Next Section Arrow - Estilo minimalista */
+.next-section-arrow {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all var(--transition-base);
+  width: fit-content;
+}
+
+.next-section-arrow:hover {
+  transform: translateY(-4px);
+}
+
+.arrow-text {
+  display: none; /* Ocultar completamente el texto */
+}
+
+.arrow-icon {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  font-weight: 300;
+  line-height: 1;
+  transition: all var(--transition-base);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.next-section-arrow:hover .arrow-icon {
+  color: var(--accent-secondary);
+  transform: scale(1.15);
+}
