@@ -151,7 +151,7 @@
   transform: translateY(-2px);
 }
 
-/* FAB - Floating Action Button */
+/* FAB - Floating Action Button - SIN SUPERPOSICIÓN */
 .fab-container {
   position: fixed;
   bottom: var(--space-lg);
@@ -180,6 +180,11 @@
 
 .fab-main:hover {
   box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+  transform: scale(1.05);
+}
+
+.fab-main:active {
+  transform: scale(0.95);
 }
 
 .fab-main.fab-open {
@@ -193,17 +198,19 @@
   color: white;
   line-height: 1;
   transition: all var(--transition-base);
+  pointer-events: none;
 }
 
 .fab-open .fab-icon {
   color: var(--text-primary);
 }
 
+/* ✨ ARREGLO: FAB items sin superposición */
 .fab-item {
   position: absolute;
-  bottom: 0;
+  bottom: 70px; /* ✨ POSICIÓN FIJA EN LUGAR DE TRANSFORMS */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); /* ✨ SOLO CENTRADO HORIZONTAL */
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -214,34 +221,45 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  cursor: pointer;
   transition: all var(--transition-base);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1500;
+}
+
+/* ✨ ARREGLO: GitHub FAB en posición específica */
+.fab-github {
+  bottom: 70px; /* ✨ PRIMERA POSICIÓN */
+}
+
+/* ✨ ARREGLO: VS Code FAB en posición específica */
+.fab-vscode {
+  bottom: 130px; /* ✨ SEGUNDA POSICIÓN (70px + 60px de separación) */
 }
 
 .fab-item:hover {
   background: var(--bg-secondary);
   border-color: var(--border-active);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%) scale(1.1); /* ✨ MANTENER CENTRADO + ESCALA */
+}
+
+.fab-item:active {
+  transform: translateX(-50%) scale(1.05); /* ✨ MANTENER CENTRADO + ESCALA */
 }
 
 .fab-svg {
   width: 24px;
   height: 24px;
   color: var(--text-primary);
-  transition: color var(--transition-base);
-}
-
-.fab-github:hover .fab-svg {
-  color: #ffffff;
-}
-
-.fab-vscode:hover .fab-svg {
-  color: #007acc;
+  transition: all var(--transition-base);
+  pointer-events: none;
+  fill: currentColor;
 }
 
 .fab-tooltip {
   position: absolute;
-  right: 60px;
+  left: 60px; /* ✨ CAMBIO: De 'right: 60px' a 'left: 60px' */
   top: 50%;
   transform: translateY(-50%);
   background: var(--bg-secondary);
@@ -256,21 +274,74 @@
   transition: all var(--transition-base);
   border: 1px solid var(--border-subtle);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1502;
 }
 
 .fab-tooltip::after {
   content: '';
   position: absolute;
   top: 50%;
-  left: 100%;
+  right: 100%; /* ✨ CAMBIO: De 'left: 100%' a 'right: 100%' */
   transform: translateY(-50%);
   border: 4px solid transparent;
-  border-left-color: var(--border-subtle);
+  border-right-color: var(--border-subtle); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
+  transition: all var(--transition-base);
 }
 
-.fab-item:hover .fab-tooltip {
+/* ✨ COLORES ESPECÍFICOS PARA GITHUB */
+.fab-github {
+  cursor: pointer !important;
+}
+
+.fab-github:hover {
+  background: rgba(255, 107, 107, 0.1) !important;
+  border-color: rgba(255, 107, 107, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3) !important;
+}
+
+.fab-github:hover .fab-svg {
+  color: #ff6b6b !important;
+  transform: scale(1.1);
+}
+
+.fab-github:hover .fab-tooltip {
   opacity: 1;
-  transform: translateY(-50%) translateX(-8px);
+  background: rgba(255, 107, 107, 0.1);
+  border-color: rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  transform: translateY(-50%) translateX(8px); /* ✨ CAMBIO: De 'translateX(-8px)' a 'translateX(8px)' */
+}
+
+.fab-github:hover .fab-tooltip::after {
+  border-right-color: rgba(255, 107, 107, 0.3); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
+}
+
+/* ✨ COLORES ESPECÍFICOS PARA VS CODE */
+.fab-vscode {
+  cursor: pointer !important;
+}
+
+.fab-vscode:hover {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3) !important;
+}
+
+.fab-vscode:hover .fab-svg {
+  color: #f59e0b !important;
+  transform: scale(1.1);
+}
+
+.fab-vscode:hover .fab-tooltip {
+  opacity: 1;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+  transform: translateY(-50%) translateX(8px); /* ✨ CAMBIO: De 'translateX(-8px)' a 'translateX(8px)' */
+}
+
+.fab-vscode:hover .fab-tooltip::after {
+  border-right-color: rgba(245, 158, 11, 0.3); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
 }
 
 /* Overlay para cerrar FAB al hacer clic fuera */
@@ -282,4 +353,21 @@
   bottom: 0;
   z-index: 1499;
   background: transparent;
+  cursor: default;
+}
+
+/* Estados de focus para accesibilidad */
+.fab-main:focus,
+.fab-item:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.fab-item:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.fab-item:focus:not(:focus-visible) {
+  outline: none;
 }

@@ -27,6 +27,7 @@
   cursor: pointer;
   transition: all var(--transition-base);
   flex-shrink: 0; /* No se comprime */
+  position: relative; /* Para posicionar el badge */
 }
 
 .logo-icon {
@@ -103,6 +104,7 @@
   padding: 0.35rem 0.5rem; /* Padding más pequeño */
   font-size: 0.8rem; /* Texto más pequeño */
   min-width: auto; /* Sin ancho mínimo */
+  transition: all var(--transition-base); /* ✨ AGREGAR TRANSICIÓN BASE */
 }
 
 .nav-link.external::before {
@@ -120,6 +122,7 @@
   left: 100%;
 }
 
+/* ✨ HOVER BASE para externos */
 .nav-link.external:hover {
   border-color: var(--border-active);
   background: rgba(255, 255, 255, 0.1);
@@ -127,17 +130,58 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Icono de enlace externo - MÁS PEQUEÑO */
-.external-icon {
-  font-size: 0.65rem; /* Reducido */
-  opacity: 0.7;
-  transition: all var(--transition-base);
-  margin-left: 0.1rem; /* Menor separación */
+/* ✨ RESTAURAR: Colores específicos para GitHub */
+.nav-link.external[href*="github.com"]:hover {
+  color: #ff6b6b !important; /* Rojizo para GitHub */
+  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.08);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
 }
 
-.nav-link.external:hover .external-icon {
+.nav-link.external[href*="github.com"]:hover .nav-text {
+  color: #ff6b6b;
+}
+
+.nav-link.external[href*="github.com"]:hover .external-icon {
+  color: #ff6b6b;
   opacity: 1;
-  transform: translateX(1px) translateY(-1px); /* Movimiento más sutil */
+}
+
+/* ✨ RESTAURAR: Colores específicos para VS Code Marketplace */
+.nav-link.external[href*="marketplace.visualstudio.com"]:hover {
+  color: #f59e0b !important; /* Dorado/Amarillo para Marketplace */
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.08);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.nav-link.external[href*="marketplace.visualstudio.com"]:hover .nav-text {
+  color: #f59e0b;
+}
+
+.nav-link.external[href*="marketplace.visualstudio.com"]:hover .external-icon {
+  color: #f59e0b;
+  opacity: 1;
+}
+
+/* ✨ MEJORA: Efecto de brillo específico por plataforma */
+.nav-link.external[href*="github.com"]::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.15), transparent);
+}
+
+.nav-link.external[href*="marketplace.visualstudio.com"]::before {
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.15), transparent);
+}
+
+/* ✨ NUEVO: Efecto de pulsación sutil para enlaces externos */
+.nav-link.external:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ✨ NUEVO: Efectos de transición más suaves */
+.nav-text,
+.external-icon {
+  transition: all var(--transition-base);
 }
 
 /* Separador visual - MÁS PEQUEÑO */
@@ -207,4 +251,25 @@
 .slide-counter .divider {
   margin: 0 0.5rem;
   color: var(--border-medium);
+}
+
+/* ✨ NUEVO: Badge de versión en el header */
+.version-badge {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  font-weight: 500;
+  margin-left: var(--space-xs);
+  backdrop-filter: blur(4px);
+  transition: all var(--transition-base);
+}
+
+.logo-container:hover .version-badge {
+  border-color: var(--border-active);
+  background: var(--bg-secondary);
+  transform: scale(1.05);
 }

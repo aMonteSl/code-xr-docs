@@ -127,6 +127,14 @@
     font-size: clamp(1.75rem, 4vw, 2rem);
   }
   
+  /* Asegurar que el efecto azul funcione en móvil */
+  .section-title .brand {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
   .features-grid {
     grid-template-columns: 1fr;
     gap: var(--space-sm);
@@ -139,15 +147,27 @@
   }
   
   .feature-icon {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    transform: scale(1) rotate(0deg); /* Estado inicial explícito */
+    transition: all var(--transition-base);
   }
   
-  .feature-card h3 {
-    font-size: 1.125rem;
+  .feature-card:hover .feature-icon {
+    transform: scale(1.03) rotate(1deg); /* Hover más sutil en móvil */
   }
   
-  .feature-card p {
-    font-size: 0.875rem;
+  .feature-card:not(:hover) .feature-icon {
+    transform: scale(1) rotate(0deg); /* Volver al estado inicial */
+    background-image: none !important;
+    animation: none !important;
+  }
+  
+  .feature-icon::after {
+    width: 2.5px;
+    height: 2.5px;
   }
   
   .download-buttons {
@@ -238,9 +258,18 @@
     font-size: 1.25rem;
   }
   
+  /* ✨ ARREGLO: Posiciones tablet */
   .fab-item {
     width: 40px;
     height: 40px;
+  }
+  
+  .fab-github {
+    bottom: 60px; /* ✨ AJUSTADO PARA TABLET */
+  }
+
+  .fab-vscode {
+    bottom: 110px; /* ✨ AJUSTADO PARA TABLET */
   }
   
   .fab-svg {
@@ -311,6 +340,12 @@
     min-width: auto;
   }
   
+  /* ✨ NUEVO: Asegurar que Technologies sea visible en móvil */
+  .nav-link.internal {
+    flex-shrink: 0; /* No comprimir texto */
+    white-space: nowrap; /* No romper líneas */
+  }
+  
   .nav-separator {
     display: none; /* Ocultar separador en móvil */
   }
@@ -330,6 +365,14 @@
   .section-title {
     font-size: 1.5rem;
     margin-bottom: var(--space-xs);
+  }
+  
+  /* Mantener efecto azul en móvil pequeño */
+  .section-title .brand {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .feature-card {
@@ -399,13 +442,118 @@
     font-size: 1.125rem;
   }
   
+  /* ✨ ARREGLO: Posiciones móvil */
   .fab-item {
     width: 36px;
     height: 36px;
   }
   
+  .fab-github {
+    bottom: 55px; /* ✨ AJUSTADO PARA MÓVIL */
+  }
+
+  .fab-vscode {
+    bottom: 100px; /* ✨ AJUSTADO PARA MÓVIL */
+  }
+  
   .fab-svg {
     width: 18px;
     height: 18px;
+  }
+  
+  .fab-tooltip {
+    left: 45px; /* ✨ CAMBIO: De 'right: 45px' a 'left: 45px' */
+    font-size: 0.65rem;
+    padding: 0.3rem 0.4rem;
+  }
+  
+  /* ✨ MANTENER: FAB con colores específicos en móvil */
+  .fab-github:hover {
+    background: rgba(255, 107, 107, 0.08) !important;
+    border-color: rgba(255, 107, 107, 0.2) !important;
+    cursor: pointer !important;
+  }
+
+  .fab-vscode:hover {
+    background: rgba(245, 158, 11, 0.08) !important;
+    border-color: rgba(245, 158, 11, 0.2) !important;
+    cursor: pointer !important;
+  }
+  
+  /* Stats ultra compactas en móviles pequeños */
+  .stats-container {
+    padding: var(--space-xs) var(--space-sm); /* ✨ ULTRA COMPACTO */
+    gap: var(--space-xs); /* ✨ MÍNIMO gap */
+  }
+  
+  .stat-item {
+    min-width: 60px; /* ✨ REDUCIDO para móvil pequeño */
+  }
+  
+  .stat-number {
+    font-size: 1.125rem !important; /* ✨ AÚN MÁS PEQUEÑO */
+  }
+  
+  .stat-label {
+    font-size: 0.6rem; /* ✨ TEXTO MÍNIMO */
+    margin-top: 0.05rem; /* ✨ ESPACIO MÍNIMO */
+  }
+  
+  .stats-separator {
+    height: 24px; /* ✨ MÁS PEQUEÑO */
+  }
+  
+  /* Download stats también más compactas */
+  .download-stats-grid {
+    gap: var(--space-sm); /* ✨ REDUCIDO */
+  }
+  
+  .download-stat {
+    gap: 0.1rem; /* ✨ MÍNIMO espacio */
+  }
+  
+  .download-stat-number {
+    font-size: 1rem; /* ✨ REDUCIDO para móvil */
+  }
+  
+  /* ✨ NUEVO: Versión consistente en móvil pequeño */
+  .download-stat .version-number {
+    font-size: 1rem !important; /* ✨ CONSISTENTE */
+  }
+  
+  .download-stat-label {
+    font-size: 0.6rem; /* ✨ REDUCIDO para móvil */
+  }
+  
+  /* Version badge ultra compacto */
+  .version-badge {
+    padding: 0.05rem 0.25rem; /* ✨ ULTRA COMPACTO */
+    font-size: 0.55rem; /* ✨ MÁS PEQUEÑO */
+  }
+  
+  /* ✨ MANTENER: Efectos de color en móvil */
+  .nav-link.external[href*="github.com"]:hover {
+    color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.3);
+    background: rgba(255, 107, 107, 0.06);
+  }
+
+  .nav-link.external[href*="marketplace.visualstudio.com"]:hover {
+    color: #f59e0b !important;
+    border-color: rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.06);
+  }
+  
+  /* ✨ MANTENER: FAB con colores específicos en móvil */
+  .fab-github:hover {
+    background: rgba(255, 107, 107, 0.08) !important;
+    border-color: rgba(255, 107, 107, 0.2) !important;
+    cursor: pointer !important;
+  }
+
+  .fab-vscode:hover {
+    background: rgba(245, 158, 11, 0.08) !important;
+    border-color: rgba(245, 158, 11, 0.2) !important;
+    cursor: pointer !important;
   }
 }
