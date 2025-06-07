@@ -1,6 +1,6 @@
-const EXTENSION_ID = 'aMonteSl.code-xr';
+const PLUGIN_ID = 'aMonteSl.code-xr';
 
-// Función principal basada en tu ejemplo exacto
+// Función principal para obtener métricas del plugin Code-XR
 async function obtenerMetricasCodeXR() {
   const url = 'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery?api-version=3.0-preview.1';
 
@@ -11,17 +11,17 @@ async function obtenerMetricasCodeXR() {
         criteria: [
           {
             filterType: 7,
-            value: EXTENSION_ID // Identificador completo de la extensión
+            value: PLUGIN_ID
           }
         ],
         pageNumber: 1,
         pageSize: 1
       }
     ],
-    flags: 769 // IncludeStatistics (descargas, instalaciones, rating)
+    flags: 769
   };
 
-  console.log('🔍 Realizando petición exacta a la API para:', EXTENSION_ID);
+  console.log('🔍 Realizando petición exacta a la API para plugin:', PLUGIN_ID);
   console.log('📋 Body de la petición:', JSON.stringify(body, null, 2));
 
   const response = await fetch(url, {
@@ -36,7 +36,7 @@ async function obtenerMetricasCodeXR() {
   console.log('📡 Respuesta HTTP status:', response.status);
 
   if (!response.ok) {
-    throw new Error(`Error al consultar API: ${response.status} ${response.statusText}`);
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   const data = await response.json();
@@ -44,11 +44,10 @@ async function obtenerMetricasCodeXR() {
   
   const ext = data.results[0]?.extensions[0];
   if (!ext) {
-    console.error('❌ La extensión Code-XR no fue encontrada en el Marketplace.');
-    throw new Error('La extensión Code-XR no fue encontrada en el Marketplace.');
+    throw new Error('Plugin no encontrado en la respuesta de la API');
   }
 
-  console.log('✅ Extensión encontrada:', ext.extensionName);
+  console.log('✅ Plugin encontrado:', ext.extensionName);
   console.log('📈 Estadísticas raw:', ext.statistics);
 
   // 🔍 DEPURACIÓN ESPECÍFICA DE VERSIONES
@@ -182,60 +181,41 @@ async function obtenerMetricasCodeXR() {
     promedioRating: promedioRating,
     totalValoraciones: totalValoraciones,
     totalDescargas: totalDescargas,
-    version: latestVersion // ✨ USAR VERSIÓN DEPURADA
+    version: latestVersion
   };
 
-  console.log('📈 Métricas finales extraídas:', result);
-  console.log('🔍 RESUMEN COMPLETO:');
-  console.log(`  Downloads: ${totalDescargas || 'NO ENCONTRADO'}`);
-  console.log(`  Active Installs: ${totalInstalaciones || 'NO ENCONTRADO'}`);
-  console.log(`  Rating: ${promedioRating || 'NO ENCONTRADO'}`);
-  console.log(`  Rating Count: ${totalValoraciones || 'NO ENCONTRADO'}`);
-  console.log(`  Version: ${latestVersion || 'NO ENCONTRADO'}`);
-
+  console.log('📈 Métricas finales del plugin extraídas:', result);
   return result;
 }
 
 // Función de adaptación para mantener compatibilidad con el hook existente
-export const getExtensionStats = async () => {
+export const getPluginStats = async () => {
   try {
-    console.log('🚀 Iniciando obtención de métricas con método exacto...');
-    
     const metrics = await obtenerMetricasCodeXR();
     
-    console.log('✅ Métricas de Code-XR obtenidas:', metrics);
-    
-    // Adaptar al formato que espera el hook
-    const adaptedStats = {
+    return {
       downloads: metrics.totalDescargas,
       installs: metrics.totalInstalaciones,
       rating: metrics.promedioRating,
       ratingCount: metrics.totalValoraciones,
-      version: metrics.version, // ✨ NO USAR FALLBACK AQUÍ
-      debug: {
-        rawMetrics: metrics,
-        source: 'exact-api-method'
-      }
+      version: metrics.version,
+      error: null
     };
-
-    console.log('🔄 Stats adaptadas para el hook:', adaptedStats);
-    
-    return adaptedStats;
-
   } catch (error) {
-    console.error('💥 Error obteniendo métricas:', error);
-    
-    // Retornar valores null en caso de error
+    console.error('Error fetching plugin stats:', error);
     return {
       downloads: null,
       installs: null,
       rating: null,
       ratingCount: null,
-      version: null, // ✨ NULL TAMBIÉN PARA VERSION
+      version: null,
       error: error.message
     };
   }
 };
+
+// ✨ MANTENER: Alias para compatibilidad
+export const getExtensionStats = getPluginStats;
 
 // Exportar también la función original por si la necesitas
 export { obtenerMetricasCodeXR };
@@ -246,7 +226,7 @@ export const getStatsFromWebPage = async () => {
     console.log('🌐 Método de fallback: scraping web...');
     
     const response = await fetch(
-      `https://marketplace.visualstudio.com/items?itemName=${EXTENSION_ID}`,
+      `https://marketplace.visualstudio.com/items?itemName=${PLUGIN_ID}`,
       {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'

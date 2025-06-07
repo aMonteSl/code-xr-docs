@@ -1,373 +1,236 @@
-/* Botones y elementos comunes */
-.cta-button {
-  background: var(--accent-gradient);
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all var(--transition-base);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
+/* ✨ COMPONENTES RESTANTES DESPUÉS DE REFACTORIZACIÓN */
 
-.cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
-}
+/* ✨ SLIDES ESPECÍFICOS */
 
-/* Badges */
-.badge {
-  background: var(--bg-card);
-  backdrop-filter: blur(8px);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-}
-
-/* Install Command */
-.install-command {
-  background: var(--bg-tertiary);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  margin-bottom: var(--space-md);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  transition: all var(--transition-base);
-  cursor: pointer;
+/* ✨ FEATURES TABS SLIDE */
+.features-tabs-slide {
+  background: radial-gradient(circle at 30% 70%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   position: relative;
-  user-select: none;
+  overflow: hidden;
 }
 
-.install-command:hover {
-  border-color: var(--border-active);
-  background: var(--bg-card);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.command-label {
-  color: var(--text-muted);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.command-text {
-  color: var(--accent-primary);
-  font-weight: 500;
-  flex: 1;
-}
-
-.copy-button {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2rem;
-  height: 1.5rem;
-}
-
-.copy-button:hover {
-  background: var(--bg-secondary);
-  border-color: var(--border-medium);
-  color: var(--accent-primary);
-}
-
-.copy-tooltip {
-  position: absolute;
-  top: -2.5rem;
-  right: 0;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-}
-
-.copy-tooltip::after {
+.features-tabs-slide::before {
   content: '';
   position: absolute;
-  top: 100%;
-  right: 1rem;
-  border: 4px solid transparent;
-  border-top-color: var(--border-subtle);
-}
-
-/* Download Buttons */
-.download-button {
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all var(--transition-base);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.download-button.primary {
-  background: var(--accent-gradient);
-  color: white;
-  border: none;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
-
-.download-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
-}
-
-.download-button.secondary {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border: 1px solid var(--border-medium);
-  backdrop-filter: blur(8px);
-}
-
-.download-button.secondary:hover {
-  border-color: var(--border-active);
-  transform: translateY(-2px);
-}
-
-/* FAB - Floating Action Button - SIN SUPERPOSICIÓN */
-.fab-container {
-  position: fixed;
-  bottom: var(--space-lg);
-  left: var(--space-lg);
-  z-index: 1500;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.fab-main {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--accent-gradient);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-  transition: all var(--transition-base);
-  position: relative;
-  z-index: 1501;
-}
-
-.fab-main:hover {
-  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
-  transform: scale(1.05);
-}
-
-.fab-main:active {
-  transform: scale(0.95);
-}
-
-.fab-main.fab-open {
-  background: var(--bg-tertiary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.fab-icon {
-  font-size: 1.5rem;
-  font-weight: 300;
-  color: white;
-  line-height: 1;
-  transition: all var(--transition-base);
-  pointer-events: none;
-}
-
-.fab-open .fab-icon {
-  color: var(--text-primary);
-}
-
-/* ✨ ARREGLO: FAB items sin superposición */
-.fab-item {
-  position: absolute;
-  bottom: 70px; /* ✨ POSICIÓN FIJA EN LUGAR DE TRANSFORMS */
-  left: 50%;
-  transform: translateX(-50%); /* ✨ SOLO CENTRADO HORIZONTAL */
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all var(--transition-base);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1500;
-}
-
-/* ✨ ARREGLO: GitHub FAB en posición específica */
-.fab-github {
-  bottom: 70px; /* ✨ PRIMERA POSICIÓN */
-}
-
-/* ✨ ARREGLO: VS Code FAB en posición específica */
-.fab-vscode {
-  bottom: 130px; /* ✨ SEGUNDA POSICIÓN (70px + 60px de separación) */
-}
-
-.fab-item:hover {
-  background: var(--bg-secondary);
-  border-color: var(--border-active);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  transform: translateX(-50%) scale(1.1); /* ✨ MANTENER CENTRADO + ESCALA */
-}
-
-.fab-item:active {
-  transform: translateX(-50%) scale(1.05); /* ✨ MANTENER CENTRADO + ESCALA */
-}
-
-.fab-svg {
-  width: 24px;
-  height: 24px;
-  color: var(--text-primary);
-  transition: all var(--transition-base);
-  pointer-events: none;
-  fill: currentColor;
-}
-
-.fab-tooltip {
-  position: absolute;
-  left: 60px; /* ✨ CAMBIO: De 'right: 60px' a 'left: 60px' */
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: all var(--transition-base);
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1502;
-}
-
-.fab-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 100%; /* ✨ CAMBIO: De 'left: 100%' a 'right: 100%' */
-  transform: translateY(-50%);
-  border: 4px solid transparent;
-  border-right-color: var(--border-subtle); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
-  transition: all var(--transition-base);
-}
-
-/* ✨ COLORES ESPECÍFICOS PARA GITHUB */
-.fab-github {
-  cursor: pointer !important;
-}
-
-.fab-github:hover {
-  background: rgba(255, 107, 107, 0.1) !important;
-  border-color: rgba(255, 107, 107, 0.3) !important;
-  box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3) !important;
-}
-
-.fab-github:hover .fab-svg {
-  color: #ff6b6b !important;
-  transform: scale(1.1);
-}
-
-.fab-github:hover .fab-tooltip {
-  opacity: 1;
-  background: rgba(255, 107, 107, 0.1);
-  border-color: rgba(255, 107, 107, 0.3);
-  color: #ff6b6b;
-  transform: translateY(-50%) translateX(8px); /* ✨ CAMBIO: De 'translateX(-8px)' a 'translateX(8px)' */
-}
-
-.fab-github:hover .fab-tooltip::after {
-  border-right-color: rgba(255, 107, 107, 0.3); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
-}
-
-/* ✨ COLORES ESPECÍFICOS PARA VS CODE */
-.fab-vscode {
-  cursor: pointer !important;
-}
-
-.fab-vscode:hover {
-  background: rgba(245, 158, 11, 0.1) !important;
-  border-color: rgba(245, 158, 11, 0.3) !important;
-  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3) !important;
-}
-
-.fab-vscode:hover .fab-svg {
-  color: #f59e0b !important;
-  transform: scale(1.1);
-}
-
-.fab-vscode:hover .fab-tooltip {
-  opacity: 1;
-  background: rgba(245, 158, 11, 0.1);
-  border-color: rgba(245, 158, 11, 0.3);
-  color: #f59e0b;
-  transform: translateY(-50%) translateX(8px); /* ✨ CAMBIO: De 'translateX(-8px)' a 'translateX(8px)' */
-}
-
-.fab-vscode:hover .fab-tooltip::after {
-  border-right-color: rgba(245, 158, 11, 0.3); /* ✨ CAMBIO: De 'border-left-color' a 'border-right-color' */
-}
-
-/* Overlay para cerrar FAB al hacer clic fuera */
-.fab-overlay {
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1499;
-  background: transparent;
-  cursor: default;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Estados de focus para accesibilidad */
-.fab-main:focus,
-.fab-item:focus {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+/* ✨ TECH SPECS SLIDE */
+.tech-specs-slide {
+  background: radial-gradient(circle at 70% 30%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-.fab-item:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+.tech-specs-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 60% 40%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.fab-item:focus:not(:focus-visible) {
-  outline: none;
+/* ✨ COMING SOON SLIDE */
+.coming-soon-slide {
+  background: radial-gradient(circle at 50% 50%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.coming-soon-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 75%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 25%, rgba(239, 68, 68, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ✨ COMPONENTES ADICIONALES QUE NO TIENEN ARCHIVO ESPECÍFICO */
+
+/* ✨ TECH CATEGORY BADGE */
+.tech-category {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+/* ✨ TECH ACCENT BAR */
+.tech-accent {
+  height: 2px;
+  background: var(--tech-color, var(--accent-primary));
+  margin-top: var(--space-sm);
+  border-radius: 1px;
+}
+
+/* ✨ EXTERNAL ICON */
+.external-icon {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: all var(--transition-base);
+}
+
+/* ✨ NAV TEXT */
+.nav-text {
+  transition: all var(--transition-base);
+}
+
+/* ✨ DOWNLOAD BUTTONS SECTION */
+.download-buttons {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+/* ✨ FLOATING ELEMENTS */
+.floating-element {
+  position: absolute;
+  opacity: 0.3;
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-element:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  top: 20%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.floating-element:nth-child(3) {
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ✨ MANTENER COMPATIBILIDAD CON CLASES LEGACY */
+.logo {
+  display: none;
+}
+
+/* ✨ RESPONSIVE ESPECÍFICO PARA COMPONENTES RESTANTES */
+@media (max-width: 768px) {
+  .floating-element {
+    display: none;
+  }
+  
+  .tech-category {
+    font-size: 0.7rem;
+  }
+  
+  .external-icon {
+    font-size: 0.6rem;
+  }
+  
+  .download-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-category {
+    font-size: 0.65rem;
+  }
+  
+  .external-icon {
+    font-size: 0.55rem;
+  }
+}
+
+/* ✨ ANIMACIONES ESPECÍFICAS PARA SLIDES */
+.features-tabs-slide,
+.tech-specs-slide,
+.coming-soon-slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  padding: var(--space-xl) var(--space-md);
+}
+
+/* ✨ ESTADOS DE TRANSICIÓN PARA SLIDES */
+.slide-enter {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.slide-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* ✨ MEJORAS DE RENDIMIENTO */
+.features-tabs-slide *,
+.tech-specs-slide *,
+.coming-soon-slide * {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* ✨ MOTION REDUCED PARA ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  .floating-element {
+    animation: none;
+  }
+  
+  .slide-enter-active,
+  .slide-exit-active {
+    transition: none;
+  }
 }

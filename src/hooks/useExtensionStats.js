@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { getExtensionStats } from '../utils/marketplaceAPI';
+import { getPluginStats } from '../utils/marketplaceAPI';
 
-export const useExtensionStats = () => {
+export const usePluginStats = () => {
   const [stats, setStats] = useState({
-    downloads: null, // null en lugar de números ficticios
+    downloads: null,
     installs: null,
     rating: null,
     ratingCount: null,
-    version: null, // ✨ CAMBIAR A NULL TAMBIÉN
+    version: null,
     loading: true,
     error: null
   });
@@ -18,30 +18,23 @@ export const useExtensionStats = () => {
         console.log('🚀 Iniciando fetch con depuración de versión...');
         setStats(prev => ({ ...prev, loading: true, error: null }));
         
-        const data = await getExtensionStats();
+        const data = await getPluginStats();
         
         if (data && !data.error) {
           console.log('✅ Datos recibidos del método exacto:', data);
           console.log('🏷️ Versión recibida en hook:', data.version, '(tipo:', typeof data.version, ')');
           
           const newStats = {
-            // Solo usar datos reales de la API, mantener null si no hay datos válidos
             downloads: (data.downloads && data.downloads > 0) ? data.downloads : null,
             installs: (data.installs && data.installs > 0) ? data.installs : null,
             rating: (data.rating && data.rating > 0) ? Math.round(data.rating * 10) / 10 : null,
             ratingCount: (data.ratingCount && data.ratingCount > 0) ? data.ratingCount : null,
-            version: data.version || null, // ✨ NULL SI NO HAY VERSIÓN
+            version: data.version || null,
             loading: false,
             error: null
           };
 
           console.log('📈 Stats finales aplicadas:', newStats);
-          console.log('🔍 Comparación detallada:');
-          console.log(`  Downloads: ${stats.downloads} → ${newStats.downloads}`);
-          console.log(`  Installs: ${stats.installs} → ${newStats.installs}`);
-          console.log(`  Rating: ${stats.rating} → ${newStats.rating}`);
-          console.log(`  Version: "${stats.version}" → "${newStats.version}"`);
-          
           setStats(newStats);
         } else {
           console.warn('⚠️ Error en datos o sin datos, manteniendo valores null');
@@ -71,3 +64,6 @@ export const useExtensionStats = () => {
 
   return stats;
 };
+
+// ✨ MANTENER: Alias para compatibilidad
+export const useExtensionStats = usePluginStats;

@@ -1,0 +1,29 @@
+/* ✨ ARCHIVO PRINCIPAL OPTIMIZADO - SIN IMPORTS ROTOS */
+
+/* Base styles */
+@import './base/variables.css';
+@import './base/reset.css';
+@import './base/typography.css';
+
+/* Layout */
+@import './layout.css';
+@import './navigation.css';
+
+/* Components */
+@import './components/fab.css';
+@import './components/multimedia.css';
+@import './components/buttons.css';
+@import './components/badges.css';
+@import './components/cards.css';
+@import './components/stats.css';
+@import './components/ui.css';
+
+/* Sections */
+@import './sections.css';
+
+/* Pages */
+@import './pages/home.css';
+
+/* Utilities */
+@import './utilities/animations.css';
+@import './utilities/responsive.css';

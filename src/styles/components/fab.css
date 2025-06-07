@@ -1,0 +1,445 @@
+/* ✨ FAB (Floating Action Button) - CON COLORES ESPECÍFICOS RESTAURADOS */
+
+.fab-container {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: var(--space-lg);
+  z-index: 1000;
+}
+
+/* ✨ OVERLAY */
+.fab-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 999;
+  cursor: pointer;
+}
+
+.fab-main {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  transition: all var(--transition-base);
+  position: relative;
+  z-index: 1002;
+}
+
+.fab-main:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  transform: scale(1.05);
+}
+
+.fab-main:active {
+  transform: scale(0.95);
+}
+
+.fab-icon {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+}
+
+.fab-main.fab-open {
+  background: var(--accent-gradient);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+/* ✨ FAB ITEMS */
+.fab-item {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-base);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  cursor: pointer;
+}
+
+/* ✨ POSICIONES */
+.fab-github {
+  bottom: 75px;
+  left: 4px;
+}
+
+.fab-vscode {
+  bottom: 135px;
+  left: 4px;
+}
+
+/* ✨ HOVER BASE - SIN COLORES ESPECÍFICOS */
+.fab-item:hover {
+  border-color: var(--border-active);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: var(--bg-secondary);
+  z-index: 1003;
+}
+
+.fab-svg {
+  width: 24px;
+  height: 24px;
+  transition: all var(--transition-base);
+  pointer-events: none;
+}
+
+/* ✨ TOOLTIP - HACIA LA DERECHA EN DESKTOP */
+.fab-tooltip {
+  position: absolute;
+  left: 58px; /* Hacia la derecha */
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--transition-base);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  z-index: 1004;
+}
+
+.fab-item:hover .fab-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(4px); /* Hacia la derecha */
+}
+
+/* ✨ RESTAURAR: COLORES ESPECÍFICOS PARA GITHUB (ROJO) */
+.fab-github:hover {
+  background: rgba(255, 107, 107, 0.1) !important;
+  border-color: rgba(255, 107, 107, 0.4) !important;
+  color: #ff6b6b !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2) !important;
+}
+
+.fab-github:hover .fab-svg {
+  color: #ff6b6b !important;
+  transform: scale(1.1);
+}
+
+.fab-github:hover .fab-tooltip {
+  background: rgba(255, 107, 107, 0.15) !important;
+  border-color: rgba(255, 107, 107, 0.3) !important;
+  color: #ff6b6b !important;
+  opacity: 1;
+}
+
+/* ✨ RESTAURAR: COLORES ESPECÍFICOS PARA MARKETPLACE (NARANJA/DORADO) */
+.fab-vscode:hover {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+  color: #f59e0b !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2) !important;
+}
+
+.fab-vscode:hover .fab-svg {
+  color: #f59e0b !important;
+  transform: scale(1.1);
+}
+
+.fab-vscode:hover .fab-tooltip {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  color: #f59e0b !important;
+  opacity: 1;
+}
+
+/* ✨ EFECTOS ADICIONALES */
+.fab-main::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.fab-main:hover::before {
+  opacity: 0.3;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.fab-main:active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  to {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+  }
+}
+
+/* ✨ RESPONSIVE - TABLET (768px) */
+@media (max-width: 768px) {
+  .fab-container {
+    bottom: var(--space-md);
+    left: var(--space-md);
+  }
+  
+  .fab-main {
+    width: 52px;
+    height: 52px;
+  }
+  
+  .fab-icon {
+    font-size: 1.375rem;
+  }
+  
+  .fab-item {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .fab-github {
+    bottom: 68px;
+    left: 4px;
+  }
+
+  .fab-vscode {
+    bottom: 120px;
+    left: 4px;
+  }
+  
+  .fab-svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .fab-tooltip {
+    left: 54px; /* Mantener hacia la derecha en tablet */
+    font-size: 0.7rem;
+    padding: 0.375rem 0.6rem;
+  }
+  
+  .fab-item:hover .fab-tooltip {
+    transform: translateY(-50%) translateX(4px); /* Hacia la derecha */
+  }
+  
+  .fab-overlay {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  
+  /* ✨ MANTENER: Colores específicos en tablet */
+  .fab-github:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+    border-color: rgba(255, 107, 107, 0.4) !important;
+    color: #ff6b6b !important;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2) !important;
+  }
+
+  .fab-github:hover .fab-svg {
+    color: #ff6b6b !important;
+    transform: scale(1.1);
+  }
+
+  .fab-github:hover .fab-tooltip {
+    background: rgba(255, 107, 107, 0.15) !important;
+    border-color: rgba(255, 107, 107, 0.3) !important;
+    color: #ff6b6b !important;
+    opacity: 1;
+  }
+
+  .fab-vscode:hover {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.4) !important;
+    color: #f59e0b !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2) !important;
+  }
+
+  .fab-vscode:hover .fab-svg {
+    color: #f59e0b !important;
+    transform: scale(1.1);
+  }
+
+  .fab-vscode:hover .fab-tooltip {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #f59e0b !important;
+    opacity: 1;
+  }
+}
+
+/* ✨ RESPONSIVE - MÓVIL (480px) */
+@media (max-width: 480px) {
+  .fab-container {
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+  }
+  
+  .fab-main {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .fab-icon {
+    font-size: 1.25rem;
+  }
+  
+  .fab-item {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .fab-github {
+    bottom: 62px;
+    left: 4px;
+  }
+
+  .fab-vscode {
+    bottom: 110px;
+    left: 4px;
+  }
+  
+  .fab-svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* ✨ SOLO EN MÓVIL: Tooltip a la izquierda por espacio */
+  .fab-tooltip {
+    right: 52px; /* A la izquierda en móvil */
+    left: auto;
+    font-size: 0.65rem;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .fab-item:hover .fab-tooltip {
+    transform: translateY(-50%) translateX(-4px); /* Hacia la izquierda en móvil */
+  }
+  
+  .fab-overlay {
+    background: rgba(0, 0, 0, 0.02);
+  }
+  
+  /* ✨ MANTENER: Colores específicos en móvil */
+  .fab-github:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+    border-color: rgba(255, 107, 107, 0.4) !important;
+    color: #ff6b6b !important;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2) !important;
+  }
+
+  .fab-github:hover .fab-svg {
+    color: #ff6b6b !important;
+    transform: scale(1.1);
+  }
+
+  .fab-github:hover .fab-tooltip {
+    background: rgba(255, 107, 107, 0.15) !important;
+    border-color: rgba(255, 107, 107, 0.3) !important;
+    color: #ff6b6b !important;
+    opacity: 1;
+  }
+
+  .fab-vscode:hover {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.4) !important;
+    color: #f59e0b !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2) !important;
+  }
+
+  .fab-vscode:hover .fab-svg {
+    color: #f59e0b !important;
+    transform: scale(1.1);
+  }
+
+  .fab-vscode:hover .fab-tooltip {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #f59e0b !important;
+    opacity: 1;
+  }
+}
+
+/* ✨ ESTADOS DE FOCUS */
+.fab-main:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.fab-item:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ✨ MEJORAS DE RENDIMIENTO */
+.fab-container * {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* ✨ MOTION REDUCED PARA ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  .fab-main,
+  .fab-item,
+  .fab-tooltip {
+    transition: none;
+  }
+  
+  .fab-main:hover::before {
+    animation: none;
+  }
+  
+  .fab-main:active::after {
+    animation: none;
+  }
+}

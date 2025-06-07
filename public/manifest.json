@@ -1,7 +1,7 @@
 {
   "short_name": "Code-XR",
   "name": "Code-XR for VS Code",
-  "description": "Visualize code metrics in Augmented and Virtual Reality",
+  "description": "Visualize code metrics in Augmented and Virtual Reality - VS Code plugin",
   "icons": [
     {
       "src": "favicon.ico",
