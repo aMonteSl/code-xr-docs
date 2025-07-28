@@ -1,4 +1,5 @@
 import React from 'react';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Navbar = ({ theme, toggleTheme }) => {
   const navigation = [
@@ -16,12 +17,12 @@ const Navbar = ({ theme, toggleTheme }) => {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img 
-              src="/icon_white.svg" 
+              src={getTechnologyAsset("icon_white.svg")}
               alt="Code-XR Logo" 
               className="h-8 w-8 hidden dark:block"
             />
             <img 
-              src="/icon_black.svg" 
+              src={getTechnologyAsset("icon_black.svg")}
               alt="Code-XR Logo" 
               className="h-8 w-8 block dark:hidden"
             />

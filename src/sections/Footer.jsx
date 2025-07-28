@@ -1,6 +1,7 @@
 import React from 'react';
 import { Github, ExternalLink, Heart, Coffee, Mail } from 'lucide-react';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Footer = () => {
   const marketplaceData = useVSCodeMarketplaceData();
@@ -50,7 +51,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3 mb-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center">
                   <img 
-                    src="/icon_white.svg" 
+                    src={getTechnologyAsset("icon_white.svg")}
                     alt="Code-XR" 
                     className="w-8 h-8"
                   />

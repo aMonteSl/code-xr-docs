@@ -1,4 +1,5 @@
 import React from 'react';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -41,7 +42,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-6">
               <img 
-                src="/icon_white.svg" 
+                src={getTechnologyAsset("icon_white.svg")}
                 alt="Code-XR Logo" 
                 className="h-8 w-8"
               />

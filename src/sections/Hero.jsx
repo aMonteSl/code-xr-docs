@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Play, Code, Monitor, Zap, Download, Star, GitFork, ChevronDown, BarChart3 } from 'lucide-react';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
 import AnimatedDescription from '../components/AnimatedDescription';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -60,7 +61,7 @@ const Hero = () => {
         <div className={`mb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="w-32 h-32 mx-auto rounded-3xl flex items-center justify-center animate-pulse-glow">
             <img 
-              src="/icon_white.svg" 
+              src={getTechnologyAsset("icon_white.svg")}
               alt="Code-XR Logo" 
               className="w-24 h-24"
             />

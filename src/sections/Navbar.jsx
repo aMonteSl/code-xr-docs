@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Download, Star, ExternalLink, Menu, X } from 'lucide-react';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +34,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center">
               <img 
-                src="/icon_white.svg" 
+                src={getTechnologyAsset("icon_white.svg")}
                 alt="Code-XR" 
                 className="w-6 h-6"
               />

@@ -1,29 +1,30 @@
 import React from 'react';
+import { getSrcAsset } from '../utils/assets';
 
 const Gallery = () => {
   const galleryItems = [
     {
       title: "3D Code Structure",
       description: "Explore your codebase in three dimensions",
-      image: "/public/vite.svg", // Placeholder
+      image: getSrcAsset("vite.svg"), // Placeholder
       category: "3D Visualization"
     },
     {
       title: "Complexity Heatmap",
       description: "Visual representation of code complexity",
-      image: "/src/assets/react.svg", // Placeholder
+      image: getSrcAsset("react.svg"), // Placeholder
       category: "Analysis"
     },
     {
       title: "Evolution Timeline",
       description: "Track code changes over time",
-      image: "/public/vite.svg", // Placeholder
+      image: getSrcAsset("vite.svg"), // Placeholder
       category: "Timeline"
     },
     {
       title: "XR Interface",
       description: "Immersive extended reality experience",
-      image: "/src/assets/react.svg", // Placeholder
+      image: getSrcAsset("react.svg"), // Placeholder
       category: "XR Experience"
     },
     {

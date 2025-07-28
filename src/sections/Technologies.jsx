@@ -1,11 +1,13 @@
 import React from 'react';
+import { ExternalLink } from 'lucide-react';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Technologies = () => {
   const technologies = [
     {
       name: 'Node.js',
-      description: 'Backend processing and extension infrastructure built on Node.js runtime.',
-      logo: '/assets/technologies/nodejs.svg',
+      description: 'JavaScript runtime for building scalable applications',
+      logo: getTechnologyAsset('nodejs.svg'),
       color: 'from-green-400 to-emerald-500',
       delay: '0ms',
       url: 'https://nodejs.org/'
@@ -13,7 +15,7 @@ const Technologies = () => {
     {
       name: 'BabiaXR',
       description: 'Data visualization library specialized in XR environments.',
-      logo: '/assets/technologies/babiaxr.png',
+      logo: getTechnologyAsset('babiaxr.png'),
       color: 'from-purple-400 to-pink-500',
       delay: '200ms',
       url: 'https://babiaxr.gitlab.io/'
@@ -21,7 +23,7 @@ const Technologies = () => {
     {
       name: 'A-Frame',
       description: 'Web framework for building virtual reality experiences with HTML.',
-      logo: '/assets/technologies/aframe.png',
+      logo: getTechnologyAsset('aframe.png'),
       color: 'from-red-400 to-pink-500',
       delay: '400ms',
       url: 'https://aframe.io/'
@@ -29,7 +31,7 @@ const Technologies = () => {
     {
       name: 'TypeScript',
       description: 'Type-safe development for robust and maintainable VS Code extension.',
-      logo: '/assets/technologies/typescript.svg',
+      logo: getTechnologyAsset('typescript.svg'),
       color: 'from-blue-600 to-indigo-500',
       delay: '600ms',
       url: 'https://www.typescriptlang.org/'
@@ -37,7 +39,7 @@ const Technologies = () => {
     {
       name: 'Python',
       description: 'Code analysis and metrics calculation through Python integration. (library lizard for CCN)',
-      logo: '/assets/technologies/python.svg',
+      logo: getTechnologyAsset('python.svg'),
       color: 'from-yellow-400 to-blue-500',
       delay: '800ms',
       url: 'https://pypi.org/project/lizard/'
@@ -45,7 +47,7 @@ const Technologies = () => {
     {
       name: 'VS Code API',
       description: 'Extension development interface for integrating with Visual Studio Code editor.',
-      logo: '/assets/technologies/vscode.svg',
+      logo: getTechnologyAsset('vscode.svg'),
       color: 'from-blue-500 to-indigo-600',
       delay: '1000ms',
       url: 'https://code.visualstudio.com/api/references/vscode-api'
