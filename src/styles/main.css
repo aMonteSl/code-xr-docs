@@ -1,29 +1,56 @@
-/* ✨ ARCHIVO PRINCIPAL OPTIMIZADO - SIN IMPORTS ROTOS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Base styles */
-@import './base/variables.css';
-@import './base/reset.css';
-@import './base/typography.css';
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+  
+  body {
+    font-family: 'Inter', 'Poppins', 'Roboto', system-ui, sans-serif;
+    line-height: 1.6;
+    background: #000000;
+    color: #ffffff;
+  }
+  
+  section {
+    scroll-snap-align: start;
+  }
+}
 
-/* Layout */
-@import './layout.css';
-@import './navigation.css';
-
-/* Components */
-@import './components/fab.css';
-@import './components/multimedia.css';
-@import './components/buttons.css';
-@import './components/badges.css';
-@import './components/cards.css';
-@import './components/stats.css';
-@import './components/ui.css';
-
-/* Sections */
-@import './sections.css';
-
-/* Pages */
-@import './pages/home.css';
-
-/* Utilities */
-@import './utilities/animations.css';
-@import './utilities/responsive.css';
+@layer components {
+  .btn-primary {
+    @apply bg-neon-blue hover:bg-neon-blue-dark text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.5);
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-neon-blue text-neon-blue hover:bg-neon-blue hover:text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-white to-neon-blue bg-clip-text text-transparent;
+  }
+  
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+  }
+  
+  .glow-blue-hover:hover {
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.6);
+  }
+  
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+  }
+  
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/10 hover:border-neon-blue/30 transition-all duration-300;
+  }
+}
