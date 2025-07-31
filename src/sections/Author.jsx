@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Linkedin, Mail, MapPin, GraduationCap, Code } from 'lucide-react';
+import { getAssetPath } from '../utils/assets';
 
 const Author = () => {
   return (
@@ -41,18 +42,18 @@ const Author = () => {
                     <picture>
                       <source 
                         media="(max-width: 640px)" 
-                        srcSet="/profile/adrian-montes-linares-small.jpg"
+                        srcSet={getAssetPath("/profile/adrian-montes-linares-small.jpg")}
                       />
                       <source 
                         media="(max-width: 1024px)" 
-                        srcSet="/profile/adrian-montes-linares-medium.jpg"
+                        srcSet={getAssetPath("/profile/adrian-montes-linares-medium.jpg")}
                       />
                       <source 
                         media="(min-width: 1025px)" 
-                        srcSet="/profile/adrian-montes-linares-large.jpg"
+                        srcSet={getAssetPath("/profile/adrian-montes-linares-large.jpg")}
                       />
                       <img 
-                        src="/profile/adrian-montes-linares-medium.jpg"
+                        src={getAssetPath("/profile/adrian-montes-linares-medium.jpg")}
                         alt="Adrián Montes Linares"
                         className="w-full h-full rounded-full object-cover shadow-2xl"
                         style={{
