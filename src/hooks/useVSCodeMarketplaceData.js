@@ -49,7 +49,7 @@ const useVSCodeMarketplaceData = () => {
             const totalDownloads = statistics.find(s => s.statisticName === 'downloadCount')?.value || 
                                  statistics.find(s => s.statisticName === 'download')?.value || '-';
             const rating = extension.averagerating || 0;
-            const version = extension.versions?.[0]?.version || '0.0.9';
+            const version = extension.versions?.[0]?.version || '-';
 
             // Format numbers
             const formatNumber = (num) => {

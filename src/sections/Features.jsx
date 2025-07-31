@@ -1,12 +1,12 @@
 import React from 'react';
 import { Monitor, Zap, BarChart3, FolderOpen } from 'lucide-react';
-import { getAssetPath, getTechnologyAsset } from '../utils/assets';
+import { getTechnologyAsset } from '../utils/assets';
 
 const Features = () => {
   // Custom icon components
   const CustomXRIcon = ({ size = 32, className = "" }) => (
     <img 
-      src={getAssetPath("icon_white.svg")}
+      src={getTechnologyAsset("icon_white.svg")}
       alt="XR" 
       className={className}
       style={{ width: size, height: size }}

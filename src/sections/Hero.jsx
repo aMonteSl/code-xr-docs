@@ -41,7 +41,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden pt-16">
+    <section id="hero" className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden pt-16">
       {/* Clean Background */}
       <div className="absolute inset-0">
         {/* Subtle grid pattern only */}
@@ -65,6 +65,14 @@ const Hero = () => {
               alt="Code-XR Logo" 
               className="w-24 h-24"
             />
+          </div>
+        </div>
+
+        {/* VISSOFT 2025 Badge */}
+        <div className={`mb-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-full backdrop-blur-sm">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+            <span className="text-yellow-300 font-medium text-sm">Accepted at IEEE VISSOFT 2025</span>
           </div>
         </div>
 

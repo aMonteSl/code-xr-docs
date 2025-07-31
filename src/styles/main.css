@@ -5,7 +5,6 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
   }
   
   body {
@@ -13,10 +12,6 @@
     line-height: 1.6;
     background: #000000;
     color: #ffffff;
-  }
-  
-  section {
-    scroll-snap-align: start;
   }
 }
 

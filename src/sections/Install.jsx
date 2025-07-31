@@ -207,26 +207,18 @@ const Install = () => {
 
         {/* Help Section */}
         <div className="text-center mt-16" data-aos="fade-up" data-aos-delay="800">
-          <h3 className="text-2xl font-bold text-white mb-4">Need Help?</h3>
           <p className="text-gray-300 mb-6">
-            Check out our documentation or join our community for support
+            For more information and detailed documentation, visit the extension page
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#"
-              className="btn-secondary flex items-center space-x-2 justify-center"
-            >
-              <span>Documentation</span>
-              <ExternalLink size={16} />
-            </a>
-            <a
-              href="#"
-              className="btn-secondary flex items-center space-x-2 justify-center"
-            >
-              <span>Discord Community</span>
-              <ExternalLink size={16} />
-            </a>
-          </div>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary flex items-center space-x-2 justify-center inline-flex"
+          >
+            <span>View on Marketplace</span>
+            <ExternalLink size={16} />
+          </a>
         </div>
       </div>
     </section>
