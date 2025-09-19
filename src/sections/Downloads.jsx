@@ -1,32 +1,21 @@
 import React from 'react';
 import { Download, FileText, Presentation, Award } from 'lucide-react';
+import { getAssetPath } from '../utils/assets';
 
 const Downloads = () => {
   const handlePosterDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/documents/vissoft2025-poster.pdf';
-    link.download = 'CodeXR_VISSOFT2025_Poster.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const url = getAssetPath('/documents/vissoft2025-poster.pdf');
+    window.open(url, '_blank');
   };
 
   const handleTFGDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/documents/tfg.pdf';
-    link.download = 'CodeXR_TFG_Document.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const url = getAssetPath('/documents/tfg_Adrian_Montes_Linares.pdf');
+    window.open(url, '_blank');
   };
 
   const handlePresentationDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/documents/tfg-presentation.pdf';
-    link.download = 'CodeXR_Defense_Presentation.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const url = getAssetPath('/documents/tfg-presentation.pdf');
+    window.open(url, '_blank');
   };
 
   return (
