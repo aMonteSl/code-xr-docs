@@ -3,19 +3,51 @@ import { Download, FileText, Presentation, Award } from 'lucide-react';
 import { getAssetPath } from '../utils/assets';
 
 const Downloads = () => {
+  const handleDownload = async (documentPath, filename) => {
+    const url = getAssetPath(documentPath);
+    
+    // For GitHub Pages, we need to handle downloads differently
+    if (window.location.hostname === 'amontesl.github.io') {
+      // In production, open in new tab and let user save manually
+      window.open(url, '_blank');
+      return;
+    }
+    
+    // Try to create a download link first (for local development)
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.target = '_blank';
+    
+    // Add to DOM temporarily
+    document.body.appendChild(link);
+    
+    // Try to trigger download
+    try {
+      link.click();
+    } catch {
+      // Fallback: open in new window
+      window.open(url, '_blank');
+    }
+    
+    // Clean up
+    setTimeout(() => {
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
+      }
+    }, 100);
+  };
+
   const handlePosterDownload = () => {
-    const url = getAssetPath('/documents/vissoft2025-poster.pdf');
-    window.open(url, '_blank');
+    handleDownload('/documents/vissoft2025-poster.pdf', 'CodeXR_VISSOFT2025_Poster.pdf');
   };
 
   const handleTFGDownload = () => {
-    const url = getAssetPath('/documents/tfg_Adrian_Montes_Linares.pdf');
-    window.open(url, '_blank');
+    handleDownload('/documents/tfg_Adrian_Montes_Linares.pdf', 'CodeXR_TFG_Document.pdf');
   };
 
   const handlePresentationDownload = () => {
-    const url = getAssetPath('/documents/tfg-presentation.pdf');
-    window.open(url, '_blank');
+    handleDownload('/documents/tfg-presentation.pdf', 'CodeXR_Defense_Presentation.pdf');
   };
 
   return (
