@@ -47,7 +47,8 @@ const Downloads = () => {
   };
 
   const handlePresentationDownload = () => {
-    handleDownload('/documents/tfg-presentation.pdf', 'CodeXR_Defense_Presentation.pdf');
+    // Open Canva presentation website in new tab
+    window.open('https://code-xr-presentacion.my.canva.site/', '_blank');
   };
 
   return (
@@ -151,11 +152,11 @@ const Downloads = () => {
               Defense Presentation
             </h3>
             <p className="text-gray-300 mb-4 leading-relaxed text-sm flex-grow">
-              Presentation slides used during the thesis defense. Includes key findings, demonstrations, and visual summaries of the project.
+              Interactive web presentation used during the thesis defense. Includes key findings, demonstrations, and visual summaries of the project.
             </p>
             <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 mb-6">
               <p className="text-purple-400 text-xs font-medium">
-                Defense Presentation Materials
+                Interactive Web Presentation
               </p>
             </div>
             <div className="mt-auto">
@@ -163,10 +164,10 @@ const Downloads = () => {
                 onClick={handlePresentationDownload}
                 className="btn-primary inline-flex items-center space-x-2 w-full justify-center mb-3"
               >
-                <Download className="w-5 h-5" />
-                <span>Download Presentation</span>
+                <Presentation className="w-5 h-5" />
+                <span>View Presentation</span>
               </button>
-              <p className="text-xs text-gray-500">PDF Slides • Defense Materials</p>
+              <p className="text-xs text-gray-500">Interactive Web • Defense Materials</p>
             </div>
           </div>
         </div>
