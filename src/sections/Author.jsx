@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Linkedin, Mail, MapPin, GraduationCap, Code } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, GraduationCap, Code, Globe } from 'lucide-react';
 import { getAssetPath } from '../utils/assets';
 
 const Author = () => {
@@ -136,6 +136,15 @@ const Author = () => {
                   >
                     <Linkedin size={18} />
                     <span>LinkedIn</span>
+                  </a>
+                  <a
+                    href="https://amontesl.github.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-white transition-all duration-300 hover:scale-105"
+                  >
+                    <Globe size={18} />
+                    <span>Portfolio</span>
                   </a>
                   <a
                     href="mailto:adrian.adyra@gmail.com"
