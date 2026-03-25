@@ -102,7 +102,7 @@ const QuickStartGuide = () => {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [currentStep]);
+  }, [currentStep, markComplete, steps]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -121,7 +121,7 @@ const QuickStartGuide = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [goToStep, nextStep, prevStep]);
 
   return (
     <section id="quick-start-guide" className="py-20 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">

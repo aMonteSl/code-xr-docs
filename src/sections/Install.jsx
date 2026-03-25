@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Download, Copy, Check, Terminal, Package, ExternalLink } from 'lucide-react';
+import { Download, Copy, Check, Terminal, Package, ExternalLink, ShieldCheck } from 'lucide-react';
+import { latestRelease } from '../content/releaseContent';
 
 const Install = () => {
   const [copiedCommand, setCopiedCommand] = useState('');
@@ -7,7 +8,7 @@ const Install = () => {
   const installMethods = [
     {
       title: 'VS Code Marketplace',
-      description: 'Install directly from the VS Code Extensions Marketplace',
+      description: 'Open the official Marketplace listing and install the latest public version of Code-XR.',
       icon: Package,
       primary: true,
       steps: [
@@ -18,12 +19,12 @@ const Install = () => {
       ],
       cta: {
         text: 'Open in Marketplace',
-        url: 'vscode:extension/aMonteSl.code-xr'
+        url: 'https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr'
       }
     },
     {
       title: 'Command Line',
-      description: 'Install using VS Code CLI',
+      description: 'Use the VS Code CLI to install the extension directly from the public Marketplace.',
       icon: Terminal,
       command: 'code --install-extension aMonteSl.code-xr',
       steps: [
@@ -35,7 +36,7 @@ const Install = () => {
     },
     {
       title: 'Manual Installation',
-      description: 'Download and install manually',
+      description: 'Download the VSIX from GitHub releases when you need an offline or manual installation path.',
       icon: Download,
       steps: [
         'Download .vsix file from releases',
@@ -63,24 +64,26 @@ const Install = () => {
   const requirements = [
     {
       category: 'VS Code',
-      items: ['Visual Studio Code v1.98.0 or superior', 'Windows, macOS, or Linux']
+      items: ['Visual Studio Code 1.98.0 or newer', 'Windows, macOS, or Linux']
     },
     {
-      category: 'XR Hardware (Optional)',
-      items: ['VR Headset (Oculus, HTC Vive, etc.)', 'XR hardware is optional but enhances the immersive experience']
-    },
-    {
-      category: 'Dependencies',
+      category: 'Automatic Setup',
       items: [
-        'A valid Visual Studio Code v1.98.0 or superior installation',
-        'Python 3 installed (must be accessible in PATH)',
-        '(Optional) WebXR-compatible browser like Chrome, Edge or Firefox Nightly for external WebVR/WebXR view'
+        'Code-XR creates and maintains its Python environment inside VS Code storage when needed',
+        'HTTPS certificates are generated locally on first startup for WebXR-compatible workflows'
+      ]
+    },
+    {
+      category: 'Optional for Immersive Workflows',
+      items: [
+        'A modern browser with WebXR support for external immersive scenes',
+        'VR or AR hardware improves the experience but is not required for the desktop workflows'
       ]
     }
   ];
 
   return (
-    <section id="install" className="py-20 bg-black relative overflow-hidden">
+    <section id="install" className="relative overflow-hidden bg-transparent py-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-0 w-96 h-96 bg-green-400 opacity-5 rounded-full blur-3xl"></div>
@@ -97,7 +100,7 @@ const Install = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Get started with Code-XR in minutes. Choose your preferred installation method below.
+            {latestRelease.copyBlocks.installIntro}
           </p>
         </div>
 
@@ -171,6 +174,8 @@ const Install = () => {
               {method.cta && (
                 <a
                   href={method.cta.url}
+                  target={method.cta.url.startsWith('http') ? '_blank' : undefined}
+                  rel={method.cta.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className={`w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
                     method.primary
                       ? 'bg-neon-blue text-black hover:bg-neon-blue-dark glow-blue'
@@ -202,6 +207,24 @@ const Install = () => {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="mb-16" data-aos="fade-up" data-aos-delay="500">
+          <div className="glass-card p-6 max-w-3xl mx-auto">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full bg-neon-blue/15 flex items-center justify-center text-neon-blue flex-shrink-0">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">v1.1.0 setup improvements</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {latestRelease.copyBlocks.installNote} The extension now exposes Python
+                  environment status, verification, and reinitialization actions directly from the
+                  UI when recovery is needed.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

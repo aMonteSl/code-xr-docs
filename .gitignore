@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+dashboard-imports/**
+!dashboard-imports/
+!dashboard-imports/README.md
+!dashboard-imports/*/
+!dashboard-imports/*/.gitkeep
 
 # Editor directories and files
 .vscode/*

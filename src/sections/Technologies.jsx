@@ -55,18 +55,11 @@ const Technologies = () => {
   ];
 
   return (
-    <section id="technologies" className="py-20 bg-black relative overflow-hidden">
+    <section id="technologies" className="relative overflow-hidden bg-transparent py-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 right-0 w-96 h-96 bg-neon-blue opacity-5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-purple-400 opacity-5 rounded-full blur-3xl"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 170, 255, 0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 170, 255, 0.02) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px'
-        }}></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,22 +1,14 @@
 import React from 'react';
-import { Monitor, Zap, BarChart3, FolderOpen } from 'lucide-react';
+import { Monitor, Users, BarChart3, Settings, SlidersHorizontal } from 'lucide-react';
 import { getTechnologyAsset } from '../utils/assets';
+import { latestRelease } from '../content/releaseContent';
 
 const Features = () => {
   // Custom icon components
   const CustomXRIcon = ({ size = 32, className = "" }) => (
     <img 
       src={getTechnologyAsset("icon_white.svg")}
-      alt="XR" 
-      className={className}
-      style={{ width: size, height: size }}
-    />
-  );
-
-  const CustomVSCodeIcon = ({ size = 32, className = "" }) => (
-    <img 
-      src={getTechnologyAsset("vscode.svg")} 
-      alt="VS Code" 
+      alt="Code-XR XR feature icon" 
       className={className}
       style={{ width: size, height: size }}
     />
@@ -24,51 +16,51 @@ const Features = () => {
 
   const features = [
     {
-      icon: Monitor,
-      title: 'LivePanel Visualization',
-      description: 'Render your data in a standard HTML/CSS panel—like a normal web page—complete with beautiful charts. Perfect when you want a quick overview without leaving your favorite editor.',
+      icon: CustomXRIcon,
+      title: 'Unified Analysis Engine',
+      description: 'Files, directories, and DOM flows now share the same Python-backed analysis contract, which keeps LivePanel and XR views aligned with the real backend output.',
       color: 'from-blue-400 to-cyan-400',
       delay: '0ms'
     },
     {
-      icon: CustomXRIcon,
-      title: 'XR Visualization',
-      description: 'Take your graphics to the next level with BabylonXR: immersive and dynamic visualizations that react in real-time to your code changes. Watch your data come to life!',
+      icon: Users,
+      title: 'Collaborative XR and DOM Rooms',
+      description: 'Live sessions now synchronize mapping changes, chart refreshes, screen layout updates, and visible presence markers across connected users.',
       color: 'from-purple-400 to-pink-400',
       delay: '200ms'
     },
     {
-      icon: CustomVSCodeIcon,
-      title: 'Full Integrated VS Code',
-      description: 'View your analysis both in a sidebar panel within VS Code and in a web tab. Total flexibility to choose your work context without breaking the flow.',
+      icon: Monitor,
+      title: 'Shared Virtual Screens',
+      description: 'Project a desktop, window, or tab into the immersive scene, with synchronized layout controls and shared video or audio playback for connected clients.',
       color: 'from-green-400 to-blue-400',
       delay: '400ms'
     },
     {
-      icon: Zap,
-      title: 'Real Time Analysis',
-      description: 'With a simple debounce your metrics update instantly. 🚀 Supports multiple simultaneous analysis to compare, overlay and extrapolate without breaking a sweat.',
+      icon: SlidersHorizontal,
+      title: 'In-Scene Mapping and Recovery',
+      description: 'Chart remapping now happens directly inside XR, with validation and automatic rollback when a new dimension combination produces invalid geometry.',
       color: 'from-yellow-400 to-orange-400',
       delay: '600ms'
     },
     {
       icon: BarChart3,
-      title: 'Metrics',
-      description: 'Get CCN, CCN Density, number of functions, classes, parameters per function, lines of code, comment lines and much more. All essential KPIs of your codebase at a single glance.',
+      title: 'Expanded Real Metrics',
+      description: 'Expose richer values like complexity bands, ratios, aggregate nesting depth, and function-size indicators to drive more meaningful LivePanel and XR mappings.',
       color: 'from-indigo-400 to-purple-400',
       delay: '800ms'
     },
     {
-      icon: FolderOpen,
-      title: 'Files and Directories',
-      description: 'Analyze files and directories in more than 24 languages, including HTML with its own VisualizeDOM. Navigate, inspect and understand your project like never before.',
+      icon: Settings,
+      title: 'Guided Python Environment Recovery',
+      description: 'The Python environment now has dedicated status, verification, and reinitialization flows inside VS Code, making setup more robust and easier to recover.',
       color: 'from-teal-400 to-green-400',
       delay: '1000ms'
     }
   ];
 
   return (
-    <section id="features" className="py-20 bg-black relative overflow-hidden">
+    <section id="features" className="relative overflow-hidden bg-transparent py-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-neon-blue opacity-5 rounded-full blur-3xl"></div>
@@ -85,7 +77,7 @@ const Features = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Experience the future of coding with immersive XR capabilities built directly into VS Code
+            {latestRelease.copyBlocks.featuresIntro}
           </p>
         </div>
 
@@ -122,16 +114,16 @@ const Features = () => {
         <div className="text-center mt-16" data-aos="fade-up" data-aos-delay="800">
           <div className="glass-card p-8 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold text-white mb-4">
-              Ready to transform your development experience?
+              Ready to explore the current release?
             </h3>
             <p className="text-gray-300 mb-6">
-              Join thousands of developers already coding in the future with Code-XR
+              Move from the release overview into the full gallery and installation workflow without losing the existing visual style of the site.
             </p>
             <a
-              href="#install"
+              href="#latest-release"
               className="btn-primary inline-flex items-center space-x-2"
             >
-              <span>Get Started Now</span>
+              <span>Explore v1.1.0</span>
             </a>
           </div>
         </div>

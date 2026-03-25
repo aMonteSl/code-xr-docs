@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { latestRelease } from '../content/releaseContent';
 
 const AnimatedDescription = () => {
-  const descriptions = [
-    "Transform your VS Code into an immersive XR development environment.",
-    "Code in virtual reality, visualize data in 3D, and collaborate in mixed reality.",
-    "Explore software metrics in spatial XR environments.",
-    "Level up static analysis with 3D and AR interfaces."
-  ];
+  const descriptions = latestRelease.copyBlocks.heroDescriptions;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
@@ -25,8 +21,8 @@ const AnimatedDescription = () => {
   }, [descriptions.length]);
 
   return (
-    <div className="h-20 md:h-16 flex items-center justify-center">
-      <p className={`text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed transition-all duration-700 ease-in-out transform ${
+    <div className="flex h-24 items-center justify-center sm:h-20 md:h-16">
+      <p className={`mx-auto max-w-3xl text-lg leading-relaxed text-gray-300 transition-all duration-700 ease-in-out transform sm:text-xl md:text-2xl ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}>
         {descriptions[currentIndex]}

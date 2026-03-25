@@ -4,16 +4,11 @@ import { getAssetPath } from '../utils/assets';
 
 const Author = () => {
   return (
-    <section id="author" className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <section id="author" className="relative overflow-hidden bg-transparent py-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 170, 255, 0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 170, 255, 0.02) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px'
-        }}></div>
+        <div className="absolute -left-12 top-16 h-64 w-64 rounded-full bg-neon-blue/6 blur-3xl"></div>
+        <div className="absolute -right-12 bottom-16 h-64 w-64 rounded-full bg-purple-400/6 blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,7 +49,7 @@ const Author = () => {
                       />
                       <img 
                         src={getAssetPath("/profile/adrian-montes-linares-medium.jpg")}
-                        alt="Adrián Montes Linares"
+                        alt="Portrait of Adrian Montes Linares, creator of Code-XR"
                         className="w-full h-full rounded-full object-cover shadow-2xl"
                         style={{
                           objectPosition: 'center center',
@@ -72,7 +67,7 @@ const Author = () => {
                     </picture>
                     {/* Fallback placeholder */}
                     <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-700 to-gray-800 hidden items-center justify-center">
-                      <div className="text-6xl text-neon-blue opacity-60">👨‍💻</div>
+                      <Code className="w-16 h-16 text-neon-blue opacity-60" />
                     </div>
                   </div>
                   {/* Enhanced decorative rings */}

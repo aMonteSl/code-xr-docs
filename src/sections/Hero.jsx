@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Play, Code, Monitor, Zap, Download, Star, GitFork, ChevronDown, BarChart3 } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Play, Code, Monitor, Zap, Download, Star, ChevronDown, BarChart3 } from 'lucide-react';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
 import AnimatedDescription from '../components/AnimatedDescription';
+import MetricPanel from '../components/MetricPanel';
 import { getTechnologyAsset } from '../utils/assets';
+import { latestRelease } from '../content/releaseContent';
+
+const formatPublishedDate = (value) => {
+  if (!value || value === '-') {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(value));
+};
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,72 +27,104 @@ const Hero = () => {
   }, []);
 
   const badges = [
-    { icon: Zap, text: 'Real-time', color: 'from-yellow-400 to-orange-500' },
-    { icon: GitFork, text: 'Open Source', color: 'from-purple-400 to-pink-500' },
-    { icon: Monitor, text: 'VS Code', color: 'from-blue-400 to-cyan-500' },
-    { icon: BarChart3, text: 'Code Metrics', color: 'from-indigo-400 to-purple-500' }
+    { icon: Zap, text: 'Unified analysis engine', color: 'from-yellow-400 to-orange-500' },
+    { icon: Monitor, text: 'Shared virtual screens', color: 'from-blue-400 to-cyan-500' },
+    { icon: BarChart3, text: 'Expanded XR metrics', color: 'from-indigo-400 to-purple-500' },
+    { icon: Code, text: 'Collaborative XR rooms', color: 'from-purple-400 to-pink-500' }
   ];
 
-  const metrics = [
-    { 
-      value: marketplaceData.downloads, 
-      label: 'Downloads (30d)', 
-      sublabel: marketplaceData.activeInstalls !== '-' ? `${marketplaceData.activeInstalls} active` : 'Active installs',
-      icon: Download 
-    },
-    { 
-      value: marketplaceData.rating !== '-' ? `${marketplaceData.rating}★` : '-', 
-      label: 'Rating', 
-      sublabel: 'Based on reviews',
-      icon: Star 
-    },
-    { 
-      value: marketplaceData.version, 
-      label: 'Version', 
-      sublabel: 'Latest',
-      icon: Code 
+  const metrics = useMemo(() => {
+    const items = [
+      {
+        id: 'active-installs',
+        value: marketplaceData.activeInstalls,
+        label: marketplaceData.sourceLabels.activeInstalls,
+        sublabel: 'Official marketplace API',
+        icon: Download,
+      },
+      {
+        id: 'marketplace-downloads',
+        value: marketplaceData.marketplaceDownloads,
+        label: marketplaceData.sourceLabels.marketplaceDownloads,
+        sublabel: 'Official marketplace API',
+        icon: BarChart3,
+      },
+    ];
+
+    if (!marketplaceData.tillDateAcquisition?.value && marketplaceData.approxTotalDownloads) {
+      items.push({
+        id: 'approx-total-downloads',
+        value: marketplaceData.approxTotalDownloads,
+        label: marketplaceData.sourceLabels.approxTotalDownloads,
+        sublabel: 'Approx. from public marketplace metrics',
+        icon: BarChart3,
+      });
     }
-  ];
+
+    items.push(
+      {
+        id: 'rating',
+        value:
+          marketplaceData.rating !== '-'
+            ? `${marketplaceData.rating}★`
+            : '-',
+        label: marketplaceData.sourceLabels.rating,
+        sublabel:
+          marketplaceData.ratingCount !== '-'
+            ? `${marketplaceData.ratingCount} review${marketplaceData.ratingCount === '1' ? '' : 's'}`
+            : 'Awaiting more reviews',
+        icon: Star,
+      },
+      {
+        id: 'version',
+        value: marketplaceData.version,
+        label: marketplaceData.sourceLabels.version,
+        sublabel: formatPublishedDate(marketplaceData.lastUpdated) || 'Latest published release',
+        icon: Code,
+      }
+    );
+
+    if (marketplaceData.tillDateAcquisition?.value) {
+      items.splice(2, 0, {
+        id: 'till-date-acquisition',
+        value: marketplaceData.tillDateAcquisition.value,
+        label: marketplaceData.tillDateAcquisition.label,
+        sublabel: 'Official publisher resource',
+        icon: Download,
+      });
+    }
+
+    return items;
+  }, [marketplaceData]);
 
   return (
-    <section id="hero" className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden pt-16">
-      {/* Clean Background */}
-      <div className="absolute inset-0">
-        {/* Subtle grid pattern only */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-blue/3 to-transparent">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 170, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 170, 255, 0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px'
-          }}></div>
-        </div>
-      </div>
-
+    <section id="hero" className="relative flex min-h-screen items-center justify-center overflow-hidden pt-16">
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Logo/Icon */}
         <div className={`mb-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="w-32 h-32 mx-auto rounded-3xl flex items-center justify-center animate-pulse-glow">
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl animate-pulse-glow sm:h-32 sm:w-32">
             <img 
               src={getTechnologyAsset("icon_white.svg")}
-              alt="Code-XR Logo" 
-              className="w-24 h-24"
+              alt="Code-XR logo" 
+              className="h-20 w-20 sm:h-24 sm:w-24"
             />
           </div>
         </div>
 
-        {/* VISSOFT 2025 Badge */}
-        <div className={`mb-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-full backdrop-blur-sm">
-            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-            <span className="text-yellow-300 font-medium text-sm">Accepted at IEEE VISSOFT 2025</span>
+        <div className={`mb-6 flex flex-wrap items-center justify-center gap-3 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-flex items-center space-x-2 rounded-full border border-neon-blue/30 bg-neon-blue/10 px-4 py-2 backdrop-blur-sm">
+            <div className="h-2 w-2 rounded-full bg-neon-blue animate-pulse"></div>
+            <span className="text-sm font-medium text-neon-blue">{latestRelease.copyBlocks.heroBadge}</span>
+          </div>
+          <div className="inline-flex items-center space-x-2 rounded-full border border-yellow-500/30 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-4 py-2 backdrop-blur-sm">
+            <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse"></div>
+            <span className="text-sm font-medium text-yellow-300">Accepted at IEEE VISSOFT 2025</span>
           </div>
         </div>
 
         {/* Main Title */}
         <div className={`mb-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h1 className="text-5xl md:text-7xl font-bold mb-4">
+          <h1 className="mb-4 text-4xl font-bold sm:text-5xl md:text-6xl xl:text-7xl">
             <span className="text-white">Welcome to</span>{' '}
             <span className="text-gradient bg-gradient-to-r from-white to-neon-blue bg-clip-text text-transparent">
               Code-XR
@@ -107,22 +153,22 @@ const Hero = () => {
 
         {/* Metrics Cards */}
         <div className={`mb-8 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {metrics.map((metric, index) => (
-              <div
-                key={index}
-                className="glass-card-hover p-6 text-center group animate-scale-in"
-                style={{animationDelay: `${800 + index * 100}ms`}}
-              >
-                <metric.icon size={24} className="mx-auto mb-3 text-neon-blue group-hover:scale-110 transition-transform duration-300" />
-                <div className={`text-3xl font-bold mb-1 ${
-                  metric.value === '-' ? 'text-gray-500' : 'text-white'
-                }`}>
-                  {metric.value}
-                </div>
-                <div className="text-lg font-medium text-neon-blue mb-1">{metric.label}</div>
-                <div className="text-sm text-gray-400">{metric.sublabel}</div>
-              </div>
+              <MetricPanel
+                key={metric.id}
+                icon={metric.icon}
+                value={metric.value}
+                label={metric.label}
+                detail={metric.sublabel}
+                align="center"
+                className={`animate-scale-in ${
+                  metrics.length % 2 === 1 && index === metrics.length - 1
+                    ? 'sm:col-span-2 lg:col-span-1'
+                    : ''
+                }`}
+                style={{ animationDelay: `${800 + index * 100}ms` }}
+              />
             ))}
           </div>
         </div>
@@ -137,21 +183,21 @@ const Hero = () => {
               className="btn-primary flex items-center space-x-2 justify-center group"
             >
               <Download size={20} className="group-hover:animate-bounce" />
-              <span>Install Extension</span>
+              <span>{latestRelease.copyBlocks.heroPrimaryCta}</span>
             </a>
             <a
-              href="#quick-start-guide"
+              href="#latest-release"
               className="btn-secondary flex items-center space-x-2 justify-center group"
             >
               <Play size={20} className="group-hover:scale-110 transition-transform" />
-              <span>Quick Start Guide</span>
+              <span>{latestRelease.copyBlocks.heroSecondaryCta}</span>
             </a>
           </div>
         </div>
 
         {/* Scroll Arrow */}
         <div className={`transition-all duration-1000 delay-1200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <a href="#features" className="block">
+          <a href="#latest-release" className="block">
             <div className="flex flex-col items-center text-neon-blue hover:text-white transition-colors duration-300 animate-bounce">
               <ChevronDown size={32} className="animate-pulse" />
             </div>

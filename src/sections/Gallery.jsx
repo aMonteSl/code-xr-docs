@@ -1,146 +1,75 @@
-import React, { useState } from 'react';
-import { Play, Maximize, ExternalLink } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { ExternalLink, ImageIcon, Play } from 'lucide-react';
+import AutoplayVideoPreview from '../components/AutoplayVideoPreview';
+import MediaLightbox from '../components/MediaLightbox';
+import { galleryCategoryOrder, galleryMedia } from '../content/releaseContent';
+import { getAssetPath } from '../utils/assets';
+
+const handleCardKeyDown = (event, callback) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    callback();
+  }
+};
 
 const Gallery = () => {
-  const [selectedVideo, setSelectedVideo] = useState(null);
-
-  // Helper function to extract YouTube video ID from URL
-  const getYouTubeId = (url) => {
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
-    return match ? match[1] : null;
-  };
-
-  // Helper function to get YouTube thumbnail
-  const getYouTubeThumbnail = (url) => {
-    const videoId = getYouTubeId(url);
-    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/api/placeholder/400/250';
-  };
-
-  const galleryItems = [
-    // Interface & Tutorial
-    {
-      id: 1,
-      type: 'video',
-      title: 'Code-XR Interface Tutorial',
-      description: 'Complete walkthrough of the Code-XR user interface and plugin functionality',
-      videoUrl: 'https://youtu.be/KRgLdLZJXHA',
-      category: 'Interface'
-    },
-    
-    // File Analysis
-    {
-      id: 2,
-      type: 'video',
-      title: 'File Analysis - LivePanel Mode',
-      description: 'Analyze individual files using the LivePanel visualization mode',
-      videoUrl: 'https://youtu.be/n5ZcjlR4pPc',
-      category: 'File Analysis'
-    },
-    {
-      id: 3,
-      type: 'video',
-      title: 'File Analysis - XR Mode',
-      description: 'Immersive XR analysis of individual code files with 3D visualization',
-      videoUrl: 'https://youtu.be/38jGwFGORvc',
-      category: 'File Analysis'
-    },
-    
-    // Directory Analysis
-    {
-      id: 4,
-      type: 'video',
-      title: 'Directory Analysis - LivePanel',
-      description: 'Analyze entire directories and their structure using LivePanel mode',
-      videoUrl: 'https://youtu.be/sPWjcgV-gZQ',
-      category: 'Directory Analysis'
-    },
-    {
-      id: 5,
-      type: 'video',
-      title: 'Directory Analysis - XR Mode',
-      description: 'Navigate and analyze directory structures in immersive XR environment',
-      videoUrl: 'https://youtu.be/TnfS2SevtWU',
-      category: 'Directory Analysis'
-    },
-    
-    // Project Analysis
-    {
-      id: 6,
-      type: 'video',
-      title: 'Full Project Analysis',
-      description: 'Comprehensive project analysis using both LivePanel and XR modes',
-      videoUrl: 'https://youtu.be/NluAHe3BQu8',
-      category: 'Project Analysis'
-    },
-    
-    // Special Features
-    {
-      id: 7,
-      type: 'video',
-      title: 'HTML DOM Tree Visualization',
-      description: 'Visualize HTML DOM structures as interactive 3D trees in XR space',
-      videoUrl: 'https://youtu.be/110b-AergdU',
-      category: 'Special Features'
-    },
-    {
-      id: 8,
-      type: 'video',
-      title: 'Augmented Reality Experience',
-      description: 'Experience Code-XR in Augmented Reality mode with real-world integration',
-      videoUrl: 'https://youtu.be/d7fojpP90Dk',
-      category: 'AR Experience'
-    }
-  ];
-
-  const categories = ['All', ...new Set(galleryItems.map(item => item.category))];
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedMedia, setSelectedMedia] = useState(null);
 
-  const filteredItems = activeCategory === 'All' 
-    ? galleryItems 
-    : galleryItems.filter(item => item.category === activeCategory);
+  const categories = useMemo(() => ['All', ...galleryCategoryOrder], []);
 
-  // Organize items by category for "All" view
-  const organizedByCategory = {
-    'Interface': galleryItems.filter(item => item.category === 'Interface'),
-    'File Analysis': galleryItems.filter(item => item.category === 'File Analysis'),
-    'Directory Analysis': galleryItems.filter(item => item.category === 'Directory Analysis'),
-    'Project Analysis': galleryItems.filter(item => item.category === 'Project Analysis'),
-    'Special Features': galleryItems.filter(item => item.category === 'Special Features'),
-    'AR Experience': galleryItems.filter(item => item.category === 'AR Experience')
-  };
+  const organizedByCategory = useMemo(
+    () =>
+      galleryCategoryOrder.map((category) => ({
+        category,
+        items: galleryMedia.filter((item) => item.category === category),
+      })),
+    []
+  );
+
+  const filteredItems = useMemo(() => {
+    if (activeCategory === 'All') {
+      return galleryMedia;
+    }
+
+    return galleryMedia.filter((item) => item.category === activeCategory);
+  }, [activeCategory]);
 
   return (
-    <section id="gallery" className="py-20 bg-black relative overflow-hidden">
-      {/* Background Effects */}
+    <section id="gallery" className="relative overflow-hidden bg-transparent py-20">
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-72 h-72 bg-purple-400 opacity-5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-neon-blue opacity-5 rounded-full blur-3xl"></div>
+        <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-purple-400/5 blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-neon-blue/5 blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16" data-aos="fade-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 text-center" data-aos="fade-up">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl">
             <span className="text-white">Experience</span>{' '}
             <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Code-XR
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            See Code-XR in action through interactive demos and real-world use cases
+          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+            Browse the new v1.1.0 media first, then move through the complete archive of Code-XR
+            tutorials, analysis workflows, and immersive demos.
           </p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up" data-aos-delay="200">
+        <div
+          className="mb-12 flex flex-wrap justify-center gap-4"
+          data-aos="fade-up"
+          data-aos-delay="150"
+        >
           {categories.map((category) => (
             <button
               key={category}
+              type="button"
               onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+              className={`rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
                 activeCategory === category
                   ? 'bg-neon-blue text-black glow-blue'
-                  : 'glass-card text-gray-300 hover:text-white hover:border-neon-blue/50'
+                  : 'glass-card text-gray-300 hover:border-neon-blue/50 hover:text-white'
               }`}
             >
               {category}
@@ -148,189 +77,146 @@ const Gallery = () => {
           ))}
         </div>
 
-        {/* Gallery Grid */}
         {activeCategory === 'All' ? (
-          // Organized view for "All" category
           <div className="space-y-16">
-            {Object.entries(organizedByCategory).map(([categoryName, items]) => (
-              items.length > 0 && (
-                <div key={categoryName}>
-                  {/* Category Title */}
-                  <div className="mb-8" data-aos="fade-up">
-                    <h3 className="text-2xl font-bold text-white mb-2">{categoryName}</h3>
-                    <div className="w-20 h-1 bg-gradient-to-r from-neon-blue to-purple-400 rounded"></div>
-                  </div>
-                  
-                  {/* Category Videos Grid */}
-                  <div className={`grid gap-8 ${items.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : items.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-                    {items.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className="glass-card-hover group cursor-pointer overflow-hidden animate-scale-in"
-                        style={{animationDelay: `${index * 100}ms`}}
-                        data-aos="fade-up"
-                        data-aos-delay={index * 100}
-                        onClick={() => setSelectedVideo(item)}
-                      >
-                        {/* Thumbnail */}
-                        <div className="relative overflow-hidden">
-                          <div className="w-full h-48 bg-gradient-to-br from-neon-blue/20 to-purple-400/20 relative">
-                            {/* YouTube Thumbnail */}
-                            <img 
-                              src={getYouTubeThumbnail(item.videoUrl)}
-                              alt={item.title}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            {/* Fallback */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/20 to-purple-400/20 hidden items-center justify-center">
-                              <div className="text-6xl text-neon-blue opacity-50">▶</div>
+            {organizedByCategory.map(
+              ({ category, items }) =>
+                items.length > 0 && (
+                  <div key={category}>
+                    <div className="mb-8" data-aos="fade-up">
+                      <h3 className="mb-2 text-2xl font-bold text-white">{category}</h3>
+                      <div className="h-1 w-20 rounded bg-gradient-to-r from-neon-blue to-purple-400"></div>
+                    </div>
+
+                    <div
+                      className={`grid gap-8 ${
+                        items.length === 1
+                          ? 'mx-auto max-w-md grid-cols-1'
+                          : items.length === 2
+                          ? 'mx-auto max-w-4xl grid-cols-1 md:grid-cols-2'
+                          : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                      }`}
+                    >
+                      {items.map((item, index) => (
+                        <article
+                          key={item.id}
+                          className="glass-card-hover group overflow-hidden text-left"
+                          style={{ animationDelay: `${index * 100}ms` }}
+                          data-aos="fade-up"
+                          data-aos-delay={index * 100}
+                          onClick={() => setSelectedMedia(item)}
+                          onKeyDown={(event) => handleCardKeyDown(event, () => setSelectedMedia(item))}
+                          role="button"
+                          tabIndex={0}
+                        >
+                          <div className="relative overflow-hidden">
+                            {item.type === 'video' ? (
+                              <AutoplayVideoPreview
+                                videoUrl={item.videoUrl}
+                                title={item.title}
+                                mediaLabel={item.mediaLabel || item.category}
+                                className="aspect-[16/10] w-full sm:aspect-video"
+                              />
+                            ) : (
+                              <img
+                                src={getAssetPath(item.imagePath)}
+                                alt={item.title}
+                                className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
+                                loading="lazy"
+                              />
+                            )}
+                            <div
+                              className={`absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                                item.type === 'video' ? 'pointer-events-none' : ''
+                              }`}
+                            >
+                              <div className="rounded-full bg-neon-blue p-4 text-black shadow-[0_0_30px_rgba(0,170,255,0.45)]">
+                                {item.type === 'video' ? <Play size={22} /> : <ImageIcon size={22} />}
+                              </div>
                             </div>
-                          </div>
-                          
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <div className="bg-neon-blue rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                              <Play size={24} className="text-black fill-current" />
+                            <div className="absolute left-4 top-4">
+                              <span className="rounded-full bg-black/70 px-3 py-1 text-sm text-neon-blue backdrop-blur-sm">
+                                {item.mediaLabel || item.category}
+                              </span>
                             </div>
                           </div>
 
-                          {/* Category Badge */}
-                          <div className="absolute top-4 left-4">
-                            <span className="px-3 py-1 bg-black/70 text-neon-blue text-sm rounded-full backdrop-blur-sm">
-                              {item.category}
-                            </span>
+                          <div className="p-6">
+                            <h3 className="mb-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-neon-blue">
+                              {item.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed text-gray-300">{item.description}</p>
                           </div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-6">
-                          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-neon-blue transition-colors duration-300">
-                            {item.title}
-                          </h3>
-                          <p className="text-gray-300 text-sm leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                        </article>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
-            ))}
+                )
+            )}
           </div>
         ) : (
-          // Regular grid for specific categories
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
             {filteredItems.map((item, index) => (
-              <div
+              <article
                 key={item.id}
-                className="glass-card-hover group cursor-pointer overflow-hidden animate-scale-in"
-                style={{animationDelay: `${index * 100}ms`}}
+                className="glass-card-hover group overflow-hidden text-left"
+                style={{ animationDelay: `${index * 100}ms` }}
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
-                onClick={() => setSelectedVideo(item)}
+                onClick={() => setSelectedMedia(item)}
+                onKeyDown={(event) => handleCardKeyDown(event, () => setSelectedMedia(item))}
+                role="button"
+                tabIndex={0}
               >
-                {/* Thumbnail */}
                 <div className="relative overflow-hidden">
-                  <div className="w-full h-48 bg-gradient-to-br from-neon-blue/20 to-purple-400/20 relative">
-                    {/* YouTube Thumbnail */}
-                    <img 
-                      src={getYouTubeThumbnail(item.videoUrl)}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
+                  {item.type === 'video' ? (
+                    <AutoplayVideoPreview
+                      videoUrl={item.videoUrl}
+                      title={item.title}
+                      mediaLabel={item.mediaLabel || item.category}
+                      className="aspect-[16/10] w-full sm:aspect-video"
                     />
-                    {/* Fallback */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/20 to-purple-400/20 hidden items-center justify-center">
-                      <div className="text-6xl text-neon-blue opacity-50">▶</div>
+                  ) : (
+                    <img
+                      src={getAssetPath(item.imagePath)}
+                      alt={item.title}
+                      className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
+                      loading="lazy"
+                    />
+                  )}
+                  <div
+                    className={`absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                      item.type === 'video' ? 'pointer-events-none' : ''
+                    }`}
+                  >
+                    <div className="rounded-full bg-neon-blue p-4 text-black shadow-[0_0_30px_rgba(0,170,255,0.45)]">
+                      {item.type === 'video' ? <Play size={22} /> : <ImageIcon size={22} />}
                     </div>
                   </div>
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-neon-blue rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                      <Play size={24} className="text-black fill-current" />
-                    </div>
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-black/70 text-neon-blue text-sm rounded-full backdrop-blur-sm">
-                      {item.category}
+                  <div className="absolute left-4 top-4">
+                    <span className="rounded-full bg-black/70 px-3 py-1 text-sm text-neon-blue backdrop-blur-sm">
+                      {item.mediaLabel || item.category}
                     </span>
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-neon-blue transition-colors duration-300">
+                  <h3 className="mb-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-neon-blue">
                     {item.title}
                   </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+                  <p className="text-sm leading-relaxed text-gray-300">{item.description}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
 
-        {/* Video Modal */}
-        {selectedVideo && (
-          <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <div 
-              className="glass-card max-w-4xl w-full overflow-hidden animate-scale-in"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-between items-center p-6 border-b border-white/10">
-                <h3 className="text-xl font-bold text-white">{selectedVideo.title}</h3>
-                <button
-                  onClick={() => setSelectedVideo(null)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="p-6">
-                <div className="w-full h-64 md:h-96 rounded-lg overflow-hidden">
-                  {/* YouTube Embed */}
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${getYouTubeId(selectedVideo.videoUrl)}?autoplay=1`}
-                    title={selectedVideo.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                </div>
-                <div className="mt-4">
-                  <p className="text-gray-300 text-sm">{selectedVideo.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-16" data-aos="fade-up" data-aos-delay="600">
-          <div className="glass-card p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Ready to Experience Code-XR?
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Install the extension and start transforming your development workflow with immersive XR visualization
+        <div className="mt-16 text-center" data-aos="fade-up" data-aos-delay="600">
+          <div className="glass-card mx-auto max-w-2xl p-8">
+            <h3 className="mb-4 text-2xl font-bold text-white">Ready to experience Code-XR?</h3>
+            <p className="mb-6 text-gray-300">
+              Install the extension and move from the release media into the full immersive
+              workflow inside VS Code.
             </p>
             <a
               href="https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr"
@@ -344,6 +230,8 @@ const Gallery = () => {
           </div>
         </div>
       </div>
+
+      <MediaLightbox item={selectedMedia} onClose={() => setSelectedMedia(null)} />
     </section>
   );
 };

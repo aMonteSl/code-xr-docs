@@ -52,7 +52,7 @@ const Downloads = () => {
   };
 
   return (
-    <section id="downloads" className="py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+    <section id="downloads" className="relative overflow-hidden bg-transparent py-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-neon-blue opacity-5 rounded-full blur-3xl"></div>

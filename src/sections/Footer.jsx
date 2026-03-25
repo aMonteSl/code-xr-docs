@@ -4,14 +4,14 @@ import { getTechnologyAsset } from '../utils/assets';
 
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-white/10">
+    <footer className="relative border-t border-white/10 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Brand */}
           <div className="flex items-center space-x-3">
             <img 
               src={getTechnologyAsset("icon_white.svg")}
-              alt="Code-XR" 
+              alt="Code-XR logo" 
               className="w-6 h-6"
             />
             <span className="text-white font-bold">Code-XR</span>

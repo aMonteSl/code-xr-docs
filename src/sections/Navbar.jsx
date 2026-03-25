@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Download, Star, ExternalLink, Menu, X } from 'lucide-react';
+import { Github, ExternalLink, Menu, X } from 'lucide-react';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
 import { getTechnologyAsset } from '../utils/assets';
 
@@ -25,6 +25,7 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
+    { href: '#latest-release', label: "What's New" },
     { href: '#features', label: 'Features' },
     { href: '#gallery', label: 'Gallery' },
     { href: '#tested-projects', label: 'Tested Projects' },
@@ -37,6 +38,7 @@ const Navbar = () => {
 
   // Main links for desktop (reduced set)
   const mainNavLinks = [
+    { href: '#latest-release', label: 'Latest' },
     { href: '#features', label: 'Features' },
     { href: '#gallery', label: 'Gallery' },
     { href: '#tested-projects', label: 'Projects' },
@@ -46,7 +48,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav aria-label="Primary" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10' : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +67,7 @@ const Navbar = () => {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center">
               <img 
                 src={getTechnologyAsset("icon_white.svg")}
-                alt="Code-XR" 
+                alt="Code-XR logo" 
                 className="w-6 h-6"
               />
             </div>
@@ -76,7 +78,7 @@ const Navbar = () => {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center space-x-6">
+          <div className="hidden 2xl:flex items-center space-x-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
@@ -89,7 +91,7 @@ const Navbar = () => {
           </div>
 
           {/* Tablet Navigation (reduced) */}
-          <div className="hidden md:flex xl:hidden items-center space-x-4">
+          <div className="hidden xl:flex 2xl:hidden items-center space-x-4">
             {mainNavLinks.map((link) => (
               <a
                 key={link.href}
@@ -102,7 +104,7 @@ const Navbar = () => {
           </div>
 
           {/* External Links */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden 2xl:flex items-center space-x-3">
             <a
               href="https://github.com/aMonteSl/CodeXR"
               target="_blank"
@@ -126,7 +128,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden text-white hover:text-neon-blue transition-colors"
+            className="xl:hidden text-white hover:text-neon-blue transition-colors"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -134,7 +136,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden bg-black/95 backdrop-blur-md border-t border-white/10 animate-fade-in-up">
+          <div className="xl:hidden bg-black/95 backdrop-blur-md border-t border-white/10 animate-fade-in-up">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navLinks.map((link) => (
                 <a

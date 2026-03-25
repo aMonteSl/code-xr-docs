@@ -32,7 +32,7 @@ const FloatingActionButton = () => {
   }
 
   return (
-    <div className={`fixed bottom-6 left-6 z-50 transition-all duration-500 ease-in-out ${
+    <div className={`fixed bottom-4 left-4 z-50 transition-all duration-500 ease-in-out sm:bottom-6 sm:left-6 ${
       isVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
     }`}>
       {/* Action Buttons */}
@@ -53,7 +53,7 @@ const FloatingActionButton = () => {
           >
             <Github size={20} />
           </a>
-          <span className="bg-black/90 text-white px-3 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/10 whitespace-nowrap">
+          <span className="max-w-[60vw] rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-sm leading-snug text-white backdrop-blur-sm sm:max-w-[220px]">
             GitHub Repository
           </span>
         </div>
@@ -70,7 +70,7 @@ const FloatingActionButton = () => {
           >
             <ExternalLink size={20} />
           </a>
-          <span className="bg-black/90 text-white px-3 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/10 whitespace-nowrap">
+          <span className="max-w-[60vw] rounded-lg border border-white/10 bg-black/90 px-3 py-2 text-sm leading-snug text-white backdrop-blur-sm sm:max-w-[220px]">
             VS Code Marketplace
           </span>
         </div>

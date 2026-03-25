@@ -15,5 +15,6 @@ export const getAssetPath = (path) => {
 
 // Specific helpers for common asset types from public directory
 export const getTechnologyAsset = (filename) => getAssetPath(`assets/technologies/${filename}`);
+export const getReleaseAsset = (version, filename) => getAssetPath(`assets/releases/${version}/${filename}`);
 export const getPublicAsset = (filename) => getAssetPath(filename);
 export const getSrcAsset = (filename) => getAssetPath(`src/assets/${filename}`);

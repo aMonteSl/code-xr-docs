@@ -1,113 +1,113 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Search, Zap, Settings, ChevronLeft, ChevronRight, Lightbulb, ArrowRight, CheckCircle, Clock } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ArrowRight,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Lightbulb,
+  Play,
+  Search,
+  Settings,
+  Zap,
+} from 'lucide-react';
 
 const QuickStartGuide = () => {
-  // State management
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
   const [stepProgress, setStepProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Enhanced step data with better organization
-  const steps = useMemo(() => [
-    {
-      id: 1,
-      title: "Install and Configure",
-      description: "Get Code-XR ready in your VS Code environment",
-      icon: <Settings size={32} />,
-      gradient: "from-emerald-400 via-teal-400 to-cyan-400",
-      bgPattern: "emerald",
-      details: [
-        "Install Code-XR from the VS Code Marketplace with one click",
-        "Configure your preferred analysis settings through the intuitive UI",
-        "Set up XR environment preferences (scenarios, lighting, interaction modes)"
-      ],
-      tip: "Start with default settings - you can always customize later as you explore",
-      duration: "2 min"
-    },
-    {
-      id: 2,
-      title: "Choose Your Analysis",
-      description: "Discover the different types of analysis available in Code-XR",
-      icon: <Play size={32} />,
-      gradient: "from-blue-400 via-indigo-400 to-purple-400",
-      bgPattern: "blue",
-      details: [
-        "Available analysis types: By file → (LivePanel or XR), By directory → (LivePanel or XR), HTML DOM visualization → (XR experience)",
-        "Launch analysis with right-click: On individual file, choose how to visualize it. On directory, choose whether to include subdirectories (deep) or not. Anywhere in project → analyze everything",
-        "Use Code-XR UI: Visualize files by language or directory tree. Click any item to automatically launch analysis according to current configuration"
-      ],
-      tip: "All analysis can be deep (includes subdirectories) or shallow",
-      duration: "3 min"
-    },
-    {
-      id: 3,
-      title: "Experiment in Real Time",
-      description: "Code while watching your code metrics change in real time",
-      icon: <Zap size={32} />,
-      gradient: "from-purple-400 via-pink-400 to-rose-400",
-      bgPattern: "purple",
-      details: [
-        "Program while seeing how your code metrics change in real time",
-        "Refactor functions if you detect high cyclomatic complexity (CCN)",
-        "Try different debounce time values until you find the one that fits your rhythm"
-      ],
-      tip: "Short and reusable functions improve maintainability",
-      duration: "5 min"
-    },
-    {
-      id: 4,
-      title: "Save for the Next Time",
-      description: "Keep your personalized configuration for future sessions",
-      icon: <Search size={32} />,
-      gradient: "from-orange-400 via-red-400 to-pink-400",
-      bgPattern: "orange",
-      details: [
-        "Save your custom configuration easily from the Analysis Settings menu",
-        "Your preferences will be maintained the next time you open VS Code, even between different projects",
-        "XR environment settings (like scenario) will also be preserved between sessions",
-        "If you want to start fresh, you can delete your profile and restore default values"
-      ],
-      tip: "Your settings persist across projects and VS Code sessions",
-      duration: "1 min"
-    }
-  ], []);
+  const steps = useMemo(
+    () => [
+      {
+        id: 1,
+        title: 'Install and Configure',
+        description: 'Get Code-XR ready in your VS Code environment',
+        icon: Settings,
+        gradient: 'from-emerald-400 via-teal-400 to-cyan-400',
+        details: [
+          'Install Code-XR from the VS Code Marketplace with one click.',
+          'Configure your preferred analysis settings from the extension UI.',
+          'Review XR environment preferences, debounce behavior, and the Python environment status tools.',
+        ],
+        tip: 'Start with the default configuration and adjust the analysis mode only after your first successful run.',
+        duration: '2 min',
+      },
+      {
+        id: 2,
+        title: 'Choose Your Analysis',
+        description: 'Discover the file, directory, project, and DOM workflows available in Code-XR',
+        icon: Play,
+        gradient: 'from-blue-400 via-indigo-400 to-purple-400',
+        details: [
+          'Launch file analysis in LivePanel or XR mode from the Explorer, tree view, or command palette.',
+          'Run directory and project analysis in shallow or deep mode depending on how much hierarchy you want to inspect.',
+          'Use DOM visualization for HTML workflows and let the extension route the file into the correct scene automatically.',
+        ],
+        tip: 'Shallow analysis is usually the fastest entry point before moving into deeper recursive scans.',
+        duration: '3 min',
+      },
+      {
+        id: 3,
+        title: 'Experiment in Real Time',
+        description: 'Edit code while watching metrics and immersive scenes react to meaningful changes',
+        icon: Zap,
+        gradient: 'from-purple-400 via-pink-400 to-rose-400',
+        details: [
+          'Use the live watchers to observe how metrics evolve as the codebase changes.',
+          'Refactor hotspots with high complexity or poor ratios and compare the result in LivePanel or XR.',
+          'Tune debounce timing to match your editing rhythm and the size of the repository you are exploring.',
+        ],
+        tip: 'Shorter, focused functions make the visual differences much easier to interpret in both panels and immersive charts.',
+        duration: '5 min',
+      },
+      {
+        id: 4,
+        title: 'Save for the Next Session',
+        description: 'Keep your preferred configuration and return to a stable workflow quickly',
+        icon: Search,
+        gradient: 'from-orange-400 via-red-400 to-pink-400',
+        details: [
+          'Save your configuration from the analysis settings menu after you find a workflow that fits your project.',
+          'Reopen VS Code later and continue with the same profile, preferred analysis mode, and environment setup.',
+          'Use the built-in verification and reinitialization actions if the Python environment ever needs recovery.',
+        ],
+        tip: 'Treat the saved configuration as a baseline profile for future projects instead of reconfiguring from scratch.',
+        duration: '1 min',
+      },
+    ],
+    []
+  );
 
-  // Navigation functions
   const nextStep = useCallback(() => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1);
-    }
-  }, [currentStep, steps.length]);
+    setCurrentStep((previous) => Math.min(previous + 1, steps.length - 1));
+  }, [steps.length]);
 
   const prevStep = useCallback(() => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
-  }, [currentStep]);
+    setCurrentStep((previous) => Math.max(previous - 1, 0));
+  }, []);
 
   const goToStep = useCallback((index) => {
     setCurrentStep(index);
   }, []);
 
   const markComplete = useCallback((stepId) => {
-    if (!completedSteps.includes(stepId)) {
-      setCompletedSteps(prev => [...prev, stepId]);
-    }
-  }, [completedSteps]);
+    setCompletedSteps((previous) =>
+      previous.includes(stepId) ? previous : [...previous, stepId]
+    );
+  }, []);
 
-  // Function to format time display
   const formatTime = useCallback((seconds) => {
     if (seconds >= 60) {
       const minutes = Math.floor(seconds / 60);
       const remainingSeconds = seconds % 60;
       return `${minutes}min - ${remainingSeconds}s`;
     }
+
     return `${seconds}s`;
   }, []);
 
-  // Intersection Observer to detect when section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -117,10 +117,11 @@ const QuickStartGuide = () => {
           }
         });
       },
-      { threshold: 0.3 } // Trigger when 30% of the section is visible
+      { threshold: 0.3 }
     );
 
     const section = document.getElementById('quick-start-guide');
+
     if (section) {
       observer.observe(section);
     }
@@ -132,40 +133,36 @@ const QuickStartGuide = () => {
     };
   }, []);
 
-  // Auto-advance effect with clock progress
   useEffect(() => {
-    // Only start timer if section is visible
-    if (!isVisible) return;
-
-    const stepDuration = parseInt(steps[currentStep].duration) * 60; // Convert minutes to seconds
-    let progressInterval;
-    
-    // Reset progress when step changes
-    setStepProgress(0);
-    
-    // Only start timer if step is not completed
-    if (!completedSteps.includes(steps[currentStep].id)) {
-      progressInterval = setInterval(() => {
-        setStepProgress(prev => {
-          const newProgress = prev + 1; // Increment by 1 second
-          if (newProgress >= stepDuration) {
-            clearInterval(progressInterval);
-            markComplete(steps[currentStep].id);
-            return stepDuration;
-          }
-          return newProgress;
-        });
-      }, 1000); // Update every 1000ms (1 second)
-    } else {
-      setStepProgress(stepDuration);
+    if (!isVisible) {
+      return undefined;
     }
 
-    return () => {
-      if (progressInterval) clearInterval(progressInterval);
-    };
-  }, [currentStep, steps, markComplete, completedSteps, isVisible]);
+    const currentDuration = parseInt(steps[currentStep].duration, 10) * 60;
+    setStepProgress(0);
 
-  // Keyboard navigation
+    if (completedSteps.includes(steps[currentStep].id)) {
+      setStepProgress(currentDuration);
+      return undefined;
+    }
+
+    const progressInterval = setInterval(() => {
+      setStepProgress((previous) => {
+        const nextProgress = previous + 1;
+
+        if (nextProgress >= currentDuration) {
+          clearInterval(progressInterval);
+          markComplete(steps[currentStep].id);
+          return currentDuration;
+        }
+
+        return nextProgress;
+      });
+    }, 1000);
+
+    return () => clearInterval(progressInterval);
+  }, [completedSteps, currentStep, isVisible, markComplete, steps]);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowRight') {
@@ -174,301 +171,263 @@ const QuickStartGuide = () => {
       } else if (event.key === 'ArrowLeft') {
         event.preventDefault();
         prevStep();
-      } else if (event.key >= '1' && event.key <= '4') {
+      } else if (event.key >= '1' && event.key <= String(steps.length)) {
         event.preventDefault();
-        goToStep(parseInt(event.key) - 1);
+        goToStep(parseInt(event.key, 10) - 1);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextStep, prevStep, goToStep]);
+  }, [goToStep, nextStep, prevStep, steps.length]);
+
+  const currentStepData = steps[currentStep];
+  const CurrentStepIcon = currentStepData.icon;
+  const currentDurationSeconds = parseInt(currentStepData.duration, 10) * 60;
 
   return (
-    <section id="quick-start-guide" className="py-20 bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
-      {/* Background Effects */}
+    <section
+      id="quick-start-guide"
+      className="relative overflow-hidden bg-transparent py-20"
+    >
       <div className="absolute inset-0">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 50%, rgba(0, 170, 255, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.03) 0%, transparent 50%)
-          `
-        }}></div>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 50%, rgba(0, 170, 255, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.03) 0%, transparent 50%)
+            `,
+          }}
+        />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 text-center" data-aos="fade-up">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
             <span className="text-white">Quick Start</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-neon-blue via-purple-400 to-pink-400 bg-clip-text text-transparent">
               Guide
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Master Code-XR in four comprehensive steps. From workspace initialization to real-time experimentation.
+          <p className="mx-auto mb-8 max-w-3xl text-xl text-gray-300">
+            Master Code-XR in four practical steps, from initial installation to a repeatable
+            analysis workflow.
           </p>
-          
-          {/* Progress Overview */}
-          <div className="flex items-center justify-center space-x-2 mb-8">
-            <Clock className="w-5 h-5 text-neon-blue" />
-            <span className="text-gray-300">Total time: ~11 minutes</span>
+
+          <div className="flex items-center justify-center space-x-2">
+            <Clock className="h-5 w-5 text-neon-blue" />
+            <span className="text-gray-300">Total time: about 11 minutes</span>
           </div>
-        </motion.div>
-
-        {/* Main Card Container */}
-        <div className="max-w-5xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, x: 300, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -300, scale: 0.95 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="relative"
-            >
-              {/* Main Step Card */}
-              <div className="bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
-                {/* Header with Gradient */}
-                <div className={`bg-gradient-to-r ${steps[currentStep].gradient} p-1`}>
-                  <div className="bg-black/90 rounded-t-3xl p-8">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-6">
-                        {/* Step Number & Icon */}
-                        <div className={`w-20 h-20 bg-gradient-to-r ${steps[currentStep].gradient} rounded-2xl flex items-center justify-center shadow-lg`}>
-                          <div className="text-black font-bold">
-                            {steps[currentStep].icon}
-                          </div>
-                        </div>
-                        
-                        {/* Title & Description */}
-                        <div>
-                          <div className="flex items-center space-x-3 mb-2">
-                            <span className="text-gray-400 text-lg font-medium">Step {steps[currentStep].id}</span>
-                            <div className="flex items-center space-x-1 text-gray-400">
-                              <Clock className="w-4 h-4" />
-                              <span className="text-sm">{steps[currentStep].duration}</span>
-                            </div>
-                          </div>
-                          <h3 className="text-3xl lg:text-4xl font-bold text-white mb-3">
-                            {steps[currentStep].title}
-                          </h3>
-                          <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-                            {steps[currentStep].description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Progress/Completion Status */}
-                      <div className="flex flex-col items-center">
-                        {completedSteps.includes(steps[currentStep].id) ? (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="flex flex-col items-center"
-                          >
-                            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-2">
-                              <CheckCircle className="w-8 h-8 text-white" />
-                            </div>
-                            <span className="text-green-400 text-sm font-medium">Completed</span>
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="flex flex-col items-center"
-                          >
-                            {/* Circular Progress Clock */}
-                            <div className="relative w-16 h-16 mb-2">
-                              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
-                                {/* Background circle */}
-                                <circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  stroke="rgba(255,255,255,0.1)"
-                                  strokeWidth="4"
-                                  fill="none"
-                                />
-                                {/* Progress circle */}
-                                <circle
-                                  cx="32"
-                                  cy="32"
-                                  r="28"
-                                  stroke="url(#gradient)"
-                                  strokeWidth="4"
-                                  fill="none"
-                                  strokeLinecap="round"
-                                  strokeDasharray={`${2 * Math.PI * 28}`}
-                                  strokeDashoffset={`${2 * Math.PI * 28 * (1 - stepProgress / (parseInt(steps[currentStep].duration) * 60))}`}
-                                  className="transition-all duration-100 ease-out"
-                                />
-                                {/* Gradient definition */}
-                                <defs>
-                                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#00AAFF" />
-                                    <stop offset="100%" stopColor="#A855F7" />
-                                  </linearGradient>
-                                </defs>
-                              </svg>
-                              {/* Clock icon in center */}
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <Clock className="w-6 h-6 text-neon-blue" />
-                              </div>
-                            </div>
-                            <span className="text-gray-400 text-sm font-medium">
-                              {formatTime(Math.round(stepProgress))}
-                            </span>
-                          </motion.div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content Body */}
-                <div className="p-8 space-y-8">
-                  {/* Details List */}
-                  <div className="space-y-6">
-                    <h4 className="text-2xl font-bold text-white mb-4 flex items-center">
-                      <ArrowRight className="w-6 h-6 text-neon-blue mr-3" />
-                      What you'll do:
-                    </h4>
-                    
-                    <div className="space-y-4">
-                      {steps[currentStep].details.map((detail, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1, duration: 0.5 }}
-                          className="group flex items-start space-x-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-300 cursor-pointer"
-                          whileHover={{ x: 10 }}
-                        >
-                          <div className={`w-8 h-8 bg-gradient-to-r ${steps[currentStep].gradient} rounded-lg flex items-center justify-center flex-shrink-0 mt-1`}>
-                            <span className="text-black font-bold text-sm">{index + 1}</span>
-                          </div>
-                          <p className="text-gray-300 leading-relaxed group-hover:text-white transition-colors duration-300">
-                            {detail}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Pro Tip */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
-                    className={`bg-gradient-to-r ${steps[currentStep].gradient} p-1 rounded-2xl`}
-                  >
-                    <div className="bg-black/90 rounded-2xl p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className={`w-12 h-12 bg-gradient-to-r ${steps[currentStep].gradient} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                          <Lightbulb className="w-6 h-6 text-black" />
-                        </div>
-                        <div>
-                          <h5 className="text-lg font-bold text-white mb-2">Pro Tip</h5>
-                          <p className="text-gray-300 leading-relaxed">
-                            {steps[currentStep].tip}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Navigation Footer */}
-                <div className="bg-black/50 border-t border-white/10 p-6">
-                  <div className="flex items-center justify-between">
-                    <motion.button
-                      onClick={prevStep}
-                      disabled={currentStep === 0}
-                      className="flex items-center space-x-2 px-6 py-3 bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-white transition-all duration-300"
-                      whileHover={currentStep > 0 ? { scale: 1.05, x: -5 } : {}}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                      <span>Previous</span>
-                    </motion.button>
-
-                    <div className="flex space-x-2">
-                      {steps.map((_, index) => (
-                        <div
-                          key={index}
-                          className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                            index === currentStep
-                              ? `bg-gradient-to-r ${steps[currentStep].gradient}`
-                              : completedSteps.includes(steps[index].id)
-                              ? 'bg-green-500'
-                              : 'bg-white/30'
-                          }`}
-                        />
-                      ))}
-                    </div>
-
-                    <motion.button
-                      onClick={nextStep}
-                      disabled={currentStep === steps.length - 1}
-                      className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-neon-blue to-purple-400 hover:from-neon-blue/80 hover:to-purple-400/80 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-black font-semibold transition-all duration-300"
-                      whileHover={currentStep < steps.length - 1 ? { scale: 1.05, x: 5 } : {}}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span>{currentStep === steps.length - 1 ? 'Complete' : 'Next'}</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
 
-        {/* Quick Access Grid (Optional) */}
-        <motion.div
-          className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {steps.map((step, index) => (
-            <motion.button
-              key={step.id}
-              onClick={() => goToStep(index)}
-              className={`p-4 rounded-xl border transition-all duration-300 text-left ${
-                currentStep === index
-                  ? `border-transparent bg-gradient-to-r ${step.gradient}`
-                  : 'border-white/10 bg-black/20 hover:bg-white/5'
-              }`}
-              whileHover={{ scale: 1.02, y: -2 }}
-            >
-              <div className={`flex items-center space-x-3 ${currentStep === index ? 'text-black' : 'text-white'}`}>
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  currentStep === index ? 'bg-black/20' : `bg-gradient-to-r ${step.gradient}`
-                }`}>
-                  <span className={`text-sm font-bold ${currentStep === index ? 'text-black' : 'text-black'}`}>
-                    {step.id}
-                  </span>
-                </div>
-                <div>
-                  <h6 className="font-semibold text-sm">{step.title}</h6>
-                  <p className={`text-xs ${currentStep === index ? 'text-black/80' : 'text-gray-400'}`}>
-                    {step.duration}
-                  </p>
+        <div className="mx-auto max-w-5xl">
+          <div key={currentStepData.id} className="animate-fade-in-up">
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-gray-900/90 to-black/90 shadow-2xl backdrop-blur-xl">
+              <div className={`bg-gradient-to-r ${currentStepData.gradient} p-1`}>
+                <div className="rounded-t-3xl bg-black/90 p-8">
+                  <div className="flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
+                    <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
+                      <div
+                        className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-r ${currentStepData.gradient} shadow-lg`}
+                      >
+                        <CurrentStepIcon className="h-8 w-8 text-black" />
+                      </div>
+
+                      <div>
+                        <div className="mb-2 flex flex-wrap items-center gap-3 text-gray-400">
+                          <span className="text-lg font-medium">Step {currentStepData.id}</span>
+                          <span className="flex items-center gap-1 text-sm">
+                            <Clock className="h-4 w-4" />
+                            {currentStepData.duration}
+                          </span>
+                        </div>
+                        <h3 className="mb-3 text-3xl font-bold text-white lg:text-4xl">
+                          {currentStepData.title}
+                        </h3>
+                        <p className="max-w-2xl text-xl leading-relaxed text-gray-300">
+                          {currentStepData.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      {completedSteps.includes(currentStepData.id) ? (
+                        <>
+                          <div className="mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-green-500">
+                            <CheckCircle className="h-8 w-8 text-white" />
+                          </div>
+                          <span className="text-sm font-medium text-green-400">Completed</span>
+                        </>
+                      ) : (
+                        <>
+                          <div className="relative mb-2 h-16 w-16">
+                            <svg className="h-16 w-16 -rotate-90 transform" viewBox="0 0 64 64">
+                              <circle
+                                cx="32"
+                                cy="32"
+                                r="28"
+                                stroke="rgba(255,255,255,0.1)"
+                                strokeWidth="4"
+                                fill="none"
+                              />
+                              <circle
+                                cx="32"
+                                cy="32"
+                                r="28"
+                                stroke="url(#guide-gradient)"
+                                strokeWidth="4"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeDasharray={`${2 * Math.PI * 28}`}
+                                strokeDashoffset={`${
+                                  2 * Math.PI * 28 * (1 - stepProgress / currentDurationSeconds)
+                                }`}
+                                className="transition-all duration-100 ease-out"
+                              />
+                              <defs>
+                                <linearGradient id="guide-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                  <stop offset="0%" stopColor="#00AAFF" />
+                                  <stop offset="100%" stopColor="#A855F7" />
+                                </linearGradient>
+                              </defs>
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Clock className="h-6 w-6 text-neon-blue" />
+                            </div>
+                          </div>
+                          <span className="text-sm font-medium text-gray-400">
+                            {formatTime(Math.round(stepProgress))}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </motion.button>
-          ))}
-        </motion.div>
+
+              <div className="space-y-8 p-8">
+                <div className="space-y-6">
+                  <h4 className="flex items-center text-2xl font-bold text-white">
+                    <ArrowRight className="mr-3 h-6 w-6 text-neon-blue" />
+                    What you will do
+                  </h4>
+
+                  <div className="space-y-4">
+                    {currentStepData.details.map((detail, index) => (
+                      <div
+                        key={detail}
+                        className="flex items-start space-x-4 rounded-xl p-4 transition-all duration-300 hover:bg-white/5"
+                      >
+                        <div
+                          className={`mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-r ${currentStepData.gradient}`}
+                        >
+                          <span className="text-sm font-bold text-black">{index + 1}</span>
+                        </div>
+                        <p className="leading-relaxed text-gray-300">{detail}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={`rounded-2xl bg-gradient-to-r ${currentStepData.gradient} p-1`}>
+                  <div className="rounded-2xl bg-black/90 p-6">
+                    <div className="flex items-start space-x-4">
+                      <div
+                        className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${currentStepData.gradient}`}
+                      >
+                        <Lightbulb className="h-6 w-6 text-black" />
+                      </div>
+                      <div>
+                        <h5 className="mb-2 text-lg font-bold text-white">Pro tip</h5>
+                        <p className="leading-relaxed text-gray-300">{currentStepData.tip}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 bg-black/50 p-6">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    disabled={currentStep === 0}
+                    className="inline-flex items-center justify-center space-x-2 rounded-xl bg-white/10 px-6 py-3 text-white transition-all duration-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                    <span>Previous</span>
+                  </button>
+
+                  <div className="flex items-center justify-center gap-2">
+                    {steps.map((step, index) => (
+                      <div
+                        key={step.id}
+                        className={`h-3 w-3 rounded-full transition-all duration-300 ${
+                          index === currentStep
+                            ? `bg-gradient-to-r ${currentStepData.gradient}`
+                            : completedSteps.includes(step.id)
+                            ? 'bg-green-500'
+                            : 'bg-white/30'
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    disabled={currentStep === steps.length - 1}
+                    className="inline-flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-r from-neon-blue to-purple-400 px-6 py-3 font-semibold text-black transition-all duration-300 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <span>{currentStep === steps.length - 1 ? 'Complete' : 'Next'}</span>
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-4"
+          data-aos="fade-up"
+          data-aos-delay="150"
+        >
+          {steps.map((step, index) => {
+            const StepIcon = step.icon;
+
+            return (
+              <button
+                key={step.id}
+                type="button"
+                onClick={() => goToStep(index)}
+                className={`rounded-xl border p-4 text-left transition-all duration-300 hover:-translate-y-1 ${
+                  currentStep === index
+                    ? `border-transparent bg-gradient-to-r ${step.gradient} text-black`
+                    : 'border-white/10 bg-black/20 text-white hover:bg-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-lg ${
+                      currentStep === index ? 'bg-black/20' : `bg-gradient-to-r ${step.gradient}`
+                    }`}
+                  >
+                    <StepIcon className="h-5 w-5 text-black" />
+                  </div>
+                  <div>
+                    <h6 className="text-sm font-semibold">{step.title}</h6>
+                    <p className={`text-xs ${currentStep === index ? 'text-black/80' : 'text-gray-400'}`}>
+                      {step.duration}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

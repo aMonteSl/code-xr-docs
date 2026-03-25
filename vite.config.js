@@ -4,8 +4,8 @@ import { ghPages } from 'vite-plugin-gh-pages'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), ghPages()],
-  base: mode === 'production' ? '/code-xr-docs/' : '/',
+  plugins: mode === 'deploy' ? [react(), ghPages()] : [react()],
+  base: mode === 'development' ? '/' : '/code-xr-docs/',
   publicDir: 'public',
   build: {
     assetsDir: 'assets',
