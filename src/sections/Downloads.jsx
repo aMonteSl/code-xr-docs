@@ -7,7 +7,7 @@ const Downloads = () => {
     const url = getAssetPath(documentPath);
     
     // For GitHub Pages, we need to handle downloads differently
-    if (window.location.hostname === 'amontesl.github.io') {
+    if (window.location.hostname === 'code-xr.adrianmonteslinares.com') {
       // In production, open in new tab and let user save manually
       window.open(url, '_blank');
       return;

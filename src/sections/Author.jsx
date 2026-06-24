@@ -133,7 +133,7 @@ const Author = () => {
                     <span>LinkedIn</span>
                   </a>
                   <a
-                    href="https://amontesl.github.io/"
+                    href="https://adrianmonteslinares.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-white transition-all duration-300 hover:scale-105"
