@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://amontesl.github.io/code-xr-docs/sitemap.xml
+Sitemap: https://code-xr.adrianmonteslinares.com/sitemap.xml
