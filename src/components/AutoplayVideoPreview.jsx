@@ -77,7 +77,7 @@ const AutoplayVideoPreview = ({ videoUrl, title, mediaLabel, className = '' }) =
         />
       ) : null}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/10" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-black/10" />
 
       {previewUrl && isVisible ? (
         <iframe

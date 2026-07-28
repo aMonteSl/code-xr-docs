@@ -116,7 +116,7 @@ const Hero = () => {
             <div className="h-2 w-2 rounded-full bg-neon-blue animate-pulse"></div>
             <span className="text-sm font-medium text-neon-blue">{latestRelease.copyBlocks.heroBadge}</span>
           </div>
-          <div className="inline-flex items-center space-x-2 rounded-full border border-yellow-500/30 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-4 py-2 backdrop-blur-sm">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-yellow-500/30 bg-linear-to-r from-yellow-500/20 to-orange-500/20 px-4 py-2 backdrop-blur-sm">
             <div className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse"></div>
             <span className="text-sm font-medium text-yellow-300">Accepted at IEEE VISSOFT 2025</span>
           </div>
@@ -126,7 +126,7 @@ const Hero = () => {
         <div className={`mb-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h1 className="mb-4 text-4xl font-bold sm:text-5xl md:text-6xl xl:text-7xl">
             <span className="text-white">Welcome to</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-white to-neon-blue bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-white to-neon-blue bg-clip-text text-transparent">
               Code-XR
             </span>
           </h1>
@@ -142,7 +142,7 @@ const Hero = () => {
                 className="flex items-center space-x-2 px-3 py-2 glass-card-hover group cursor-pointer animate-scale-in"
                 style={{animationDelay: `${index * 100}ms`}}
               >
-                <div className={`p-1.5 rounded-lg bg-gradient-to-r ${badge.color} group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`p-1.5 rounded-lg bg-linear-to-r ${badge.color} group-hover:scale-110 transition-transform duration-300`}>
                   <badge.icon size={12} className="text-white" />
                 </div>
                 <span className="text-white font-medium text-sm">{badge.text}</span>

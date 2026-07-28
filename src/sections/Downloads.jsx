@@ -64,7 +64,7 @@ const Downloads = () => {
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Academic</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Resources
             </span>
           </h2>
@@ -81,13 +81,13 @@ const Downloads = () => {
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-linear-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center mx-auto mb-6">
               <Award className="w-10 h-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-4 min-h-[2.5rem] flex items-center justify-center">
+            <h3 className="text-xl font-bold text-white mb-4 min-h-10 flex items-center justify-center">
               Conference Paper – VISSOFT 2025
             </h3>
-            <p className="text-gray-300 mb-4 leading-relaxed text-sm flex-grow">
+            <p className="text-gray-300 mb-4 leading-relaxed text-sm grow">
               Research work accepted at VISSOFT 2025, an IEEE conference on software visualization. Presents the core ideas and implementation of CodeXR.
             </p>
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-6">
@@ -113,13 +113,13 @@ const Downloads = () => {
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            <div className="w-20 h-20 bg-gradient-to-r from-neon-blue to-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-linear-to-r from-neon-blue to-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
               <FileText className="w-10 h-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-4 min-h-[2.5rem] flex items-center justify-center">
+            <h3 className="text-xl font-bold text-white mb-4 min-h-10 flex items-center justify-center">
               Final Degree Project (TFG)
             </h3>
-            <p className="text-gray-300 mb-4 leading-relaxed text-sm flex-grow">
+            <p className="text-gray-300 mb-4 leading-relaxed text-sm grow">
               Complete thesis document detailing the research, development, and evaluation of Code-XR. Includes methodology and comprehensive analysis.
             </p>
             <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-6">
@@ -145,13 +145,13 @@ const Downloads = () => {
             data-aos="fade-up"
             data-aos-delay="300"
           >
-            <div className="w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-linear-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-6">
               <Presentation className="w-10 h-10 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-4 min-h-[2.5rem] flex items-center justify-center">
+            <h3 className="text-xl font-bold text-white mb-4 min-h-10 flex items-center justify-center">
               Defense Presentation
             </h3>
-            <p className="text-gray-300 mb-4 leading-relaxed text-sm flex-grow">
+            <p className="text-gray-300 mb-4 leading-relaxed text-sm grow">
               Interactive web presentation used during the thesis defense. Includes key findings, demonstrations, and visual summaries of the project.
             </p>
             <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 mb-6">

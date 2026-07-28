@@ -22,7 +22,7 @@ const RealProjects = () => {
         <div className="mb-16 text-center" data-aos="fade-up">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl">
             <span className="text-white">Tested on</span>{' '}
-            <span className="bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Large-Scale Projects
             </span>
           </h2>
@@ -52,7 +52,7 @@ const RealProjects = () => {
               >
                 <div className="flex items-center space-x-4">
                   <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r ${project.color} transition-transform duration-300 ${
+                    className={`flex h-12 w-12 items-center justify-center rounded-lg bg-linear-to-r ${project.color} transition-transform duration-300 ${
                       openProject === project.id ? 'scale-110' : ''
                     }`}
                   >

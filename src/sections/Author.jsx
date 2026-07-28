@@ -16,7 +16,7 @@ const Author = () => {
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Meet the</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Author
             </span>
           </h2>
@@ -32,7 +32,7 @@ const Author = () => {
               {/* Profile Image */}
               <div className="lg:col-span-1 text-center lg:text-left">
                 <div className="inline-block relative">
-                  <div className="w-56 h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-neon-blue/20 to-purple-400/20 flex items-center justify-center mx-auto lg:mx-0 border-2 border-neon-blue/30 overflow-hidden p-1">
+                  <div className="w-56 h-56 lg:w-64 lg:h-64 rounded-full bg-linear-to-br from-neon-blue/20 to-purple-400/20 flex items-center justify-center mx-auto lg:mx-0 border-2 border-neon-blue/30 overflow-hidden p-1">
                     {/* Your Profile Photo */}
                     <picture>
                       <source 
@@ -66,7 +66,7 @@ const Author = () => {
                       />
                     </picture>
                     {/* Fallback placeholder */}
-                    <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-700 to-gray-800 hidden items-center justify-center">
+                    <div className="w-full h-full rounded-full bg-linear-to-br from-gray-700 to-gray-800 hidden items-center justify-center">
                       <Code className="w-16 h-16 text-neon-blue opacity-60" />
                     </div>
                   </div>
@@ -74,7 +74,7 @@ const Author = () => {
                   <div className="absolute inset-0 rounded-full border-2 border-neon-blue/30 animate-pulse"></div>
                   <div className="absolute inset-2 rounded-full border border-purple-400/20"></div>
                   {/* Subtle glow effect */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neon-blue/10 to-purple-400/10 blur-lg -z-10"></div>
+                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-neon-blue/10 to-purple-400/10 blur-lg -z-10"></div>
                 </div>
               </div>
 
@@ -156,7 +156,7 @@ const Author = () => {
           {/* Additional Info */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="400">
             <div className="glass-card p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-neon-blue to-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 bg-linear-to-r from-neon-blue to-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <h4 className="text-lg font-bold text-white mb-2">Education</h4>
@@ -166,7 +166,7 @@ const Author = () => {
             </div>
 
             <div className="glass-card p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 bg-linear-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Code className="w-6 h-6 text-white" />
               </div>
               <h4 className="text-lg font-bold text-white mb-2">TFG Project</h4>
@@ -176,7 +176,7 @@ const Author = () => {
             </div>
 
             <div className="glass-card p-6 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-12 h-12 bg-linear-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-6 h-6 text-white" />
               </div>
               <h4 className="text-lg font-bold text-white mb-2">Approach</h4>

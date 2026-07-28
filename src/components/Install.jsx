@@ -53,7 +53,7 @@ const Install = () => {
             >
               {method.primary && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold">
+                  <span className="bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold">
                     Recommended
                   </span>
                 </div>
@@ -69,7 +69,7 @@ const Install = () => {
               <div className="space-y-4 mb-8">
                 {method.steps.map((step, stepIndex) => (
                   <div key={stepIndex} className="flex items-center space-x-4">
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                    <div className="shrink-0 w-8 h-8 bg-linear-to-r from-blue-500 to-purple-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
                       {stepIndex + 1}
                     </div>
                     <span className="text-gray-700 dark:text-gray-300">{step}</span>

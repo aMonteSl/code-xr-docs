@@ -176,11 +176,11 @@ const Navbar = () => {
       {/* Horizontal Progress Line */}
       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-800/50">
         <div 
-          className="h-full bg-gradient-to-r from-neon-blue to-purple-400 transition-all duration-150 ease-out"
+          className="h-full bg-linear-to-r from-neon-blue to-purple-400 transition-all duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}
         >
           {/* Glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-neon-blue to-purple-400 blur-sm opacity-60"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-neon-blue to-purple-400 blur-xs opacity-60"></div>
         </div>
       </div>
     </nav>

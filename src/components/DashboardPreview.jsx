@@ -15,7 +15,7 @@ const DashboardPreview = ({ title, url }) => {
       </div>
 
       <div className="relative">
-        <div className="aspect-[16/11] bg-slate-950 md:aspect-[4/3] xl:aspect-[16/10]">
+        <div className="aspect-16/11 bg-slate-950 md:aspect-4/3 xl:aspect-16/10">
           <iframe
             src={url}
             className="h-full w-full border-0"

@@ -51,7 +51,7 @@ const LatestRelease = () => {
   return (
     <section id="latest-release" className="relative overflow-hidden bg-transparent py-24">
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,170,255,0.04),_transparent_34%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,170,255,0.04),transparent_34%)]" />
         <div className="absolute right-0 top-24 h-80 w-80 rounded-full bg-neon-blue/6 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-purple-400/5 blur-3xl" />
       </div>
@@ -129,7 +129,7 @@ const LatestRelease = () => {
                   <div className="mb-2 text-xs uppercase tracking-[0.2em] text-gray-400">
                     {highlight.eyebrow}
                   </div>
-                  <h4 className="mb-3 text-xl font-bold text-white md:min-h-[3.5rem]">
+                  <h4 className="mb-3 text-xl font-bold text-white md:min-h-14">
                     {highlight.title}
                   </h4>
                   <p className="text-sm leading-relaxed text-gray-300">{highlight.description}</p>
@@ -172,7 +172,7 @@ const LatestRelease = () => {
                     <img
                       src={getAssetPath(sceneComparison.before.imagePath)}
                       alt="Code-XR v1.0.0 XR scene"
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-4/3 w-full object-cover"
                       loading="lazy"
                     />
                   </div>
@@ -188,7 +188,7 @@ const LatestRelease = () => {
                     <img
                       src={getAssetPath(sceneComparison.after.imagePath)}
                       alt="Code-XR v1.1.0 XR scene"
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-4/3 w-full object-cover"
                       loading="lazy"
                     />
                   </div>
@@ -268,7 +268,7 @@ const LatestRelease = () => {
                         {item.stat}
                       </span>
                     </div>
-                    <div className="flex aspect-[16/10] items-center justify-center rounded-2xl border border-white/10 bg-slate-950/90 p-3">
+                    <div className="flex aspect-16/10 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/90 p-3">
                       <img
                         src={getAssetPath(item.imagePath)}
                         alt={`${item.label} performance comparison`}
@@ -312,7 +312,7 @@ const LatestRelease = () => {
                         <img
                           src={getAssetPath(media.imagePath)}
                           alt={media.title}
-                          className="aspect-[16/10] w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
+                          className="aspect-16/10 w-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
                           loading="lazy"
                         />
                       </div>
@@ -357,7 +357,7 @@ const LatestRelease = () => {
                     videoUrl={video.videoUrl}
                     title={video.title}
                     mediaLabel={video.mediaLabel}
-                    className="aspect-[16/10] w-full sm:aspect-video"
+                    className="aspect-16/10 w-full sm:aspect-video"
                   />
                 </div>
                 <div className="p-6">

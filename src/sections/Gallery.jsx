@@ -46,7 +46,7 @@ const Gallery = () => {
         <div className="mb-16 text-center" data-aos="fade-up">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl">
             <span className="text-white">Experience</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Code-XR
             </span>
           </h2>
@@ -85,7 +85,7 @@ const Gallery = () => {
                   <div key={category}>
                     <div className="mb-8" data-aos="fade-up">
                       <h3 className="mb-2 text-2xl font-bold text-white">{category}</h3>
-                      <div className="h-1 w-20 rounded bg-gradient-to-r from-neon-blue to-purple-400"></div>
+                      <div className="h-1 w-20 rounded-sm bg-linear-to-r from-neon-blue to-purple-400"></div>
                     </div>
 
                     <div
@@ -115,13 +115,13 @@ const Gallery = () => {
                                 videoUrl={item.videoUrl}
                                 title={item.title}
                                 mediaLabel={item.mediaLabel || item.category}
-                                className="aspect-[16/10] w-full sm:aspect-video"
+                                className="aspect-16/10 w-full sm:aspect-video"
                               />
                             ) : (
                               <img
                                 src={getAssetPath(item.imagePath)}
                                 alt={item.title}
-                                className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
+                                className="aspect-16/10 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
                                 loading="lazy"
                               />
                             )}
@@ -174,13 +174,13 @@ const Gallery = () => {
                       videoUrl={item.videoUrl}
                       title={item.title}
                       mediaLabel={item.mediaLabel || item.category}
-                      className="aspect-[16/10] w-full sm:aspect-video"
+                      className="aspect-16/10 w-full sm:aspect-video"
                     />
                   ) : (
                     <img
                       src={getAssetPath(item.imagePath)}
                       alt={item.title}
-                      className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
+                      className="aspect-16/10 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:aspect-video"
                       loading="lazy"
                     />
                   )}

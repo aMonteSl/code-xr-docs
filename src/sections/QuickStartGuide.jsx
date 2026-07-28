@@ -207,7 +207,7 @@ const QuickStartGuide = () => {
         <div className="mb-16 text-center" data-aos="fade-up">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
             <span className="text-white">Quick Start</span>{' '}
-            <span className="bg-gradient-to-r from-neon-blue via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-neon-blue via-purple-400 to-pink-400 bg-clip-text text-transparent">
               Guide
             </span>
           </h2>
@@ -224,13 +224,13 @@ const QuickStartGuide = () => {
 
         <div className="mx-auto max-w-5xl">
           <div key={currentStepData.id} className="animate-fade-in-up">
-            <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-gray-900/90 to-black/90 shadow-2xl backdrop-blur-xl">
-              <div className={`bg-gradient-to-r ${currentStepData.gradient} p-1`}>
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-gray-900/90 to-black/90 shadow-2xl backdrop-blur-xl">
+              <div className={`bg-linear-to-r ${currentStepData.gradient} p-1`}>
                 <div className="rounded-t-3xl bg-black/90 p-8">
                   <div className="flex flex-col gap-8 xl:flex-row xl:items-center xl:justify-between">
                     <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
                       <div
-                        className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-r ${currentStepData.gradient} shadow-lg`}
+                        className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-r ${currentStepData.gradient} shadow-lg`}
                       >
                         <CurrentStepIcon className="h-8 w-8 text-black" />
                       </div>
@@ -321,7 +321,7 @@ const QuickStartGuide = () => {
                         className="flex items-start space-x-4 rounded-xl p-4 transition-all duration-300 hover:bg-white/5"
                       >
                         <div
-                          className={`mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-r ${currentStepData.gradient}`}
+                          className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-r ${currentStepData.gradient}`}
                         >
                           <span className="text-sm font-bold text-black">{index + 1}</span>
                         </div>
@@ -331,11 +331,11 @@ const QuickStartGuide = () => {
                   </div>
                 </div>
 
-                <div className={`rounded-2xl bg-gradient-to-r ${currentStepData.gradient} p-1`}>
+                <div className={`rounded-2xl bg-linear-to-r ${currentStepData.gradient} p-1`}>
                   <div className="rounded-2xl bg-black/90 p-6">
                     <div className="flex items-start space-x-4">
                       <div
-                        className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${currentStepData.gradient}`}
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-r ${currentStepData.gradient}`}
                       >
                         <Lightbulb className="h-6 w-6 text-black" />
                       </div>
@@ -366,7 +366,7 @@ const QuickStartGuide = () => {
                         key={step.id}
                         className={`h-3 w-3 rounded-full transition-all duration-300 ${
                           index === currentStep
-                            ? `bg-gradient-to-r ${currentStepData.gradient}`
+                            ? `bg-linear-to-r ${currentStepData.gradient}`
                             : completedSteps.includes(step.id)
                             ? 'bg-green-500'
                             : 'bg-white/30'
@@ -379,7 +379,7 @@ const QuickStartGuide = () => {
                     type="button"
                     onClick={nextStep}
                     disabled={currentStep === steps.length - 1}
-                    className="inline-flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-r from-neon-blue to-purple-400 px-6 py-3 font-semibold text-black transition-all duration-300 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center justify-center space-x-2 rounded-xl bg-linear-to-r from-neon-blue to-purple-400 px-6 py-3 font-semibold text-black transition-all duration-300 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span>{currentStep === steps.length - 1 ? 'Complete' : 'Next'}</span>
                     <ChevronRight className="h-5 w-5" />
@@ -405,14 +405,14 @@ const QuickStartGuide = () => {
                 onClick={() => goToStep(index)}
                 className={`rounded-xl border p-4 text-left transition-all duration-300 hover:-translate-y-1 ${
                   currentStep === index
-                    ? `border-transparent bg-gradient-to-r ${step.gradient} text-black`
+                    ? `border-transparent bg-linear-to-r ${step.gradient} text-black`
                     : 'border-white/10 bg-black/20 text-white hover:bg-white/5'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-                      currentStep === index ? 'bg-black/20' : `bg-gradient-to-r ${step.gradient}`
+                      currentStep === index ? 'bg-black/20' : `bg-linear-to-r ${step.gradient}`
                     }`}
                   >
                     <StepIcon className="h-5 w-5 text-black" />

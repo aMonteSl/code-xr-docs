@@ -72,7 +72,7 @@ const Features = () => {
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Powerful</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               Features
             </span>
           </h2>
@@ -92,7 +92,7 @@ const Features = () => {
               data-aos-delay={index * 100}
             >
               {/* Icon */}
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 glow-blue-hover`}>
+              <div className={`w-16 h-16 rounded-xl bg-linear-to-r ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 glow-blue-hover`}>
                 <feature.icon size={32} className="text-white" />
               </div>
 
@@ -105,7 +105,7 @@ const Features = () => {
               </p>
 
               {/* Hover Effect Line */}
-              <div className="mt-6 h-0.5 bg-gradient-to-r from-transparent via-neon-blue to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+              <div className="mt-6 h-0.5 bg-linear-to-r from-transparent via-neon-blue to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
             </div>
           ))}
         </div>

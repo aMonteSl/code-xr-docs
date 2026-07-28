@@ -19,11 +19,11 @@ const ScrollProgressBar = () => {
   return (
     <div className="fixed top-0 left-0 w-full h-1 bg-black/20 z-50 backdrop-blur-sm">
       <div 
-        className="h-full bg-gradient-to-r from-neon-blue to-purple-400 transition-all duration-150 ease-out shadow-lg"
+        className="h-full bg-linear-to-r from-neon-blue to-purple-400 transition-all duration-150 ease-out shadow-lg"
         style={{ width: `${scrollProgress}%` }}
       >
         {/* Glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-blue to-purple-400 blur-sm opacity-50"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-neon-blue to-purple-400 blur-xs opacity-50"></div>
       </div>
     </div>
   );

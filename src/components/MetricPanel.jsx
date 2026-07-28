@@ -22,14 +22,14 @@ const MetricPanel = ({ icon: Icon, value, label, detail, align = 'left', classNa
         {value}
       </div>
       <div
-        className={`min-h-[3.75rem] text-lg font-medium leading-snug text-neon-blue ${
+        className={`min-h-15 text-lg font-medium leading-snug text-neon-blue ${
           centered ? 'flex items-center justify-center' : ''
         }`}
       >
         {label}
       </div>
       <div
-        className={`mt-3 min-h-[2.75rem] text-sm leading-relaxed text-gray-400 ${
+        className={`mt-3 min-h-11 text-sm leading-relaxed text-gray-400 ${
           centered ? 'flex items-start justify-center' : ''
         }`}
       >

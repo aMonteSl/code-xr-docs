@@ -67,7 +67,7 @@ const Technologies = () => {
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Technologies</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-purple-400 bg-clip-text text-transparent">
               We Use
             </span>
           </h2>
@@ -90,7 +90,7 @@ const Technologies = () => {
               data-aos-delay={index * 100}
             >
               {/* Logo */}
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${tech.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 glow-blue-hover p-3`}>
+              <div className={`w-16 h-16 rounded-xl bg-linear-to-r ${tech.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 glow-blue-hover p-3`}>
                 <img 
                   src={tech.logo} 
                   alt={tech.name}
@@ -107,7 +107,7 @@ const Technologies = () => {
               </p>
 
               {/* Hover Effect Line */}
-              <div className="mt-6 h-0.5 bg-gradient-to-r from-transparent via-neon-blue to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+              <div className="mt-6 h-0.5 bg-linear-to-r from-transparent via-neon-blue to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
               
               {/* External Link Indicator */}
               <div className="mt-4 flex items-center text-neon-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -2,31 +2,31 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-16 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+    <section id="home" className="min-h-screen flex items-center justify-center pt-16 bg-linear-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Animated glow background */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-64 h-64 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+            <div className="w-64 h-64 bg-linear-to-r from-blue-400 to-purple-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
           </div>
           
           {/* Logo/Icon */}
           <div className="relative mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce">
+            <div className="w-24 h-24 mx-auto bg-linear-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce">
               <span className="text-3xl font-bold text-white">XR</span>
             </div>
           </div>
 
           {/* Main Title */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Code-XR
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl lg:text-3xl mb-6 text-gray-600 dark:text-gray-300 max-w-4xl mx-auto">
-            Explore code metrics in <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">3D/XR space</span> with immersive software visualization
+            Explore code metrics in <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">3D/XR space</span> with immersive software visualization
           </p>
 
           {/* Description */}
@@ -38,7 +38,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
               href="#features"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               Explore Features
             </a>

@@ -63,7 +63,7 @@ const Gallery = () => {
               data-aos-delay={index * 100}
             >
               {/* Image Container */}
-              <div className="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">
+              <div className="relative h-48 bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">
                 <img 
                   src={item.image} 
                   alt={item.title}
@@ -86,7 +86,7 @@ const Gallery = () => {
               </div>
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </div>
           ))}
         </div>

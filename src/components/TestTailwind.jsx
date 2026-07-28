@@ -24,7 +24,7 @@ const TestTailwind = () => {
       {/* Test Section */}
       <section className="min-h-screen flex flex-col justify-center items-center space-y-8 px-4">
         <h1 className="text-4xl md:text-6xl font-bold text-center">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             Tailwind CSS Test
           </span>
         </h1>

@@ -95,7 +95,7 @@ const Install = () => {
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-white">Quick</span>{' '}
-            <span className="text-gradient bg-gradient-to-r from-neon-blue to-green-400 bg-clip-text text-transparent">
+            <span className="text-gradient bg-linear-to-r from-neon-blue to-green-400 bg-clip-text text-transparent">
               Installation
             </span>
           </h2>
@@ -124,8 +124,8 @@ const Install = () => {
               {/* Icon */}
               <div className={`w-16 h-16 rounded-xl ${
                 method.primary 
-                  ? 'bg-gradient-to-r from-neon-blue to-blue-400' 
-                  : 'bg-gradient-to-r from-gray-600 to-gray-700'
+                  ? 'bg-linear-to-r from-neon-blue to-blue-400' 
+                  : 'bg-linear-to-r from-gray-600 to-gray-700'
               } flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 glow-blue-hover`}>
                 <method.icon size={32} className="text-white" />
               </div>
@@ -213,7 +213,7 @@ const Install = () => {
         <div className="mb-16" data-aos="fade-up" data-aos-delay="500">
           <div className="glass-card p-6 max-w-3xl mx-auto">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-neon-blue/15 flex items-center justify-center text-neon-blue flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-neon-blue/15 flex items-center justify-center text-neon-blue shrink-0">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
