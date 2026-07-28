@@ -1,0 +1,204 @@
+/* The archived site only scans its own tree (plus its HTML entry), so the
+   new site's classes never leak into this bundle and vice versa. */
+@import 'tailwindcss' source('../');
+@source '../../old_web';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-neon-blue: #00aaff;
+  --color-neon-blue-dark: #0088cc;
+  --color-neon-blue-light: #33bbff;
+  --color-dark-bg: #000000;
+  --color-dark-card: #111111;
+  --color-dark-border: #222222;
+
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out;
+  --animate-fade-in-down: fade-in-down 0.8s ease-out;
+  --animate-scale-in: scale-in 0.5s ease-out;
+
+  --font-sans: Inter, Poppins, Roboto, system-ui, sans-serif;
+
+  --backdrop-blur-xs: 2px;
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.6;
+      box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+      box-shadow: 0 0 40px rgba(0, 170, 255, 0.5);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility site-shell {
+  @apply min-h-screen text-white;
+  background-color: #010204;
+  background-image:
+    radial-gradient(circle at top, rgba(0, 170, 255, 0.07), transparent 26%),
+    linear-gradient(rgba(0, 170, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 170, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(
+      180deg,
+      rgba(3, 6, 10, 0.97),
+      rgba(2, 4, 8, 0.96) 45%,
+      rgba(0, 0, 0, 0.99) 100%
+    );
+  background-size:
+    auto,
+    50px 50px,
+    50px 50px,
+    auto;
+  background-position:
+    top center,
+    top left,
+    top left,
+    top left;
+}
+
+@utility btn-primary {
+  @apply bg-neon-blue hover:bg-neon-blue-dark text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.5);
+  }
+}
+
+@utility btn-secondary {
+  @apply border-2 border-neon-blue text-neon-blue hover:bg-neon-blue hover:text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105;
+}
+
+@utility text-gradient {
+  @apply bg-linear-to-r from-white to-neon-blue bg-clip-text text-transparent;
+}
+
+@utility glow-blue {
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+}
+
+@utility glow-blue-hover {
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.6);
+  }
+}
+
+@utility glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+}
+
+@utility glass-card-hover {
+  @apply glass-card hover:bg-white/10 hover:border-neon-blue/30 transition-all duration-300;
+}
+
+@utility metric-panel {
+  @apply relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/90;
+  background-image: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.94),
+    rgba(2, 6, 23, 0.98)
+  );
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 170, 255, 0.08),
+      transparent 48%
+    );
+    pointer-events: none;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: rgba(0, 170, 255, 0.3);
+    box-shadow:
+      0 24px 50px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(0, 170, 255, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', 'Poppins', 'Roboto', system-ui, sans-serif;
+    line-height: 1.6;
+    background: #000000;
+    color: #ffffff;
+  }
+}

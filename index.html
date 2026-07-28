@@ -17,6 +17,15 @@
     <meta name="application-name" content="Code-XR" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#020711" />
+    <script>
+      // Resolve the theme before first paint to avoid a flash of the wrong
+      // scheme. Follows the browser/OS preference; src/app/theme.js keeps it
+      // in sync if the preference changes while the page is open.
+      document.documentElement.classList.toggle(
+        'dark',
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      );
+    </script>
     <link rel="canonical" href="https://code-xr.adrianmonteslinares.com/" />
 
     <meta property="og:type" content="website" />
@@ -78,7 +87,7 @@
             "url": "https://code-xr.adrianmonteslinares.com/",
             "downloadUrl": "https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr",
             "image": "https://code-xr.adrianmonteslinares.com/social-preview.png",
-            "softwareVersion": "v1.1.0",
+            "softwareVersion": "v1.2.0",
             "author": {
               "@type": "Person",
               "name": "Adrian Montes Linares"
@@ -101,8 +110,8 @@
       }
     </script>
   </head>
-  <body class="bg-black text-cyan-300 min-h-screen w-full">
+  <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/app/main.jsx"></script>
   </body>
 </html>

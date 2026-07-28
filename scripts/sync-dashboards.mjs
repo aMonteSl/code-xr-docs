@@ -1,7 +1,7 @@
 import { access, cp, mkdir, readdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { testedProjects } from '../src/content/testedProjectsContent.js';
+import { testedProjects } from '../legacy/content/testedProjectsContent.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
