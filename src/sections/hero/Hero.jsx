@@ -7,18 +7,18 @@ import { site } from '@/content/siteContent';
 // @/components/ui, semantic color tokens only.
 const Hero = () => {
   return (
-    <section id="hero" className="flex min-h-screen items-center py-24">
+    <section id="hero" className="flex min-h-svh items-center py-20 sm:py-24">
       <Container className="text-center">
         <p className="text-sm font-semibold tracking-widest text-accent uppercase">
           {site.name} · {site.version}
         </p>
-        <h1 className="mx-auto mt-4 max-w-3xl text-5xl font-extrabold tracking-tight text-balance sm:text-6xl">
+        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2rem,7vw,3.75rem)] leading-[1.1] font-extrabold tracking-tight text-balance">
           {site.tagline}
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-ink-muted">
+        <p className="mx-auto mt-6 max-w-2xl text-base text-pretty text-ink-muted sm:text-lg">
           {site.description}
         </p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
           <Button href={site.links.marketplace} rel="noopener noreferrer">
             Install from Marketplace
           </Button>
@@ -26,7 +26,7 @@ const Hero = () => {
             View on GitHub
           </Button>
         </div>
-        <p className="mt-16 text-sm text-ink-faint">
+        <p className="mt-12 text-sm text-ink-faint sm:mt-16">
           New site under construction —{' '}
           <a className="underline hover:text-ink-muted" href={site.links.oldSite}>
             browse the previous version

@@ -64,6 +64,26 @@ Everything lives in `src/styles/main.css`. **Two token layers — components onl
 
 **Tailwind scoping**: each site's CSS restricts scanning with `source(…)` (`src/styles/main.css` scans `src/`; `legacy/styles/main.css` scans `legacy/` + `old_web/`) so the two bundles never leak classes into each other. Keep it that way.
 
+## Responsive design — NON-NEGOTIABLE
+
+**Every section must look good on every screen size and resolution, from a 320px phone to an ultrawide desktop.** A section is not done until it has been checked across that range. This is a hard acceptance criterion, not a polish step.
+
+No extra dependency is needed or wanted: Tailwind 4 covers all of it in core (breakpoints, `@container` container queries, `text-balance`/`text-pretty`, arbitrary `clamp()` values, `svh`/`dvh` units). Verified working in this project.
+
+Rules:
+
+- **Mobile-first.** Write the base classes for the smallest screen, then layer `sm: md: lg: xl: 2xl:`. Never write desktop styles and patch mobile with overrides.
+- **No horizontal overflow, ever.** The page body must never scroll sideways. Wide content (tables, code blocks, diagrams, dashboard embeds) scrolls inside its own `overflow-x-auto` container. Check with `document.documentElement.scrollWidth > clientWidth`.
+- **Fluid typography for display text.** Headlines use `text-[clamp(min,vw,max)]` (see `sections/hero/Hero.jsx`) instead of jumping between fixed sizes at breakpoints. Body copy may use plain `text-base sm:text-lg` steps. Pair with `text-balance` on headings and `text-pretty` on paragraphs.
+- **Touch targets ≥ 44px** on interactive elements. On narrow screens stack buttons full-width (`flex-col items-stretch sm:flex-row`) rather than shrinking them.
+- **Container queries over media queries for reusable components.** A card that must adapt to *its own* width belongs in `@container` + `@sm:`/`@md:` variants, so it works in any slot. Viewport breakpoints are for page-level layout.
+- **Viewport height**: use `min-h-svh`/`dvh`, not `min-h-screen`, so mobile browser chrome doesn't cut content off.
+- **Images and media**: always constrained (`max-w-full h-auto`), with explicit `width`/`height` or an `aspect-[…]` wrapper to prevent layout shift, and `loading="lazy"` below the fold. The v1.2.0 screenshots in `public/assets/releases/v1-2-0/` are ~1 MB 2x-density PNGs — they stay crisp on retina/HiDPI, but never ship them at full size into a small slot; size the rendered box and let the browser downscale.
+- **Respect `prefers-reduced-motion`**: any non-trivial animation needs a reduced-motion fallback.
+- **Both themes at every size.** Responsive checks run in light *and* dark — see the theming section.
+
+**How to verify** (dev server on port 5173, use the browser tools): check at least **320, 375, 768, 1024, 1440** px wide. At each width confirm zero horizontal overflow, no clipped or overlapping text, tap targets big enough, and that images keep their aspect ratio. `resize_window` also takes `colorScheme` to check both themes.
+
 ## Legacy site (`legacy/`) notes
 
 - Reachable only from `/old_web/`; `old_web/index.html` is `noindex` and canonicals to `/`.
