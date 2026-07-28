@@ -1,5 +1,6 @@
 import React from 'react';
-import { Github, Linkedin, Mail, MapPin, GraduationCap, Code, Globe } from 'lucide-react';
+import { Mail, MapPin, GraduationCap, Code, Globe } from 'lucide-react';
+import { Github, Linkedin } from '../components/icons/brandIcons';
 import { getAssetPath } from '../utils/assets';
 
 const Author = () => {

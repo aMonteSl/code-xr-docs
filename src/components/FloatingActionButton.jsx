@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Github, ExternalLink, X } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
+import { Github } from './icons/brandIcons';
 import { getTechnologyAsset } from '../utils/assets';
 
 const FloatingActionButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  // Visible from the first render; scrolling back to the very top hides it.
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -15,9 +17,6 @@ const FloatingActionButton = () => {
         setIsOpen(false);
       }
     };
-
-    // Show immediately on page load
-    setIsVisible(true);
 
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);

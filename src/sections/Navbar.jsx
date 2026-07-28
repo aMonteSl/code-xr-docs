@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Github, ExternalLink, Menu, X } from 'lucide-react';
+import { ExternalLink, Menu, X } from 'lucide-react';
+import { Github } from '../components/icons/brandIcons';
 import useVSCodeMarketplaceData from '../hooks/useVSCodeMarketplaceData';
 import { getTechnologyAsset } from '../utils/assets';
 

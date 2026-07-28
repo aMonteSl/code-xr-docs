@@ -1,5 +1,6 @@
 import React from 'react';
-import { Github, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import { Github } from '../components/icons/brandIcons';
 import { getTechnologyAsset } from '../utils/assets';
 
 const Footer = () => {

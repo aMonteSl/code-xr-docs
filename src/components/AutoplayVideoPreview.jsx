@@ -42,6 +42,12 @@ const AutoplayVideoPreview = ({ videoUrl, title, mediaLabel, className = '' }) =
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
+
+        // Reset the loaded state whenever the preview leaves the viewport so
+        // the poster shows again on re-entry.
+        if (!entry.isIntersecting) {
+          setIsLoaded(false);
+        }
       },
       {
         rootMargin: '180px 0px',
@@ -53,12 +59,6 @@ const AutoplayVideoPreview = ({ videoUrl, title, mediaLabel, className = '' }) =
 
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!isVisible) {
-      setIsLoaded(false);
-    }
-  }, [isVisible]);
 
   return (
     <div

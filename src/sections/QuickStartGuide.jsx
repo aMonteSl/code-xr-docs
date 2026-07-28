@@ -139,11 +139,16 @@ const QuickStartGuide = () => {
     }
 
     const currentDuration = parseInt(steps[currentStep].duration, 10) * 60;
-    setStepProgress(0);
+    const isCompleted = completedSteps.includes(steps[currentStep].id);
 
-    if (completedSteps.includes(steps[currentStep].id)) {
-      setStepProgress(currentDuration);
-      return undefined;
+    // Defer the reset to the next frame: completed steps pin the bar to the
+    // end, everything else restarts from zero before the interval ticks.
+    const frame = requestAnimationFrame(() => {
+      setStepProgress(isCompleted ? currentDuration : 0);
+    });
+
+    if (isCompleted) {
+      return () => cancelAnimationFrame(frame);
     }
 
     const progressInterval = setInterval(() => {
@@ -160,7 +165,10 @@ const QuickStartGuide = () => {
       });
     }, 1000);
 
-    return () => clearInterval(progressInterval);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearInterval(progressInterval);
+    };
   }, [completedSteps, currentStep, isVisible, markComplete, steps]);
 
   useEffect(() => {

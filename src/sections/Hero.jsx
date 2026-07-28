@@ -23,7 +23,8 @@ const Hero = () => {
   const marketplaceData = useVSCodeMarketplaceData();
 
   useEffect(() => {
-    setIsVisible(true);
+    const frame = requestAnimationFrame(() => setIsVisible(true));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const badges = [
