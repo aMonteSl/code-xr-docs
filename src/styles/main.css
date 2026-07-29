@@ -2,7 +2,7 @@
 @import 'tailwindcss' source('../');
 
 /* Dark mode is class-based: index.html sets .dark on <html> before first
-   paint from prefers-color-scheme, and src/app/theme.js keeps it in sync. */
+   paint from prefers-color-scheme, and src/lib/theme.js keeps it in sync. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
@@ -30,7 +30,82 @@
   --color-brand-900: #0d4a6f;
   --color-brand-950: #082f4a;
 
-  --font-sans: 'Inter', 'Poppins', 'Roboto', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Poppins', 'Roboto', system-ui, sans-serif;
+
+  --radius-card: 0.75rem;
+
+  /* -------------------------------------------------------------------------
+     Motion. Every ENTRANCE keyframe animates *from* an offset *to* the natural
+     state, and the base classes carry no offset. That is what lets
+     `motion-reduce:animate-none` land an element on its correct final
+     appearance with zero extra CSS. Idle loops touch only opacity/transform so
+     they stay on the compositor and never trigger a repaint.
+
+     DURATIONS follow one rule, and the codebase already keeps to it:
+       300ms — state feedback: hover, focus, show/hide, a bar solidifying.
+       500ms — content swaps: a crossfade, a carousel track, an icon turning.
+     Match the intent, not the nearest neighbour. Anything longer needs a
+     reason at the call site (the QuickStart ring is 1000ms because it is
+     showing elapsed time, not reacting to anything).
+  ------------------------------------------------------------------------- */
+  --animate-rise-in: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-logo-draw: logo-draw 1.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-logo-float: logo-float 7s ease-in-out infinite;
+  /* Duration comes from --carousel-duration so the bar and the autoplay
+     interval can never drift apart: both read one constant in the section. */
+  --animate-carousel-progress: carousel-progress var(--carousel-duration, 6s) linear;
+
+  /* NOTE: `rise-in`'s own @keyframes lives at the BOTTOM of this file, at top
+     level, not here. Tailwind only emits keyframes declared inside @theme when
+     the matching animate-* utility is actually used, and the scroll reveal
+     references `rise-in` by name without going through the utility. */
+
+  /* Blueprint entrance: the outline traces itself (the paths carry
+     pathLength="1", so a dasharray of 1 spans the whole path), then the fill
+     emerges and the stroke fades away. Base classes hold the FINAL state
+     (fill on, stroke-opacity 0), so `animate-none` under reduced motion lands
+     on the solid mark. */
+  @keyframes logo-draw {
+    0% {
+      stroke-dashoffset: 1;
+      stroke-opacity: 0.85;
+      fill-opacity: 0;
+    }
+    55% {
+      stroke-dashoffset: 0;
+      stroke-opacity: 0.85;
+      fill-opacity: 0;
+    }
+    78% {
+      fill-opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      stroke-opacity: 0;
+      fill-opacity: 1;
+    }
+  }
+
+  /* scaleX rather than width: stays on the compositor instead of relayouting
+     the frame sixty times a second. */
+  @keyframes carousel-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes logo-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
 }
 
 @theme inline {
@@ -45,39 +120,71 @@
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-on-accent: var(--on-accent);
+
+  --shadow-card: var(--shadow-card-value);
 }
 
-/* Light theme (default): white base, blue accents. */
+/* Light theme (default). Steel-slate family: grayed blues, restrained accent.
+   The site look is deliberately more sober than the extension's #00aaff
+   identity (which lives on in the brand-* ramp above). No colored shadows,
+   no glows, anywhere. */
 :root {
-  --surface: #ffffff;
-  --surface-raised: #f4f9fd;
-  --surface-sunken: #e8f2fa;
-  --ink: #0b1b2b;
-  --ink-muted: #43586d;
-  --ink-faint: #7d90a3;
-  --edge: #d3e2ee;
-  --accent: #0088cc;
-  --accent-strong: #006ba3;
+  --surface: #fafbfc;
+  --surface-raised: #f2f4f7;
+  --surface-sunken: #e9edf2;
+  --ink: #1c2733;
+  --ink-muted: #4c5b6b;
+  --ink-faint: #8593a3;
+  --edge: #dbe1e8;
+  --accent: #35618e;
+  --accent-strong: #274b70;
   --on-accent: #ffffff;
+
+  --shadow-card-value: 0 1px 2px rgb(28 39 51 / 0.04), 0 8px 24px -12px rgb(28 39 51 / 0.12);
 }
 
-/* Dark theme: deep night-blue base (not pure black), white ink, neon accent. */
+/* Dark theme: blue-tinted graphite (not black), soft steel accent. */
 .dark {
-  --surface: #04101c;
-  --surface-raised: #081a2b;
-  --surface-sunken: #020a12;
-  --ink: #f2f8fd;
-  --ink-muted: #a8bdd0;
-  --ink-faint: #64809b;
-  --edge: #14304a;
-  --accent: #00aaff;
-  --accent-strong: #33bbff;
-  --on-accent: #04101c;
+  --surface: #0e141b;
+  --surface-raised: #151d26;
+  --surface-sunken: #0a0f15;
+  --ink: #e6ebf0;
+  --ink-muted: #a3b1bf;
+  --ink-faint: #66778a;
+  --edge: #26313e;
+  --accent: #7ba7cc;
+  --accent-strong: #9dbfda;
+  --on-accent: #0e141b;
+
+  --shadow-card-value: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px -16px rgb(0 0 0 / 0.5);
 }
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Anchor jumps land below the fixed 4rem navbar instead of under it.
+       Layout, not motion — it stays unconditional, or a reduced-motion reader
+       gets their anchor target parked underneath the bar. */
+    scroll-padding-top: 4.5rem;
+  }
+
+  /* The one motion rule on the site that is neither a transition nor an
+     animation, so no `motion-reduce:` utility can reach it. It needs its own
+     guard or smooth scrolling is forced on readers who asked for none. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Tailwind v4's Preflight, unlike v3's, no longer restores `cursor: pointer`
+     on buttons — it defers to the UA default, which is an arrow. Restored once
+     here rather than as a utility on every button, so a new button cannot be
+     shipped without it. Disabled controls correctly keep the arrow. Utilities
+     still win (later layer), so the `cursor-zoom-in` on the carousel and
+     step-card images is unaffected. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
   }
 
   body {
@@ -85,6 +192,268 @@
     color: var(--ink);
     font-family: var(--font-sans);
     line-height: 1.6;
+    /* Only reaches the body's own two colours, so on its own it makes the
+       theme switch disagree with itself — everything else flips in one frame.
+       It stays as the fallback for browsers without view transitions; where
+       those exist it runs underneath the snapshot and is never seen. */
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  /* One keyboard-focus style for the whole site, defined once here rather
+     than repeated as focus-visible:* utilities on every component. Using
+     `outline` (not `ring`) matters: ring-* writes to box-shadow and silently
+     loses to any shadow-* utility on the same element, which is exactly how
+     the primary button ended up with no visible focus indicator at all. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* -------------------------------------------------------------------------
+     Scrollbar. Declared on :root so it INHERITS: the page scrollbar and every
+     overflow container on the site (the dashboard embeds, the lightbox, the
+     glossary grids) get the same one, in the current theme's colours, instead
+     of the page being themed and its scrolling panels staying OS-grey.
+
+     `--ink-faint`, not `--edge`: the thumb has to be findable. Faint is the
+     lightest token that still reads against both surfaces, and it is neutral,
+     so this adds no hue — the palette rule holds here too.
+  ------------------------------------------------------------------------- */
+  :root {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-faint) transparent;
+  }
+
+  /* Chromium ignores ::-webkit-scrollbar entirely on any element that sets the
+     standard properties above, so these are not a parallel styling — they are
+     the fallback for engines that lack them (Safari below 18.2, Chrome below
+     121). Gated on @supports so the two can never both apply and disagree. */
+  @supports not (scrollbar-color: auto) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* The border is what makes a 10px track read as a thin thumb: it is
+       painted in the page surface, so it shows as padding around the bar. */
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--ink-faint);
+      border: 3px solid var(--surface);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--ink-muted);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Theme switch. The incoming theme is revealed by a circle growing from the
+   toggle button; the outgoing one simply waits underneath. Driven by the View
+   Transitions API, so the whole page moves as ONE composited snapshot — the
+   alternative (transitioning colours on every element) repaints the entire
+   document for the duration and still misses anything with its own transition.
+
+   No cross-fade between the two snapshots: overlapping a light and a dark copy
+   of the page washes through a grey midpoint that belongs to neither theme.
+   A clean edge sweeping across is both calmer and more legible.
+
+   hooks/useTheme.js sets the three custom properties and decides whether to
+   start a transition at all — under reduced motion it never calls the API, and
+   the guard below is the second lock on the same door.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    /* Drop the UA's default cross-fade; the reveal below replaces it. */
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 0;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 1;
+    animation: theme-reveal 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-origin-x, 50%) var(--theme-origin-y, 50%));
+  }
+
+  to {
+    clip-path: circle(
+      var(--theme-origin-radius, 150vmax) at var(--theme-origin-x, 50%) var(--theme-origin-y, 50%)
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   rise-in, at top level and therefore always emitted. Two consumers now: the
+   `animate-rise-in` utility (the hero's staggered entrance) and the scroll
+   reveal below, which names the keyframes directly. Inside @theme it would
+   only be emitted while the utility is in use, and the reveal would break
+   silently the day the hero stopped using it.
+--------------------------------------------------------------------------- */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll progress, in the navbar's bottom edge. Same technique as the reveal
+   below and the same reason: `animation-timeline: scroll()` maps document
+   scroll straight to animation progress on the compositor, so this costs no
+   listener, no state and no re-render — where the previous site drove its
+   progress bar from a React scroll handler.
+
+   scaleX, not width: a width animation relayouts the fixed bar on every frame.
+   The base state is scaleX(0), which is also what an unsupported browser and a
+   page too short to scroll both get — the bar is simply never drawn.
+
+   NOT gated on prefers-reduced-motion, unlike everything else here. This is a
+   position indicator locked 1:1 to the scrollbar, not motion the page plays at
+   the reader: hiding it would remove the information it exists to carry, and
+   the reduced-motion reader is exactly the one who benefits from knowing where
+   they are without watching the page move.
+--------------------------------------------------------------------------- */
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reveal on scroll for every section below the hero. Scroll-driven, so there
+   is no observer, no state and no re-render: the browser maps scroll position
+   to animation progress on the compositor.
+
+   Deliberately NOT the useInView hook. That hook is not one-shot — it reacts to
+   every crossing — so sections would re-animate on the way back up, the AOS tic
+   this site does not have. It would also add nine decorative observers next to
+   the six already doing load-bearing work (gating YouTube iframes and ~1.7 MB
+   dashboard exports). No animation library belongs here: `aos` and
+   `framer-motion` were removed with the old site, on purpose.
+
+   Degrades to nothing twice over — @supports, and the reduced-motion gate. In
+   both cases the sections are simply already in their final state, which is
+   exactly how the site behaved before this block existed.
+--------------------------------------------------------------------------- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* The Container div, NOT the <section>: a section translating up would
+       carry its border-t away from the section above it, and Gallery's
+       <dialog> sibling must never sit inside an animated subtree. Every
+       section renders exactly one Container. */
+    main > section:not(#hero) > div {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      /* `cover`, not `entry`: the cover range is well defined for an element of
+         ANY height, including the several sections taller than the viewport,
+         where `entry` degenerates — the same trap documented on useInView's
+         threshold-0 choice. `linear` because progress is scroll, not time, and
+         any easing here would double-ease the motion. */
+      animation-range: cover 0% cover 16%;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Lightbox entrance. The site's only <dialog> is components/ui/Lightbox, which
+   opens with showModal() from an effect: the element goes from display:none
+   straight into the top layer, so with nothing else it simply pops.
+
+   @starting-style supplies the "one frame before it existed" values — the only
+   way to transition an element that had no previous computed style at all. No
+   JS change is needed; it re-applies on every open.
+
+   The transition is declared on dialog[open], NOT on dialog: when the attribute
+   goes away on close the declaration goes with it and the close is instant.
+   That is deliberate. Animating the close needs `transition-behavior:
+   allow-discrete` on `display` and `overlay`, and `overlay` is Chromium-only —
+   elsewhere the panel would fade while dropping out of the top layer, losing
+   its ::backdrop. Worse than a clean instant close. Lightbox also unmounts its
+   children in the same commit, so an exit would animate an empty panel.
+
+   Same shape as the entrance keyframes in @theme: the base state IS the final
+   appearance, so gating the whole block on reduced motion needs no extra CSS
+   to land the dialog correctly — it just appears, exactly as it does today.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] {
+    transition:
+      opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @starting-style {
+    dialog[open] {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  /* background-color only. backdrop-filter is deliberately NOT in the list:
+     animating a blur repaints the whole page underneath for the duration, and
+     the panel's own backdrop-blur is functional, not decorative. */
+  dialog[open]::backdrop {
+    transition: background-color 220ms ease;
+  }
+
+  @starting-style {
+    dialog[open]::backdrop {
+      background-color: transparent;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero backdrop: a restrained vertical gradient plus a fine monochrome grain.
+   This is the ONLY sanctioned background treatment — no glows, no halos, no
+   geometric patterns. Both layers are static background-images: painted once,
+   never repainted, never animated.
+--------------------------------------------------------------------------- */
+@utility hero-gradient {
+  background-image: linear-gradient(to bottom, var(--surface-raised), var(--surface) 60%);
+}
+
+/* Desaturated feTurbulence noise tiled at 160px. The consuming element sets
+   the opacity (the grain needs more presence on the dark surface). */
+@utility hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }

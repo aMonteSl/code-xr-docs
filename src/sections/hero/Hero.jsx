@@ -1,37 +1,70 @@
-import Container from '@/components/ui/Container';
 import Button from '@/components/ui/Button';
+import Container from '@/components/ui/Container';
+import { hero } from '@/content/heroContent';
 import { site } from '@/content/siteContent';
+import { useMarketplaceStats } from '@/hooks/useMarketplaceStats';
+import HeroBackdrop from '@/sections/hero/HeroBackdrop';
+import HeroLogo from '@/sections/hero/HeroLogo';
+import HeroRotatingLine from '@/sections/hero/HeroRotatingLine';
+import HeroStats from '@/sections/hero/HeroStats';
 
-// Placeholder hero while the v1.2.0 site is built out. It exists to prove the
-// conventions end to end: content from @/content, dumb components from
-// @/components/ui, semantic color tokens only.
+// The landing hero. Marketplace data is fetched once here and handed down, so
+// the version badge and the stat strip always agree with each other.
 const Hero = () => {
+  const { status, stats } = useMarketplaceStats();
+
   return (
-    <section id="hero" className="flex min-h-svh items-center py-20 sm:py-24">
+    // `relative isolate` scope the backdrop's -z-10; there is deliberately no
+    // `overflow-hidden` — inset-0 layers cannot overflow, and clipping would
+    // eat the focus ring (outline-offset: 2px) of anything near the edge.
+    <section id="hero" className="relative isolate flex min-h-svh items-center py-16 sm:py-20">
+      <HeroBackdrop />
+
       <Container className="text-center">
-        <p className="text-sm font-semibold tracking-widest text-accent uppercase">
-          {site.name} · {site.version}
-        </p>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2rem,7vw,3.75rem)] leading-[1.1] font-extrabold tracking-tight text-balance">
-          {site.tagline}
+        <HeroLogo />
+
+        {/* The brand is the title. "XR" takes the accent, echoing the mark
+            above, where the X and the R are separate paths.
+
+            The tagline is INSIDE the h1, as a block span keeping its own type
+            scale and its own entrance delay. Nothing moves visually — the two
+            lines render exactly as they did when the tagline was a sibling <p>
+            — but the page's one heading now says what the page is about
+            instead of just naming the brand. */}
+        <h1 className="mt-8 motion-reduce:animate-none animate-rise-in [animation-delay:300ms]">
+          <span className="block text-[clamp(2.5rem,9vw,4.5rem)] leading-[1.05] font-extrabold tracking-tight">
+            {hero.title.brandLead}
+            <span className="text-accent">{hero.title.brandAccent}</span>
+          </span>
+
+          <span className="mx-auto mt-4 block max-w-3xl text-[clamp(1.125rem,3.5vw,1.75rem)] leading-snug font-medium text-balance text-ink motion-reduce:animate-none animate-rise-in [animation-delay:420ms]">
+            {hero.title.tagline}
+          </span>
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-base text-pretty text-ink-muted sm:text-lg">
-          {site.description}
-        </p>
-        <div className="mt-10 flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
-          <Button href={site.links.marketplace} rel="noopener noreferrer">
-            Install from Marketplace
+
+        <div className="motion-reduce:animate-none animate-rise-in [animation-delay:540ms]">
+          <HeroRotatingLine />
+        </div>
+
+        <div className="mt-10 flex flex-col items-stretch justify-center gap-4 motion-reduce:animate-none animate-rise-in [animation-delay:660ms] sm:flex-row sm:items-center">
+          <Button href={site.links.marketplace} target="_blank" rel="noopener noreferrer">
+            {hero.actions.install}
           </Button>
-          <Button href={site.links.github} variant="secondary" rel="noopener noreferrer">
-            View on GitHub
+          <Button
+            href={site.links.github}
+            variant="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {hero.actions.source}
           </Button>
         </div>
-        <p className="mt-12 text-sm text-ink-faint sm:mt-16">
-          New site under construction —{' '}
-          <a className="underline hover:text-ink-muted" href={site.links.oldSite}>
-            browse the previous version
-          </a>
-        </p>
+
+        {/* Last on purpose: on a failed fetch the strip degrades to just the
+            two static cards, and being last means the change shifts nothing. */}
+        <div className="motion-reduce:animate-none animate-rise-in [animation-delay:780ms]">
+          <HeroStats status={status} stats={stats} />
+        </div>
       </Container>
     </section>
   );

@@ -6,8 +6,10 @@ CodeXR is a Visual Studio Code extension that analyzes your code (complexity, si
 
 **No VR headset required.** Everything works on a normal desktop with mouse and keyboard, and the 2D LivePanel mode doesn't even leave VS Code. If you do have a headset, the same scene becomes immersive. That's the XR in CodeXR: an extra dimension when you want it, never a requirement.
 
-Everything runs on your machine: local analysis, local servers, no telemetry, no account, and nothing is downloaded without asking you first.
+Everything runs on your machine: local analysis, local servers, no telemetry, no account, and nothing is downloaded without asking you first (your answer is remembered, so you are asked once).
 
+[![VISSOFT 2025 Distinguished Artifact Award](https://img.shields.io/badge/VISSOFT%202025-Distinguished%20Artifact%20Award-FFD700)](https://conf.researchr.org/info/icsme-2025/icsme-2025-awards)
+[![DOI](https://img.shields.io/badge/DOI-10.1109%2FVISSOFT67405.2025.00034-1f6feb)](https://doi.org/10.1109/VISSOFT67405.2025.00034)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![VS Code Marketplace](https://img.shields.io/badge/VS%20Code%20Marketplace-code--xr-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr)
 [![Latest release](https://img.shields.io/github/v/release/aMonteSl/CodeXR?label=Release&color=blue)](https://github.com/aMonteSl/CodeXR/releases/latest)
@@ -20,6 +22,19 @@ Everything runs on your machine: local analysis, local servers, no telemetry, no
 [![Documentation](https://img.shields.io/badge/Docs-Official%20Website-blue)](https://code-xr.adrianmonteslinares.com/)
 [![Author](https://img.shields.io/badge/Author-adrianmonteslinares.com-lightgrey)](https://adrianmonteslinares.com/)
 [![Support](https://img.shields.io/badge/Support-Buy%20Me%20a%20Coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/adrianadyrx)
+
+## Published and awarded at VISSOFT 2025
+
+CodeXR is the artifact behind **"Real-Time XR Visualizations of Code Metrics in the IDE"** by David Moreno-Lumbreras, Gregorio Robles and Adrián Montes Linares, a paper accepted and presented at **VISSOFT 2025**, the IEEE Working Conference on Software Visualization, co-located with ICSME 2025.
+
+The artifact received the conference's **Distinguished Artifact Award**.
+
+| | |
+|---|---|
+| **Paper** | [IEEE Xplore](https://ieeexplore.ieee.org/document/11175653) · [DOI 10.1109/VISSOFT67405.2025.00034](https://doi.org/10.1109/VISSOFT67405.2025.00034) |
+| **Award** | [Official announcement](https://conf.researchr.org/info/icsme-2025/icsme-2025-awards) · [Certificate](https://adrianmonteslinares.com/documents/distinghuished_artifact_award.pdf) |
+
+If CodeXR is useful in your own research, citing the paper above is the best way to support it.
 
 ## Official Documentation
 
@@ -34,6 +49,30 @@ Our official documentation includes:
 - **Advanced Configuration** - Customization options and settings
 
 *You can also access the documentation directly from VS Code through the CodeXR tree view → "Learn More" section.*
+
+## See it working
+
+If you only have time for one thing, watch the **complete tutorial**: the whole extension in twelve minutes, from the VS Code sidebar to the four analyses inside the XR room.
+
+[![CodeXR complete tutorial: the whole extension, from the sidebar to XR](https://img.youtube.com/vi/dtvFhUQ1uKY/hqdefault.jpg)](https://youtu.be/dtvFhUQ1uKY)
+
+### Tried on three real projects
+
+Not on toy fixtures. These are silent walkthroughs of the four analyses on three real, public codebases, the same three used to test every release.
+
+**BabiaXR** ([aframe-babia-components](https://github.com/babiaxr/aframe-babia-components)), the A-Frame library CodeXR renders its charts with, so the code being measured is the code drawing the scene. [Watch the walkthrough](https://youtu.be/ZJo2eFBEPKA)
+
+![BabiaXR analyzed with CodeXR: the four analyses on the aframe-babia-components repository](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/videos/testedProjects/BabiaXR/BabiaXR.gif)
+
+**Express** ([expressjs/express](https://github.com/expressjs/express)), a small core with a very long history, which makes fan-in obvious and the evolution movie long. [Watch the walkthrough](https://youtu.be/ExHQhj6ibWU)
+
+![Express analyzed with CodeXR: the four analyses on the expressjs/express repository](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/videos/testedProjects/ExpressJS/ExpressJS.gif)
+
+**JetUML** ([prmr/JetUML](https://github.com/prmr/JetUML)), a Java desktop application whose deliberate package layering is exactly what the dependency graph is for. [Watch the walkthrough](https://youtu.be/Wy0T7dR2F-k)
+
+![JetUML analyzed with CodeXR: the four analyses on the prmr/JetUML repository](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/videos/testedProjects/JetUML/JetUML.gif)
+
+Every video on the channel, with its GIF and duration, is listed in [media/v1.2.0/videos/VIDEOS.md](media/v1.2.0/videos/VIDEOS.md).
 
 ## What's New in v1.2.0: "Threads, Timelines & Global Networks"
 
@@ -91,12 +130,12 @@ Where the comparison shows two photographs, Project Evolution plays the movie: t
 | ![A frame of the movie on the amber table, stamped with the commit hash and date it belongs to](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/analysis/xr/project_evolution/project_evolution_example_1.png) | ![The player panel: Auto, Range and Manual timeline modes, the frame list, Generate movie, transport buttons and playback speeds](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/controllers/xr/project_evolution/project_evolution_controller.png) |
 | **The result**: every frame is a real analysis, stamped with its commit and date | **The panel**: build the timeline, generate the movie, then play, step and change speed |
 
-▶ **[Watch the full demo on YouTube](https://youtu.be/Qs1OHWCqXSs)**
+▶ **[Watch the full demo on YouTube](https://youtu.be/QDN8tcKx60w)**
 
 ### And the rest of 1.2.0
 
 - **Collaboration 2.0**: persistent identities, host/guest roles with automatic promotion, and a bundled animated avatar (CC0, works offline) with a per-participant colour and a name tag that always faces you.
-- **Cross-network sessions, optional and off by default**: share a session with someone outside your network through an outbound Cloudflare tunnel: no router changes, no published IP, a six-digit pairing code that expires and burns itself on a wrong attempt, and full revocation the moment you stop sharing.
+- **Cross-network sessions, ready out of the box**: every server you start opens an outbound Cloudflare tunnel automatically, so sharing with someone outside your network is one link away: no router changes, no published IP, a six-digit pairing code that burns itself on a wrong attempt, and full revocation the moment you stop sharing. The invitation link stays valid for as long as you keep sharing, and the whole capability can be turned off in Server Configuration.
 - **Screen sharing that survives the trip**: guests arriving through the tunnel are served by your own CodeXR server; one encode for the whole audience, quality that follows the audience size.
 - **An in-room user guide**: six colour-coded tabs plus a 24-term metric glossary generated from the real analysis contracts, also served as `guide.html` for reading outside XR.
 - **LivePanel grows two sections**: *Dependency Summary* (counters, top fan-in/fan-out, cycles) and *Historical Comparison* in 2D with a searchable delta table.
@@ -107,6 +146,66 @@ Where the comparison shows two photographs, Project Evolution plays the movie: t
 
 The complete list, including a long round of chart, containment and collaboration fixes, is in the [CHANGELOG](CHANGELOG.md).
 
+## Tutorial: sharing a session across networks
+
+A VR session over your own network needs none of this: a headset on the same Wi-Fi opens the scene directly. Cross-network access exists for the other case, someone who is **not** on your network. It is enabled by default (turn it off in Server Configuration if you prefer): `cloudflared` opens an **outbound** tunnel, so your router never has to accept an incoming connection and your IP is never published, and nobody enters without the code you read out.
+
+The whole point of the flow below is that a link alone is never enough to get in. Whoever opens it still has to receive a code from you, through a channel you already trust.
+
+Two people are involved, and each step below says which one acts: the **host** runs the analysis in VS Code and owns the session, and the **guest** joins from a browser anywhere in the world.
+
+### 1. Host: start the server, the tunnel follows
+
+Cross-network connections are enabled by default, so when your analysis server starts, CodeXR opens the tunnel with it (the first time it will offer to download `cloudflared`, once). The sidebar shows the **Cross-network address**, the `trycloudflare.com` invitation link, which also lands on your clipboard; the link stays valid for as long as you keep sharing. If you stopped the connection, **Start remote access** on the server row brings it back. Send the link to your guest however you normally talk to them.
+
+![The CodeXR sidebar with the cross-network address on a trycloudflare.com link, plus View remote status and Stop remote connection](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/host_user/control_panel.png)
+
+Right below it sit **View remote status** and **Stop remote connection**, and further down the list of connected users, so the whole session lives in one place.
+
+### 2. Guest: pick how you will appear
+
+The link opens this page. Continue as anonymous, with an alias CodeXR reserves for you, or type a custom name of 2 to 32 characters. Then press **Request access**, which puts you in the waiting room: no code, no entry.
+
+| | |
+|:---:|:---:|
+| ![The join page: continue as anonymous with a reserved alias, or choose a custom display name](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/invited_user/remote-join-identity.png) | ![The same page after requesting access: a six-digit field and a Connect button, waiting for the host's code](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/invited_user/remote-join-code.png) |
+| **Step 1**: how you appear in the room | **Step 2**: waiting for the code the host reads out |
+
+### 3. Host: read them the code
+
+The moment the guest requests access, VS Code shows you the code with a **Copy code** button:
+
+![VS Code notification reading "Remote request from Anakin. Temporary code: 957797", with a Copy code button](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/host_user/user_code.png)
+
+The sidebar reflects the same thing, so a dismissed notification is never a dead end: the connection row reads **1 request waiting** and a **Generate new pairing code** action appears next to it.
+
+![The sidebar showing "Cross-network connection · Shared | 1 request waiting" and the Generate new pairing code action](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/host_user/waiting_invited_user.png)
+
+Pass those six digits to your guest through whatever channel you already use, a call or a message. **Guest**: type them, press **Connect**, and you are in the session.
+
+### 4. If the code fails, the host issues a new one
+
+A wrong code is burnt immediately on the server, so it can never be retried. The host gets a warning naming the guest and their address, with a **Generate new code** button that mints a fresh one on the spot, and the same **Generate new pairing code** action stays in the sidebar. There is no limit to how many times you can do this. If instead the guest runs out of attempts, the pairing request itself is over and they need a brand new invitation link.
+
+| | |
+|:---:|:---:|
+| ![The join page rejecting a code: the field is cleared and a red message reads "The code is not valid"](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/invited_user/remote-join-rejected.png) | ![An invitation that no longer works: "This invitation has expired or was already used. Ask the host for a new link."](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/invited_user/remote-join-expired.png) |
+| **A burnt code**: the guest is told to ask for a new one | **A dead link**: expired or already used, so it needs a new invitation |
+
+### 5. Host: stay in control of the room
+
+**Connected users** lists everyone in the session, and each row states how they got there, so a guest who came through the tunnel is never confused with someone on your own network:
+
+![Connected users (2): Anakin as Azure, CodeXR, Local; and Anakin 2 as Amber, Browser, Remote](https://raw.githubusercontent.com/aMonteSl/CodeXR/v1.2.0/media/v1.2.0/collaboration/host_user/control_host_users.png)
+
+Click any of them to open their card: display name, role, avatar, when they connected, whether they arrived through the tunnel or from your local network, and the IP address they connected from. Guests carry a **Remove from Session** action; the host cannot be removed.
+
+Removing a remote guest also revokes their session, so the link they have stops working and they need both a new invitation and a new code to come back. Someone on your local network can still reopen the server address, since nothing is gating that beyond the server itself, so stop the server if that is what you want. Either way the person sees a message telling them they were removed rather than the session dying on them.
+
+**Stop remote connection** ends everything at once: invitations, sessions and credentials are revoked, and the random `trycloudflare.com` address simply stops existing.
+
+> The tunnel is a Cloudflare Quick Tunnel: free, no account, and explicitly best effort. It has no SLA, it does not support Server-Sent Events, and the address changes every time. `cloudflared` is pinned to version 2026.5.2, downloaded only with your consent and checked against its SHA-256 before it ever runs. The full picture is in [the cross-network access document](docs/features/CLOUDFLARE_REMOTE_ACCESS.md).
+
 ## Video walkthroughs for v1.2.0
 
 Four narrated videos, one per analysis:
@@ -115,8 +214,8 @@ Four narrated videos, one per analysis:
 |:---:|:---:|
 | [![Classic analysis walkthrough](https://img.youtube.com/vi/76p1ibPaf3I/hqdefault.jpg)](https://youtu.be/76p1ibPaf3I) | [![Dependency graph walkthrough](https://img.youtube.com/vi/42hIQTUD0-g/hqdefault.jpg)](https://youtu.be/42hIQTUD0-g) |
 | **[Classic analysis](https://youtu.be/76p1ibPaf3I)**: the 3D city, Field Mapping and live updates | **[Dependency graph](https://youtu.be/42hIQTUD0-g)**: layouts, node cards, filters and flow |
-| [![Historical comparison walkthrough](https://img.youtube.com/vi/b37qDCQeZg0/hqdefault.jpg)](https://youtu.be/b37qDCQeZg0) | [![Project Evolution walkthrough](https://img.youtube.com/vi/Qs1OHWCqXSs/hqdefault.jpg)](https://youtu.be/Qs1OHWCqXSs) |
-| **[Historical comparison](https://youtu.be/b37qDCQeZg0)**: two revisions, one table | **[Project Evolution](https://youtu.be/Qs1OHWCqXSs)**: your repository as a film |
+| [![Historical comparison walkthrough](https://img.youtube.com/vi/b37qDCQeZg0/hqdefault.jpg)](https://youtu.be/b37qDCQeZg0) | [![Project Evolution walkthrough](https://img.youtube.com/vi/QDN8tcKx60w/hqdefault.jpg)](https://youtu.be/QDN8tcKx60w) |
+| **[Historical comparison](https://youtu.be/b37qDCQeZg0)**: two revisions, one table | **[Project Evolution](https://youtu.be/QDN8tcKx60w)**: your repository as a film |
 
 ## Tested in real XR sessions
 
@@ -386,7 +485,7 @@ The **"Active Analyses"** section in the tree view provides comprehensive sessio
 - **Easy Cleanup**: Close analyses you no longer need to free system resources
 - **Session Details**: View detailed information about each active analysis
 - **Browser Integration**: Open analyses directly in your browser
-- **Export for Debugging**: Copy the full generated analysis folder to any location for manual inspection or debugging
+- **Export a self-contained copy**: Exporting opens a selector where you choose what travels: the normal analysis (always included), the dependency graph (generated during export if you never opened it), and the two git analyses. Picking those pre-analyzes the whole git timeline (up to 240 revisions, shared between both modes, cancellable; it can take a while on big repositories) so the copy is fully interactive offline: serve it with any static HTTP server (`npx serve`) and you can compare ANY two exported revisions and generate ANY movie (Auto, Range or Manual) without CodeXR behind it. A `README-EXPORT.md` inside the copy explains the details
 
 ## Configuration and Customization
 
@@ -398,7 +497,7 @@ Access settings directly from the tree view or VS Code preferences:
 - **Debounce Timing**: Adjust how quickly analysis responds to code changes
 - **Auto-analysis**: Enable/disable automatic re-analysis on file save
 - **File Filtering**: Configure which file types to include/exclude from analysis
-- **Cross-network Connections**: Enable or disable remote-access actions on your servers (off by default)
+- **Cross-network Connections**: Enable or disable remote access on your servers (on by default; disabling stops every tunnel and removes the `cloudflared` copy CodeXR downloaded). Declining the one-time `cloudflared` download turns this off too, so you are asked again only once you re-enable it.
 
 ### XR Environment Settings
 Customize your scene:
