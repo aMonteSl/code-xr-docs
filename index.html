@@ -16,7 +16,26 @@
     <meta name="author" content="Adrian Montes Linares" />
     <meta name="application-name" content="Code-XR" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#020711" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafbfc" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e141b" />
+    <script>
+      // Resolve the theme before first paint to avoid a flash of the wrong
+      // scheme: a stored manual choice wins, otherwise follow the OS.
+      // src/lib/theme.js reads the same key with the same precedence and keeps
+      // it in sync while the page is open — change the two together.
+      (function () {
+        var stored = null;
+        try {
+          stored = window.localStorage.getItem('codexr:theme');
+        } catch (error) {
+          stored = null;
+        }
+        var isDark =
+          stored === 'dark' ||
+          (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', isDark);
+      })();
+    </script>
     <link rel="canonical" href="https://code-xr.adrianmonteslinares.com/" />
 
     <meta property="og:type" content="website" />
@@ -36,7 +55,7 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Code-XR landing page preview showing the immersive XR software visualization scene."
+      content="Code-XR title card: the Code-XR mark and wordmark over the tagline &quot;Code analysis you can walk through&quot;, with VS Code Extension, v1.2.0 and IEEE VISSOFT 2025 Distinguished Artifact."
     />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -51,7 +70,7 @@
     />
     <meta
       name="twitter:image:alt"
-      content="Code-XR landing page preview showing the immersive XR software visualization scene."
+      content="Code-XR title card: the Code-XR mark and wordmark over the tagline &quot;Code analysis you can walk through&quot;, with VS Code Extension, v1.2.0 and IEEE VISSOFT 2025 Distinguished Artifact."
     />
 
     <script type="application/ld+json">
@@ -78,7 +97,7 @@
             "url": "https://code-xr.adrianmonteslinares.com/",
             "downloadUrl": "https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr",
             "image": "https://code-xr.adrianmonteslinares.com/social-preview.png",
-            "softwareVersion": "v1.1.0",
+            "softwareVersion": "v1.2.0",
             "author": {
               "@type": "Person",
               "name": "Adrian Montes Linares"
@@ -96,13 +115,43 @@
               "https://marketplace.visualstudio.com/items?itemName=aMonteSl.code-xr",
               "https://github.com/aMonteSl/CodeXR"
             ]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://code-xr.adrianmonteslinares.com/#author",
+            "name": "Adrian Montes Linares",
+            "url": "https://adrianmonteslinares.com/",
+            "sameAs": [
+              "https://github.com/aMonteSl",
+              "https://www.linkedin.com/in/adrianmonteslinares/",
+              "https://adrianmonteslinares.com/"
+            ]
+          },
+          {
+            "@type": "ScholarlyArticle",
+            "@id": "https://doi.org/10.1109/VISSOFT67405.2025.00034",
+            "name": "Real-Time XR Visualizations of Code Metrics in the IDE",
+            "author": [
+              { "@type": "Person", "name": "David Moreno-Lumbreras" },
+              { "@type": "Person", "name": "Gregorio Robles" },
+              { "@type": "Person", "name": "Adrian Montes Linares" }
+            ],
+            "datePublished": "2025",
+            "publisher": { "@type": "Organization", "name": "IEEE" },
+            "isPartOf": {
+              "@type": "PublicationEvent",
+              "name": "IEEE Working Conference on Software Visualization (VISSOFT) 2025"
+            },
+            "award": "Distinguished Artifact Award",
+            "sameAs": ["https://ieeexplore.ieee.org/document/11175653"],
+            "about": { "@type": "SoftwareApplication", "name": "Code-XR" }
           }
         ]
       }
     </script>
   </head>
-  <body class="bg-black text-cyan-300 min-h-screen w-full">
+  <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/app/main.jsx"></script>
   </body>
 </html>

@@ -1,3 +1,4 @@
+// == xrChartDebugRuntime.js | constantsAndChartLookup (assembled per manifest.json; see COMPONENTS.md) ==
 (function (root, factory) {
   if (typeof module === 'object' && typeof module.exports === 'object') {
     module.exports = factory(root);
@@ -188,6 +189,7 @@
     return null;
   }
 
+// == xrChartDebugRuntime.js | raycastAndGizmo (assembled per manifest.json; see COMPONENTS.md) ==
   function getRenderableObjects() {
     var scene = getScene();
     if (!scene) {
@@ -358,6 +360,7 @@
     return getDoc().getElementById(state.activeChartId);
   }
 
+// == xrChartDebugRuntime.js | rigFlightAndScale (assembled per manifest.json; see COMPONENTS.md) ==
   function getRigElement() {
     var doc = getDoc();
     if (!doc) {
@@ -561,6 +564,7 @@
     return targetEl ? findAxisFromTarget(targetEl) : null;
   }
 
+// == xrChartDebugRuntime.js | debugModeAndPointer (assembled per manifest.json; see COMPONENTS.md) ==
   function deactivateDebugMode(reason) {
     if (!state.debugActive) {
       return;
@@ -744,6 +748,7 @@
     refs.contextMenuHandler = null;
   }
 
+// == xrChartDebugRuntime.js | initialize (assembled per manifest.json; see COMPONENTS.md) ==
   function initialize() {
     if (state.initialized) {
       return;
