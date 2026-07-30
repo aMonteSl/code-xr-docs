@@ -34,6 +34,10 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
   });
 
   const current = slides[index];
+  // A block with a single screenshot is a figure, not a deck: no timer (the
+  // hook already refuses below two), no controls (ImageCarousel drops them),
+  // and no "1 / 1" in front of the lightbox caption either.
+  const isStatic = slides.length < 2;
 
   return (
     <div style={{ '--carousel-duration': `${INTERVAL_MS}ms` }}>
@@ -41,7 +45,7 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
         slides={slides}
         index={index}
         isPaused={isFrozen}
-        showProgress={autoplay}
+        showProgress={autoplay && !isStatic}
         frameClassName={frameClassName}
         sizes={sizes}
         onPrev={prev}
@@ -56,7 +60,11 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
         src={current.src}
         sources={current.sources}
         alt={current.alt}
-        caption={`${whatsNew.carousel.counter(index + 1, slides.length)}  ${current.alt}`}
+        caption={
+          isStatic
+            ? current.alt
+            : `${whatsNew.carousel.counter(index + 1, slides.length)}  ${current.alt}`
+        }
         onClose={() => setIsExpanded(false)}
         labels={whatsNew.carousel}
       />

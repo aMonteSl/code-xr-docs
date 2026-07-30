@@ -52,6 +52,14 @@
     <meta name="twitter:image" content="https://code-xr.adrianmonteslinares.com/social-preview.png" />
     <meta name="twitter:image:alt" content="Code-XR title card: the Code-XR mark and wordmark over the tagline &quot;Code analysis you can walk through&quot;." />
 
+    <!--
+      A STUB. scripts/prerender.mjs replaces this whole block on every subpage
+      with the real @graph (the page's own type, its BreadcrumbList, the author
+      node and, where there is one, a VideoObject). It lives here only so the
+      page is valid before postbuild runs and so the dev server serves something
+      coherent; the prerender asserts the replacement, so the stub cannot reach
+      production unnoticed.
+    -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -60,8 +68,6 @@
         "description": "A complete walkthrough of the CodeXR extension for VS Code: configure the servers, set your analysis defaults, run your first analysis, and find your way around the four analyses inside the XR room.",
         "url": "https://code-xr.adrianmonteslinares.com/tutorial/",
         "inLanguage": "en",
-        "author": { "@id": "https://code-xr.adrianmonteslinares.com/#author" },
-        "isPartOf": { "@type": "WebSite", "url": "https://code-xr.adrianmonteslinares.com/" },
         "about": { "@type": "SoftwareApplication", "name": "Code-XR" }
       }
     </script>

@@ -8,6 +8,23 @@
 //
 // `file` paths are relative to public/assets/releases/v1-2-0 and resolve
 // through getReleaseAsset.
+//
+// VIDEO FIELDS. `videoId` and `videoTitle` are what the page renders;
+// `videoDuration` and `videoUploadDate` exist only for the VideoObject that
+// scripts/prerender.mjs puts on each analysis detail page.
+//
+//   videoDuration    ISO 8601, taken from the extension repo's
+//                    media/v1.2.0/videos/VIDEOS.md, which is the declared source
+//                    of truth for every video. Note it disagrees with SHOTLIST.md
+//                    by one second on the historical comparison (1:18 vs 1:19);
+//                    VIDEOS.md wins.
+//   videoUploadDate  NOT KNOWN YET, hence null. Google requires it for the video
+//                    rich result, and it is a claim it can check against
+//                    YouTube — so it is left null rather than guessed. The
+//                    prerender omits falsy fields, so the markup stays valid and
+//                    simply does not qualify until these are real dates from
+//                    YouTube Studio (YYYY-MM-DD). Same for TUTORIAL_VIDEO in
+//                    tutorialContent.js.
 export const whatsNew = {
   eyebrow: 'Release',
   heading: "What's new in v1.2.0",
@@ -66,6 +83,8 @@ export const whatsNew = {
       ],
       videoId: '76p1ibPaf3I',
       videoTitle: 'Classic analysis in XR',
+      videoDuration: 'PT1M16S',
+      videoUploadDate: null,
       images: [
         { file: 'analysis/xr/normal/normal.png', alt: 'The code city on the cyan table, with the in-room guide and the Field Mapping panel around it' },
         { file: 'controllers/xr/normal/codexr_field_mapping.png', alt: 'The Field Mapping panel: chart picker on top, then area, height and colour, each with the full metric list' },
@@ -85,6 +104,8 @@ export const whatsNew = {
       ],
       videoId: '42hIQTUD0-g',
       videoTitle: 'Dependency graph in XR',
+      videoDuration: 'PT1M48S',
+      videoUploadDate: null,
       images: [
         { file: 'analysis/xr/dependency/dependency_force-3d.png', alt: 'The dependency graph in the force-3d layout' },
         { file: 'analysis/xr/dependency/dependency_hierarchical.png', alt: 'The dependency graph in the hierarchical layout' },
@@ -106,6 +127,8 @@ export const whatsNew = {
       ],
       videoId: 'b37qDCQeZg0',
       videoTitle: 'Historical comparison in XR',
+      videoDuration: 'PT1M18S',
+      videoUploadDate: null,
       images: [
         { file: 'analysis/xr/historical/historical_comparison.png', alt: 'The dual table: two revisions of the same project side by side on one shared scale' },
         { file: 'analysis/xr/historical/historical_comparison_example.png', alt: 'A historical comparison on a real repository, each side labelled with its revision' },
@@ -125,6 +148,8 @@ export const whatsNew = {
       ],
       videoId: 'QDN8tcKx60w',
       videoTitle: 'Project Evolution in XR',
+      videoDuration: 'PT3M2S',
+      videoUploadDate: null,
       images: [
         { file: 'analysis/xr/project_evolution/project_evolution.png', alt: 'A frame of the evolution movie on the amber table' },
         { file: 'analysis/xr/project_evolution/project_evolution_example_1.png', alt: 'An evolution frame stamped with the commit hash and date it belongs to' },
@@ -166,10 +191,24 @@ export const whatsNew = {
       title: 'A user guide inside the room',
       description:
         'The answer to "what am I looking at" no longer requires taking the headset off. Six tabs, each in the colour of its analysis, plus a 24-term metric glossary generated from the real analysis contracts. It behaves like any other screen: drag it, resize it, minimise it when you are done. The same guide is served as guide.html for reading outside XR.',
+      // Every tab the guide actually has, in the order the description above
+      // walks them: the two shared tabs, then each analysis with its
+      // walkthrough followed by its glossary, and the browser twin last.
+      // Anything less made the card claim six tabs and a 24-term glossary while
+      // showing three screenshots.
       images: [
-        { file: 'guide/landing.png', alt: 'The in-room user guide on its landing tab' },
-        { file: 'guide/tips.png', alt: 'The tips tab of the in-room user guide' },
-        { file: 'guide/guide-html.png', alt: 'The same guide served as an HTML page next to the scene' },
+        { file: 'guide/landing.png', alt: 'The in-room user guide on its Start tab' },
+        { file: 'guide/tips.png', alt: 'The Tips tab of the in-room user guide' },
+        { file: 'guide/normal_guide.png', alt: 'The guide walking through the classic analysis' },
+        { file: 'guide/normal_data.png', alt: 'The metric glossary for the classic analysis' },
+        { file: 'guide/deps_guide.png', alt: 'The guide walking through the dependency graph' },
+        { file: 'guide/deps_guide_2.png', alt: 'The dependency walkthrough, second page' },
+        { file: 'guide/deps_data.png', alt: 'The metric glossary for the dependency graph' },
+        { file: 'guide/history_guide.png', alt: 'The guide walking through the historical comparison' },
+        { file: 'guide/history_data.png', alt: 'The metric glossary for the historical comparison' },
+        { file: 'guide/evolution_guide.png', alt: 'The guide walking through project evolution' },
+        { file: 'guide/evolution_data.png', alt: 'The metric glossary for project evolution' },
+        { file: 'guide/guide-html.png', alt: 'The same guide served as guide.html, for reading outside XR' },
       ],
     },
     {
