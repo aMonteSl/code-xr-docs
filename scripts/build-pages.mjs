@@ -73,6 +73,14 @@ ${theme}
     <meta name="twitter:image" content="${ORIGIN}/social-preview.png" />
     <meta name="twitter:image:alt" content="Code-XR title card: the Code-XR mark and wordmark over the tagline &quot;Code analysis you can walk through&quot;." />
 
+    <!--
+      A STUB. scripts/prerender.mjs replaces this whole block on every subpage
+      with the real @graph (the page's own type, its BreadcrumbList, the author
+      node and, where there is one, a VideoObject). It lives here only so the
+      page is valid before postbuild runs and so the dev server serves something
+      coherent; the prerender asserts the replacement, so the stub cannot reach
+      production unnoticed.
+    -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -81,8 +89,6 @@ ${theme}
         "description": ${JSON.stringify(page.seoDescription)},
         "url": "${ORIGIN}${page.path}",
         "inLanguage": "en",
-        "author": { "@id": "${ORIGIN}/#author" },
-        "isPartOf": { "@type": "WebSite", "url": "${ORIGIN}/" },
         "about": { "@type": "SoftwareApplication", "name": "Code-XR" }
       }
     </script>

@@ -11,6 +11,17 @@ import Picture from '@/components/ui/Picture';
 // click shows instantly. The frame's size comes in through `frameClassName`
 // so the component stays reusable and the section decides how big it gets —
 // `sizes` is that same decision expressed for the image loader.
+//
+// WITH ONE SLIDE IT IS A STATIC FIGURE, not a carousel of one. The arrows, the
+// counter and the progress bar all go: two arrows that cycle back to the same
+// image, a "1 / 1", and an accent bar that fills and advances nothing are three
+// separate lies about what the thing does. useCarousel already refuses to start
+// a timer below two slides, so this is the visual half of the same rule.
+//
+// The caption row STAYS, expand button included. It is what keeps the frames of
+// several cards in a grid on the same line: HighlightCard pins its carousel to
+// the card's bottom edge, so dropping a 44px control row from one card would
+// leave its screenshot sitting higher than its neighbour's.
 const ImageCarousel = ({
   slides,
   index,
@@ -25,7 +36,15 @@ const ImageCarousel = ({
   labels,
 }) => {
   const count = slides.length;
+  const isStatic = count < 2;
   const isMounted = (slideIndex) => Math.abs(slideIndex - index) <= 1;
+  // No rotation to pause, so nothing to report. Keeps a static figure from
+  // churning the parent's paused state on every hover.
+  const reportPause = (paused) => {
+    if (!isStatic) {
+      onPauseChange(paused);
+    }
+  };
 
   const arrowClass =
     // hover:border-accent/40 is the shared signal for a carousel arrow, the
@@ -37,12 +56,12 @@ const ImageCarousel = ({
   return (
     <figure
       className="flex h-full flex-col"
-      onPointerEnter={() => onPauseChange(true)}
-      onPointerLeave={() => onPauseChange(false)}
-      onFocus={() => onPauseChange(true)}
+      onPointerEnter={() => reportPause(true)}
+      onPointerLeave={() => reportPause(false)}
+      onFocus={() => reportPause(true)}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
-          onPauseChange(false);
+          reportPause(false);
         }
       }}
     >
@@ -77,24 +96,28 @@ const ImageCarousel = ({
 
         {/* Siblings of the expand buttons, never children: a button nested in
             a button is invalid HTML and breaks activation. */}
-        <button
-          type="button"
-          onClick={onPrev}
-          aria-label={labels.previous}
-          className={`${arrowClass} left-3`}
-        >
-          <ChevronLeft aria-hidden="true" className="size-5" />
-        </button>
-        <button
-          type="button"
-          onClick={onNext}
-          aria-label={labels.next}
-          className={`${arrowClass} right-3`}
-        >
-          <ChevronRight aria-hidden="true" className="size-5" />
-        </button>
+        {isStatic ? null : (
+          <>
+            <button
+              type="button"
+              onClick={onPrev}
+              aria-label={labels.previous}
+              className={`${arrowClass} left-3`}
+            >
+              <ChevronLeft aria-hidden="true" className="size-5" />
+            </button>
+            <button
+              type="button"
+              onClick={onNext}
+              aria-label={labels.next}
+              className={`${arrowClass} right-3`}
+            >
+              <ChevronRight aria-hidden="true" className="size-5" />
+            </button>
+          </>
+        )}
 
-        {showProgress ? (
+        {showProgress && !isStatic ? (
           // How long until the next slide. `key={index}` remounts the fill on
           // every change so the animation restarts from zero — covering the
           // autoplay tick and a manual click alike — and pausing it is the
@@ -120,9 +143,11 @@ const ImageCarousel = ({
         </figcaption>
 
         <div className="flex shrink-0 items-center gap-1 self-end sm:self-auto">
-          <span className="mr-1 text-xs tabular-nums text-ink-muted">
-            {labels.counter(index + 1, count)}
-          </span>
+          {isStatic ? null : (
+            <span className="mr-1 text-xs tabular-nums text-ink-muted">
+              {labels.counter(index + 1, count)}
+            </span>
+          )}
           <button
             type="button"
             onClick={onExpand}

@@ -100,6 +100,17 @@ export const analysisPages = {
 
   exploreLabel: (name) => `Explore ${name}`,
 
+  // The other three, at the foot of every detail page. Before this, a detail
+  // page's only way onward was back to the index, which funnelled every path
+  // through one URL and asked a reader who had just finished one analysis to go
+  // up a level to reach the next. Titles and summaries are read from the same
+  // places the index uses, so this adds pointers, not facts.
+  siblings: {
+    heading: 'The other three analyses',
+    intro: 'The same pedestal serves all four, and the controller switches between them without losing the state of any.',
+    cardLabel: 'Read about it',
+  },
+
   // The /analysis/ index: the four side by side, each card navigating to its
   // own page. It does not replace the four direct links in the release
   // section — those stay, and this is the way in for a reader who wants to
@@ -125,6 +136,13 @@ export const analysisPages = {
       id: 'classic',
       slug: 'classic',
       name: 'the classic analysis',
+      // Short noun for the BreadcrumbList leaf, and its own field because
+      // nothing else here fits: `name` carries a leading "the" for the sentence
+      // it is built into, `seoTitle` runs to a clause, and the title from
+      // whatsNew is a full sentence with a colon. A breadcrumb that reads
+      // "Classic analysis: change the chart without re-running it" is a
+      // breadcrumb Google truncates.
+      breadcrumb: 'Classic analysis',
       seoTitle: 'Classic analysis | Code-XR',
       seoDescription:
         'Walk your codebase as a 3D city inside VS Code: one mark per file across eight chart types, sized and coloured by the metrics you choose, updating as you save.',
@@ -253,6 +271,7 @@ export const analysisPages = {
       id: 'dependency',
       slug: 'dependency-graph',
       name: 'the dependency graph',
+      breadcrumb: 'Dependency graph',
       seoTitle: 'Dependency graph in 3D | Code-XR',
       seoDescription:
         'See what depends on what as a navigable 3D graph in VS Code: three layouts, seven relation kinds, fan-in and fan-out, cycles and instability, extracted statically from your working directory.',
@@ -386,6 +405,7 @@ export const analysisPages = {
       id: 'historical',
       slug: 'historical-comparison',
       name: 'historical comparison',
+      breadcrumb: 'Historical comparison',
       seoTitle: 'Compare two points of your Git history | Code-XR',
       seoDescription:
         'Put two revisions of your project on one dual table in VS Code, with the same chart, the same mapping and the same scale, so a height difference is a real difference. Never runs checkout or fetch.',
@@ -475,6 +495,7 @@ export const analysisPages = {
       id: 'evolution',
       slug: 'project-evolution',
       name: 'project evolution',
+      breadcrumb: 'Project Evolution',
       seoTitle: 'Replay your Git history in 3D | Code-XR',
       seoDescription:
         'Project Evolution plays your repository as a film: the chart walks the history commit by commit, every frame a full analysis stamped with its commit and date.',
