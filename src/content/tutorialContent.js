@@ -45,9 +45,16 @@ export const TUTORIAL_VIDEO = {
   id: 'dtvFhUQ1uKY',
   title: 'Getting started with CodeXR: the complete tutorial',
   durationLabel: '12 minutes',
-  // ISO 8601, for the VideoObject the prerender injects. 12:24.
+  // ISO 8601, for the VideoObject the prerender injects. 12:24, from the
+  // extension repo's media/v1.2.0/videos/VIDEOS.md.
   duration: 'PT12M24S',
-  uploadDate: '2026-07-30',
+  // NOT KNOWN, and deliberately null rather than guessed. It briefly held
+  // '2026-07-30', which was an assumption, not a fact: `uploadDate` is a claim
+  // Google can check against YouTube, so a wrong one is worse than none.
+  // The prerender omits any falsy field, so the VideoObject stays valid without
+  // it — it just does not qualify for the video rich result until this is a real
+  // date. Fill it in from YouTube Studio (YYYY-MM-DD) and that is the whole fix.
+  uploadDate: null,
   posterFile: 'hero.png',
   posterAlt:
     'The CodeXR room: the pedestal table with an analysis on it, two avatars, the guide screen and a shared virtual screen',

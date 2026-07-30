@@ -41,6 +41,7 @@ const run = async () => {
     const { site } = await vite.ssrLoadModule('/src/content/siteContent.js');
     const { faq } = await vite.ssrLoadModule('/src/content/faqContent.js');
     const { analysisPages } = await vite.ssrLoadModule('/src/content/analysisPagesContent.js');
+    const { whatsNew } = await vite.ssrLoadModule('/src/content/whatsNewContent.js');
     const { tutorial, TUTORIAL_VIDEO } = await vite.ssrLoadModule(
       '/src/content/tutorialContent.js'
     );
@@ -57,41 +58,143 @@ const run = async () => {
       })),
     };
 
-    // The tutorial's HowTo, with one step per step and the video attached.
+    // ---------------------------------------------------------------- JSON-LD
     //
-    // Generated here rather than written into the template for the same reason
-    // as the FAQ: the steps already exist in tutorialContent, and a hand-kept
-    // copy in the generator would be stale the first time one is reworded.
+    // Every subpage's graph is built HERE, not in scripts/build-pages.mjs. That
+    // generator owns the <head> boilerplate and writes a minimal stub; this owns
+    // the shape of the graph, because the shape needs content (steps, video
+    // metadata, breadcrumb titles) that only these modules have.
     //
-    // The VideoObject goes on /tutorial/ ONLY, not on the home's teaser section,
-    // or the same twelve minutes would be claimed by two URLs.
-    const tutorialLd = {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      name: tutorial.heading,
-      description: tutorial.seoDescription,
-      url: `${ORIGIN}/tutorial/`,
-      inLanguage: 'en',
-      author: { '@id': `${ORIGIN}/#author` },
-      about: { '@type': 'SoftwareApplication', name: 'Code-XR' },
-      totalTime: TUTORIAL_VIDEO.duration,
-      step: tutorial.steps.map((step) => ({
-        '@type': 'HowToStep',
-        position: step.number,
-        name: step.title,
-        text: step.lead,
-        url: `${ORIGIN}/tutorial/#${step.part}`,
+    // Falsy fields are dropped on the way out. That is what lets a video ship
+    // valid markup while its uploadDate is still unknown: see the note on
+    // videoUploadDate in whatsNewContent.js. Never paper over a missing value
+    // with a plausible one — uploadDate is a claim Google checks.
+    const compact = (object) =>
+      Object.fromEntries(Object.entries(object).filter(([, value]) => Boolean(value)));
+
+    // The author node, emitted on every subpage. Before this, subpages carried
+    // only `author: { "@id": ".../#author" }` while the Person itself lived on
+    // the home alone, so the reference resolved to nothing on the page that made
+    // it. Same @id as the home, so the two are one entity, not two.
+    const AUTHOR_ID = `${ORIGIN}/#author`;
+    const authorNode = {
+      '@type': 'Person',
+      '@id': AUTHOR_ID,
+      name: 'Adrian Montes Linares',
+      url: 'https://adrianmonteslinares.com/',
+    };
+
+    // `trail` is [name, path] pairs from the home down to the page itself.
+    const breadcrumbLd = (trail) => ({
+      '@type': 'BreadcrumbList',
+      itemListElement: trail.map(([name, path], index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name,
+        item: `${ORIGIN}${path}`,
       })),
-      video: {
+    });
+
+    const videoLd = ({ id, title, description, duration, uploadDate }) =>
+      compact({
         '@type': 'VideoObject',
-        name: TUTORIAL_VIDEO.title,
+        name: title,
+        description,
+        duration,
+        uploadDate,
+        embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
+        contentUrl: `https://www.youtube.com/watch?v=${id}`,
+        thumbnailUrl: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+      });
+
+    const graph = (nodes) => ({ '@context': 'https://schema.org', '@graph': nodes });
+
+    // FAQPage belongs to the home alone — see the note above it.
+    //
+    // The tutorial's HowTo carries one HowToStep per step, generated rather than
+    // hand-kept so a reworded step cannot leave the markup behind. Its
+    // VideoObject goes on /tutorial/ ONLY, not on the home's teaser section, or
+    // the same twelve minutes would be claimed by two URLs.
+    const tutorialLd = graph([
+      {
+        '@type': 'HowTo',
+        name: tutorial.heading,
         description: tutorial.seoDescription,
-        duration: TUTORIAL_VIDEO.duration,
-        uploadDate: TUTORIAL_VIDEO.uploadDate,
-        embedUrl: `https://www.youtube-nocookie.com/embed/${TUTORIAL_VIDEO.id}`,
-        contentUrl: `https://www.youtube.com/watch?v=${TUTORIAL_VIDEO.id}`,
-        thumbnailUrl: `https://img.youtube.com/vi/${TUTORIAL_VIDEO.id}/maxresdefault.jpg`,
+        url: `${ORIGIN}/tutorial/`,
+        inLanguage: 'en',
+        author: { '@id': AUTHOR_ID },
+        about: { '@type': 'SoftwareApplication', name: 'Code-XR' },
+        totalTime: TUTORIAL_VIDEO.duration,
+        step: tutorial.steps.map((step) => ({
+          '@type': 'HowToStep',
+          position: step.number,
+          name: step.title,
+          text: step.lead,
+          url: `${ORIGIN}/tutorial/#${step.part}`,
+        })),
+        video: videoLd({
+          id: TUTORIAL_VIDEO.id,
+          title: TUTORIAL_VIDEO.title,
+          description: tutorial.seoDescription,
+          duration: TUTORIAL_VIDEO.duration,
+          uploadDate: TUTORIAL_VIDEO.uploadDate,
+        }),
       },
+      breadcrumbLd([
+        ['Code-XR', '/'],
+        ['Tutorial', '/tutorial/'],
+      ]),
+      authorNode,
+    ]);
+
+    const analysisIndexLd = graph([
+      {
+        '@type': 'TechArticle',
+        headline: analysisPages.index.seoTitle,
+        description: analysisPages.index.seoDescription,
+        url: `${ORIGIN}/analysis/`,
+        inLanguage: 'en',
+        author: { '@id': AUTHOR_ID },
+        isPartOf: { '@type': 'WebSite', url: `${ORIGIN}/` },
+        about: { '@type': 'SoftwareApplication', name: 'Code-XR' },
+      },
+      breadcrumbLd([
+        ['Code-XR', '/'],
+        ['Analyses', '/analysis/'],
+      ]),
+      authorNode,
+    ]);
+
+    // One VideoObject per detail page, for the demo that page embeds. Four more
+    // video rich-result candidates, from data the content module already had.
+    const analysisPageLd = (page) => {
+      const analysis = whatsNew.analyses.find((item) => item.id === page.id);
+
+      return graph([
+        {
+          '@type': 'TechArticle',
+          headline: page.seoTitle,
+          description: page.seoDescription,
+          url: `${ORIGIN}/analysis/${page.slug}/`,
+          inLanguage: 'en',
+          author: { '@id': AUTHOR_ID },
+          isPartOf: { '@type': 'WebSite', url: `${ORIGIN}/` },
+          about: { '@type': 'SoftwareApplication', name: 'Code-XR' },
+          video: videoLd({
+            id: analysis.videoId,
+            title: analysis.videoTitle,
+            description: analysis.description,
+            duration: analysis.videoDuration,
+            uploadDate: analysis.videoUploadDate,
+          }),
+        },
+        breadcrumbLd([
+          ['Code-XR', '/'],
+          ['Analyses', '/analysis/'],
+          [page.breadcrumb, `/analysis/${page.slug}/`],
+        ]),
+        authorNode,
+      ]);
     };
 
     const pages = [
@@ -102,12 +205,16 @@ const run = async () => {
         element: createElement(App),
         injectFaq: true,
       },
+      // Every subpage replaces the generator's stub. `replaceLd` is asserted
+      // below, so a page that ever stopped matching fails the build instead of
+      // silently shipping the stub.
       {
         file: 'dist/analysis/index.html',
         loc: `${ORIGIN}/analysis/`,
         priority: '0.9',
         element: createElement(AnalysisIndexPage),
         injectFaq: false,
+        replaceLd: analysisIndexLd,
       },
       {
         file: 'dist/tutorial/index.html',
@@ -115,8 +222,6 @@ const run = async () => {
         priority: '0.9',
         element: createElement(TutorialPage),
         injectFaq: false,
-        // Replaces the HowTo stub the generator wrote, which carries only the
-        // headline and description.
         replaceLd: tutorialLd,
       },
       ...analysisPages.pages.map((page) => ({
@@ -125,6 +230,7 @@ const run = async () => {
         priority: '0.8',
         element: createElement(AnalysisPage, { slug: page.slug }),
         injectFaq: false,
+        replaceLd: analysisPageLd(page),
       })),
     ];
 

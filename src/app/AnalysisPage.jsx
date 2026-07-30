@@ -1,8 +1,10 @@
 import Container from '@/components/ui/Container';
+import LinkCard from '@/components/ui/LinkCard';
 import SectionBridge from '@/components/ui/SectionBridge';
 import { analysisPages } from '@/content/analysisPagesContent';
 import { site } from '@/content/siteContent';
 import { whatsNew } from '@/content/whatsNewContent';
+import { getReleaseImageSources } from '@/lib/assets';
 import AnalysisHero from '@/sections/analysis/AnalysisHero';
 import AnalysisOverview from '@/sections/analysis/AnalysisOverview';
 import AnalysisSpecs from '@/sections/analysis/AnalysisSpecs';
@@ -27,6 +29,13 @@ import Navbar from '@/sections/navbar/Navbar';
 // Every block is a <section> wrapping exactly one Container, which is what the
 // scroll-reveal selector in main.css keys on — so these pages inherit the
 // reveal with no new CSS.
+const RELEASE = 'v1-2-0';
+
+// Three cards in a 1/2/3-column grid with a 24px gap, inside the Container's
+// 1280px content box: (1280 - 48) / 3 = 411px at the cap.
+const SIBLING_SIZES =
+  '(min-width: 1344px) 411px, (min-width: 1024px) calc(33vw - 33px), (min-width: 640px) calc(50vw - 44px), calc(100vw - 3rem)';
+
 const AnalysisPage = ({ slug }) => {
   const page = analysisPages.pages.find((item) => item.slug === slug) ?? null;
   const analysis = page ? whatsNew.analyses.find((item) => item.id === page.id) : null;
@@ -83,6 +92,50 @@ const AnalysisPage = ({ slug }) => {
         {page.groups.map((group) => (
           <MediaGroup key={group.label} group={group} />
         ))}
+
+        {/* The other three, so the way onward is not only back up to the index.
+            Same components and same data the index and the tutorial use: the
+            title from whatsNew.analyses, the summary and the cover from the page
+            entry. Nothing is restated. */}
+        <section className="border-t border-edge py-12 sm:py-16">
+          <Container>
+            <div className="@container max-w-3xl">
+              <h2 className="text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+                {analysisPages.siblings.heading}
+              </h2>
+              <p className="mt-3 text-base hyphens-auto @md:text-justify text-ink-muted text-pretty">
+                {analysisPages.siblings.intro}
+              </p>
+            </div>
+
+            {/* items-stretch (the grid default) plus flex-1 inside the card, so
+                all three share the tallest one's height and their arrows line
+                up. */}
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {analysisPages.pages
+                .filter((item) => item.slug !== page.slug)
+                .map((sibling) => {
+                  const siblingAnalysis = whatsNew.analyses.find(
+                    (item) => item.id === sibling.id
+                  );
+                  const cover = sibling.groups[0].images[0];
+
+                  return (
+                    <LinkCard
+                      key={sibling.slug}
+                      href={`/analysis/${sibling.slug}/`}
+                      title={siblingAnalysis.title}
+                      description={sibling.summary}
+                      image={getReleaseImageSources(RELEASE, cover.file)}
+                      alt={cover.alt}
+                      sizes={SIBLING_SIZES}
+                      label={analysisPages.siblings.cardLabel}
+                    />
+                  );
+                })}
+            </div>
+          </Container>
+        </section>
 
         <section className="border-t border-edge py-12 sm:py-16">
           <Container>
