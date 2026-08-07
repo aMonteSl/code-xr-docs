@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ImageCarousel from '@/components/ui/ImageCarousel';
 import Lightbox from '@/components/ui/Lightbox';
+import LiveRegion from '@/components/ui/LiveRegion';
 import { whatsNew } from '@/content/whatsNewContent';
 import { useCarousel } from '@/hooks/useCarousel';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -26,9 +27,12 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
     images.map((image) => ({ ...getReleaseImageSources(RELEASE, image.file), alt: image.alt }))
   );
   const [isExpanded, setIsExpanded] = useState(false);
+  // Written by stepTo alone; see the note there and the fuller one in
+  // AboutCarousel.
+  const [announcement, setAnnouncement] = useState('');
 
   const autoplay = !prefersReducedMotion && !isExpanded && isInView;
-  const { index, next, prev, isFrozen, setPaused } = useCarousel(slides.length, {
+  const { index, goTo, next, prev, isFrozen, setPaused } = useCarousel(slides.length, {
     intervalMs: INTERVAL_MS,
     autoplay,
   });
@@ -36,8 +40,18 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
   const current = slides[index];
   // A block with a single screenshot is a figure, not a deck: no timer (the
   // hook already refuses below two), no controls (ImageCarousel drops them),
-  // and no "1 / 1" in front of the lightbox caption either.
+  // no "1 / 1" in front of the lightbox caption, and nothing to announce.
   const isStatic = slides.length < 2;
+
+  // Snapshotted in the handler, never derived from `index` in the render: a
+  // derived message would also change on the autoplay tick, and these blocks
+  // rotate for as long as they are on screen. Full reasoning in AboutCarousel.
+  const stepTo = (delta) => {
+    const target = (index + delta + slides.length) % slides.length;
+
+    goTo(target);
+    setAnnouncement(whatsNew.carousel.announcement(target + 1, slides.length, slides[target].alt));
+  };
 
   return (
     <div style={{ '--carousel-duration': `${INTERVAL_MS}ms` }}>
@@ -48,12 +62,26 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
         showProgress={autoplay && !isStatic}
         frameClassName={frameClassName}
         sizes={sizes}
-        onPrev={prev}
-        onNext={next}
+        onPrev={() => stepTo(-1)}
+        onNext={() => stepTo(1)}
         onExpand={() => setIsExpanded(true)}
-        onPauseChange={setPaused}
+        onPauseChange={(paused) => {
+          setPaused(paused);
+
+          // Leaving the frame is when autoplay may resume and the snapshot
+          // starts describing a slide that has been replaced. Clearing a live
+          // region is silent. (ImageCarousel only reports pause at all when it
+          // is not a static figure, so this never runs for a deck of one.)
+          if (!paused) {
+            setAnnouncement('');
+          }
+        }}
         labels={whatsNew.carousel}
       />
+
+      {/* Same rule the arrows and the counter follow: a figure of one has
+          nothing to step through and so nothing to say. */}
+      {isStatic ? null : <LiveRegion message={announcement} />}
 
       <Lightbox
         isOpen={isExpanded}

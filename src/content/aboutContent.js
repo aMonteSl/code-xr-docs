@@ -50,6 +50,20 @@ export const about = {
     expand: 'Expand screenshot',
     close: 'Close expanded screenshot',
     counter: (position, total) => `${position} / ${total}`,
+
+    // Spoken on a manual step ONLY, never on the six-second tick — see the
+    // snapshot note in AboutCarousel, which is what enforces that.
+    //
+    // "3 of 40" rather than the visible counter's "3 / 40" because this
+    // sentence is not the counter, it is a sentence, and it spells out the word
+    // a slash stands for. (The EXPANDED view is a different case: its announcer
+    // repeats the lightbox caption verbatim, slash and all, because that is
+    // literally the text on screen.) The description is included because it is
+    // the thing the reader pressed the arrow to get — the image sits inside a
+    // button whose aria-label is "Expand screenshot", so its alt is not what
+    // focus announces.
+    announcement: (position, total, description) =>
+      `Screenshot ${position} of ${total}. ${description}`,
   },
 
   // Editorial exclusions: files listed here stay in the manifest below (so

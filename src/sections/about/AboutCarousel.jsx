@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ImageCarousel from '@/components/ui/ImageCarousel';
 import Lightbox from '@/components/ui/Lightbox';
+import LiveRegion from '@/components/ui/LiveRegion';
 import { about } from '@/content/aboutContent';
 import { useCarousel } from '@/hooks/useCarousel';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -53,11 +54,14 @@ const AboutCarousel = () => {
   });
 
   const [isExpanded, setIsExpanded] = useState(false);
+  // Written by stepTo below and by nothing else. That restriction is the whole
+  // design — see the comment on stepTo.
+  const [announcement, setAnnouncement] = useState('');
   // This one autoplays unconditionally. In-view gating was tried here and
   // stopped it rotating, so it stays out: it is the only carousel on its
   // section and there is nothing to coordinate it with.
   const autoplay = !prefersReducedMotion && !isExpanded;
-  const { index, next, prev, isFrozen, setPaused } = useCarousel(slides.length, {
+  const { index, goTo, next, prev, isFrozen, setPaused } = useCarousel(slides.length, {
     intervalMs: INTERVAL_MS,
     // Hover, focus and the open lightbox all pause via setPaused; reduced
     // motion disables autoplay outright (manual navigation still works).
@@ -65,6 +69,32 @@ const AboutCarousel = () => {
   });
 
   const current = slides[index];
+
+  // Manual navigation is announced to screen readers; the six-second tick is
+  // not, and this deck is ~40 slides sitting second on the home page — a live
+  // region that followed the tick would interrupt a screen-reader user every
+  // six seconds for the entire visit.
+  //
+  // The safety is structural, not a flag: the message is SNAPSHOTTED here, in
+  // the click handler, rather than derived from `index` during render. A
+  // derived string changes whenever the index changes, which includes every
+  // autoplay tick; a string only this function can write cannot be moved by a
+  // timer at all, whatever hover, focus and visibility do to the rotation.
+  //
+  // Two consecutive calls can never write the same sentence — while a pointer
+  // or focus is inside the frame the rotation is paused, so the only thing
+  // moving the index is the delta below, which is never zero. That matters
+  // because a live region whose text does not actually change says nothing.
+  //
+  // The modulo is the one goTo would apply anyway; it is computed here because
+  // the sentence has to name the slide being arrived AT, not the one being
+  // left.
+  const stepTo = (delta) => {
+    const target = (index + delta + slides.length) % slides.length;
+
+    goTo(target);
+    setAnnouncement(about.carousel.announcement(target + 1, slides.length, slides[target].alt));
+  };
 
   return (
     <div
@@ -78,19 +108,44 @@ const AboutCarousel = () => {
         showProgress={autoplay}
         frameClassName={FRAME_CLASS}
         sizes={SIZES}
-        onPrev={prev}
-        onNext={next}
+        onPrev={() => stepTo(-1)}
+        onNext={() => stepTo(1)}
         onExpand={() => setIsExpanded(true)}
-        onPauseChange={setPaused}
+        onPauseChange={(paused) => {
+          setPaused(paused);
+
+          // Pointer out or focus out is the exact moment autoplay is free to
+          // resume, and from the next tick the snapshot would be describing a
+          // slide that is no longer on screen. Clearing it is silent: the
+          // default aria-relevant reports additions and text, not removals.
+          //
+          // On touch this fires BEFORE the click (a non-hovering pointer gets
+          // pointerup, then pointerout/pointerleave, and only then the
+          // compatibility mouse events and click), so a tap clears first and
+          // announces second. Do not defer this behind a timer to "protect"
+          // the announcement — there is nothing to protect it from.
+          if (!paused) {
+            setAnnouncement('');
+          }
+        }}
         labels={about.carousel}
       />
+
+      {/* Sibling of the figure, not inside it: ImageCarousel is dumb and cannot
+          tell a tick from a click — knowing that is autoplay policy, and
+          autoplay policy lives here. */}
+      <LiveRegion message={announcement} />
 
       {/* onPrev/onNext give the expanded view its arrows AND its arrow keys —
           the dialog's own onKeyDown handles both. A document-level key
           listener used to live here instead; wiring the props without
           removing it would have fired every keystroke twice (the dialog's
           preventDefault does not stop the bubble to document). Touch users
-          get navigation at all only through these arrows. */}
+          get navigation at all only through these arrows.
+
+          Deliberately `prev`/`next` and not `stepTo`: the expanded view has an
+          announcer of its own (see Lightbox), and routing it through this one
+          would say the same thing twice. */}
       <Lightbox
         isOpen={isExpanded}
         src={current.src}

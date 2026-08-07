@@ -6,6 +6,7 @@ import LinkedinIcon from '@/components/ui/LinkedinIcon';
 import { author } from '@/content/authorContent';
 import { site } from '@/content/siteContent';
 import { getProfileImage, getProfileSrcSet } from '@/lib/assets';
+import FeedbackAsk from '@/sections/author/FeedbackAsk';
 
 const ICONS = {
   graduation: GraduationCap,
@@ -25,6 +26,12 @@ const ICONS = {
 // two rings, one of them pulsing, over a blue-to-purple gradient halo. Rings
 // that pulse and coloured glows are the two things this palette rules out, so
 // the frame is a plain edge ring.
+//
+// This band also closes the page, so it carries the site's closing ask
+// (FeedbackAsk at the bottom, #feedback). That is a deliberate lodging, not an
+// overflow: the navbar has no room for a twelfth entry and the ask reads
+// honestly only after the bio it follows. The full argument, and the reason it
+// is not called "support", is in FeedbackAsk's own header.
 const Author = () => {
   return (
     <section id="author" className="border-t border-edge py-16 sm:py-24">
@@ -137,6 +144,14 @@ const Author = () => {
             );
           })}
         </div>
+
+        {/* Inside the Container (so it gets the gutters and the section's own
+            scroll reveal) but OUTSIDE the stagger grid, on purpose. That grid's
+            children carry `animation-fill-mode: both`, which pins
+            `transform: none` on them forever — see the .stagger-cards note in
+            main.css. A SIBLING of the grid keeps the plain section reveal and
+            stays free of that constraint. */}
+        <FeedbackAsk />
       </Container>
     </section>
   );

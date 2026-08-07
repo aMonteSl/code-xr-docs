@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import LiveRegion from '@/components/ui/LiveRegion';
 import { useCarousel } from '@/hooks/useCarousel';
 import StepCard from '@/sections/collaboration/StepCard';
 
@@ -22,10 +24,24 @@ import StepCard from '@/sections/collaboration/StepCard';
 // with the outer container.
 const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
   const { index, goTo } = useCarousel(steps.length, { autoplay: false });
+  // Empty until the reader moves, so nothing is spoken on arrival.
+  const [announcement, setAnnouncement] = useState('');
 
   // useCarousel's goTo wraps modulo-length; a tutorial must not loop, so all
   // navigation goes through this clamp and the arrows disable at the ends.
-  const goClamped = (target) => goTo(Math.min(Math.max(target, 0), steps.length - 1));
+  //
+  // Being the one chokepoint is also what makes announcing from here correct
+  // and complete: the arrows, the numbered pills and the peeking cards all come
+  // through it, and — because this carousel deliberately has no autoplay (see
+  // the top of the file) — nothing else ever does. Every message it writes was
+  // asked for by a click or a key. Re-choosing the step you are already on
+  // writes the same string and so says nothing, which is right: nothing moved.
+  const goClamped = (target) => {
+    const clamped = Math.min(Math.max(target, 0), steps.length - 1);
+
+    goTo(clamped);
+    setAnnouncement(labels.stepAnnouncement(clamped + 1, steps.length, steps[clamped].title));
+  };
 
   const arrowClass =
     'flex size-11 shrink-0 items-center justify-center rounded-full border border-edge bg-surface text-ink transition-[border-color,opacity] duration-300 hover:border-accent/40 motion-reduce:transition-none disabled:pointer-events-none disabled:opacity-40';
@@ -84,6 +100,10 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
           <ChevronRight aria-hidden="true" className="size-5" />
         </button>
       </div>
+
+      {/* Between the controls and the track, so a reader browsing in order
+          meets the result right where the buttons that caused it are. */}
+      <LiveRegion message={announcement} />
 
       {/* The track. It clips its own overflow (the peeks); the section and the
           document never scroll horizontally because of it. */}

@@ -58,6 +58,13 @@ export const whatsNew = {
     expand: 'Expand screenshot',
     close: 'Close expanded screenshot',
     counter: (position, total) => `${position} / ${total}`,
+
+    // Spoken on a manual step only, never on the autoplay tick — SectionCarousel
+    // snapshots it in the click handler, which is what makes that true. Worded
+    // identically to about.carousel.announcement on purpose: two decks on one
+    // page that behave the same should sound the same.
+    announcement: (position, total, description) =>
+      `Screenshot ${position} of ${total}. ${description}`,
   },
 
   analyses: [

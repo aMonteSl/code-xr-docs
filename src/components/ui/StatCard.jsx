@@ -14,9 +14,11 @@ import { ArrowUpRight } from 'lucide-react';
 // margin over the 4.5:1 the 11-12px label and detail lines need — but it is a
 // measured one; re-measure rather than assume if the backdrop ever changes.
 // Hover feedback belongs to the LINK branch alone. Six of these sit in one row
-// in the hero and only two carry an href; lifting and lighting the other four
-// had four inert <div>s promising a click they cannot take. The absence of a
-// response on those IS the correct signal — they get no substitute treatment.
+// in the hero and three carry an href — approx. total to the Marketplace
+// listing, rating to its review tab, the award to its official page. Lifting
+// and lighting the other three had inert <div>s promising a click they cannot
+// take. The absence of a response on those IS the correct signal — they get no
+// substitute treatment.
 //
 // Explicit transition list: Tailwind's bare `transition` includes
 // outline-color, which would make the focus ring of the linked card fade in
@@ -27,7 +29,7 @@ import { ArrowUpRight } from 'lucide-react';
 const INTERACTIVE =
   'transition-[border-color,translate] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:translate-none motion-reduce:transition-none';
 
-const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, href, className = '', ...rest }) => {
+const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, loadingLabel = '', href, className = '', ...rest }) => {
   const Tag = href ? 'a' : 'div';
 
   return (
@@ -50,12 +52,24 @@ const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, href, c
       {Icon ? <Icon aria-hidden="true" className="mx-auto size-5 text-accent" /> : null}
 
       {isLoading ? (
-        // Sized to exactly the height the value will occupy, so the card does
-        // not resize when the data lands.
-        <span
-          aria-hidden="true"
-          className="mx-auto mt-2 block h-8 w-20 animate-pulse rounded-md bg-surface-sunken motion-reduce:animate-none sm:h-9"
-        />
+        <>
+          {/* Sized to exactly the height the value will occupy, so the card
+              does not resize when the data lands. */}
+          <span
+            aria-hidden="true"
+            className="mx-auto mt-2 block h-8 w-20 animate-pulse rounded-md bg-surface-sunken motion-reduce:animate-none sm:h-9"
+          />
+          {/* The skeleton is a picture of a number, so mid-fetch this card read
+              as "Active installs. Marketplace API." with nothing where the
+              figure goes. This says what is missing.
+              It is NOT a live region and this card gets no aria-busy either:
+              aria-busy is advisory metadata no mainstream screen reader speaks
+              on a static element, so it would answer an audit rather than a
+              visitor. When the data lands this span is simply replaced —
+              silently, which is the point. sr-only is position:absolute, so the
+              height reserved above is untouched. */}
+          <span className="sr-only">{loadingLabel}</span>
+        </>
       ) : (
         // tabular-nums stops the digits jittering while the count animates.
         <p className="mt-2 text-2xl font-bold tabular-nums text-ink sm:text-3xl">{value}</p>

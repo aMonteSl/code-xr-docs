@@ -27,6 +27,15 @@ export const hero = {
   ],
 
   stats: {
+    // Stands in for a value while the Marketplace fetch is in flight. It is
+    // deliberately NOT announced and there is no live region anywhere near this
+    // strip: nobody asked for these six numbers, they land together, and
+    // useCountUp then ramps three of them for ~900ms — a live region would read
+    // a paragraph of moving digits over the hero headline. This exists so that
+    // a card read DURING the fetch says something instead of naming a metric
+    // and its source with silence where the figure belongs.
+    loading: 'Loading',
+
     installs: {
       label: 'Active installs',
       detail: 'Marketplace API',
@@ -45,6 +54,19 @@ export const hero = {
       label: 'Rating',
       // Pluralized against the live review count.
       detail: (count) => `${count} review${count === 1 ? '' : 's'}`,
+      // The SPOKEN form of the score, and it is not redundant. Once the card
+      // carries an href it also carries an aria-label, and an aria-label
+      // REPLACES the whole accessible name — without this the linked card
+      // announces "Rating, read the reviews…" and never the number it exists to
+      // show. It cannot just reuse the visible value either: that string ends in
+      // "★", which a screen reader says out loud as "black star".
+      accessibleValue: (rating) => `${rating.toFixed(1)} out of 5`,
+      // The card links to the listing's review tab once the count is real.
+      // "read", not "leave": the strip is the first thing a visitor sees and
+      // most of them have not run the extension yet, so the ASK belongs at the
+      // bottom of the page (#feedback) where the reader has. The tab it lands
+      // on carries both, so nothing is promised that is not there.
+      linkHint: 'read the reviews on the VS Code Marketplace',
     },
     version: {
       label: 'Now live',
