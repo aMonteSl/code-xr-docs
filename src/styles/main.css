@@ -269,6 +269,37 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Cross-document navigations. The MPA's seven routes are full document loads
+   sharing one stylesheet, so this single opt-in gives every same-origin
+   navigation the UA's 250ms cross-fade between the outgoing and incoming
+   page. That default is kept ON PURPOSE: it is already the sober fade the
+   duration rule prescribes for a content swap, it composites the two
+   snapshots with plus-lighter (no brightness dip mid-fade), and both sides
+   are always the SAME theme (the inline head script in all seven entries
+   resolves it from the same localStorage key before first render), so the
+   grey-midpoint problem the theme switch avoids cannot occur here. A
+   vertical rise was considered and rejected: animating transform on the root
+   snapshot drags the fixed navbar with it, and pinning the bar needs a
+   view-transition-name that then has to be scoped AGAINST the theme circle —
+   complexity out of proportion to a 10px flourish.
+
+   The theme toggle is NOT this transition: its rules below are scoped under
+   html.theme-switching (set by useTheme.js for exactly the transition's
+   lifetime) and out-rank the UA default by specificity.
+
+   Gated on reduced motion — the opt-in itself, not just the animations, so
+   those readers get plain instant loads with no paint-holding. Browsers
+   without @view-transition (Firefox, Safari < 18.2, Chrome < 126) ignore the
+   rule and load normally. The dashboards and 404.html do not load this
+   stylesheet, so leaving or entering them stays a plain load too.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Theme switch. The incoming theme is revealed by a circle growing from the
    toggle button; the outgoing one simply waits underneath. Driven by the View
    Transitions API, so the whole page moves as ONE composited snapshot — the
@@ -281,21 +312,24 @@
 
    hooks/useTheme.js sets the three custom properties and decides whether to
    start a transition at all — under reduced motion it never calls the API, and
-   the guard below is the second lock on the same door.
+   the guard below is the second lock on the same door. It also owns the
+   html.theme-switching class scoping every selector here: without it these
+   rules would hijack the cross-document navigation transition above and
+   replay the circle from its 50%/50% fallback on every page change.
 --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  html.theme-switching::view-transition-old(root),
+  html.theme-switching::view-transition-new(root) {
     /* Drop the UA's default cross-fade; the reveal below replaces it. */
     animation: none;
     mix-blend-mode: normal;
   }
 
-  ::view-transition-old(root) {
+  html.theme-switching::view-transition-old(root) {
     z-index: 0;
   }
 
-  ::view-transition-new(root) {
+  html.theme-switching::view-transition-new(root) {
     z-index: 1;
     animation: theme-reveal 500ms cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -370,6 +404,41 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Hero render drift. The backdrop photo yields ~24px downward while the hero
+   scrolls off — it moves at ~97% of scroll speed, which is what makes it
+   read as sitting BEHIND the copy. scroll(root) with a 100svh range spends
+   the whole effect inside the hero's own exit (the hero is min-h-svh at the
+   top of the document) instead of across the page; on short phones where
+   content makes the hero taller than svh the drift merely completes a
+   little early, which at 0.12-0.14 opacity is invisible.
+
+   transform on the img only: the gradient and grain layers stay exactly as
+   static as their comment promises. Base state is the natural position, so
+   no support and reduced motion both mean the photo simply never moves. The
+   24px that leave the section's box are clipped by the backdrop WRAPPER
+   (see HeroBackdrop) — never by the section, whose lack of overflow-hidden
+   protects focus rings and stays untouched.
+--------------------------------------------------------------------------- */
+@keyframes hero-drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(24px);
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .hero-drift {
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100svh;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Reveal on scroll for every section below the hero. Scroll-driven, so there
    is no observer, no state and no re-render: the browser maps scroll position
    to animation progress on the compositor.
@@ -400,6 +469,114 @@
          threshold-0 choice. `linear` because progress is scroll, not time, and
          any easing here would double-ease the motion. */
       animation-range: cover 0% cover 16%;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Card cascade inside a revealed section. Opt-in via .stagger-cards (grids
+   that ramp 1 -> 2@sm -> 3@lg) or .stagger-cards-2 (grids capped at two
+   columns) on the GRID element — never a global selector, because only the
+   call site knows its children are uniform tiles, and the two class names
+   exist because the site has exactly two real column ramps: a single class
+   would run a 3-cycle over Faq/Gallery's permanent two columns and fade the
+   right card of every third row before the left one. The class is for
+   REPEATED SIBLINGS OF THE SAME KIND; a composition grid (text next to a
+   video) gets nothing — a diagonal between two different things means
+   nothing.
+
+   Each child carries its OWN view() timeline, so the row-by-row cascade
+   falls out of geometry for free — a lower row enters the scrollport later —
+   and only the columns need explicit offsets. A named view-timeline on the
+   grid plus timeline-scope was rejected: one shared timeline erases that
+   per-row behaviour and would need per-row offsets CSS cannot know, since
+   the row count changes with every breakpoint. animation-delay cannot
+   stagger any of this: delays are time, and these timelines are progress.
+
+   `entry`, NOT `cover` — the OPPOSITE of the section reveal above, on
+   purpose. For viewport-tall sections cover is the well-defined range; for a
+   ~200px card cover's span is dominated by the viewport height, so a fixed
+   end percentage stops being reachable at the bottom of the page as the
+   viewport grows — on a tall screen the last row of Author's highlights
+   would freeze mid-fade at max scroll. entry's span is the card's own
+   height, so finishing needs only a fraction of a card of content below it,
+   and the shallowest case on any page (py-16 plus the one-row footer)
+   clears that at every viewport height. A card taller than the scrollport
+   does not degenerate either: entry's end clamps to "as entered as it gets"
+   and still completes mid-scroll.
+
+   Column offsets sit behind width queries that MIRROR the grids' Tailwind
+   breakpoints (40rem = sm, 64rem = lg; change them together): in a single
+   column an nth offset can start a LATER card before an EARLIER one when
+   cards are shorter than the lag (TechStrip's ~90px chips), and there the
+   positional cascade is already the whole effect.
+
+   nth-child, never nth-of-type: Gallery rows mix <div> (MediaVideo) and
+   <button> (MediaCard), and per-type counters would restart the cascade.
+   The col-span-2 last cards in Academic/Author/InstallMethods are child 3 —
+   odd, offset 0 — and sit alone in their two-column row, so the expanded
+   tile never lags behind an empty slot.
+
+   8px, not rise-in's 14px: the first row of a tall section starts fading
+   while the Container reveal above is still finishing (worst residue ~6px,
+   decaying linearly to zero), and the two transforms compose. 8px keeps the
+   child motion subordinate so the composite stays bounded and reads as one
+   movement; 14px on both would read doubled.
+
+   Fill `both` pins `transform: none` on these children forever, so any
+   hover motion on a DIRECT child of a staggered grid must use the native
+   translate/scale/rotate properties (which compose with transform), never
+   the transform property itself — Tailwind v4's translate-* utilities
+   already do.
+
+   Same double degradation as the section reveal: no animation-timeline
+   support or reduced motion means the children carry no animation at all
+   and sit in their final state — the base classes hold no offset. `screen
+   and` keeps a mid-scroll print from printing opacity-0 cards.
+--------------------------------------------------------------------------- */
+@keyframes stagger-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    :is(.stagger-cards, .stagger-cards-2) > * {
+      animation: stagger-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* Two columns from sm: the even card trails its row-mate by 15% of its
+       own entry span. Percentages past 100% are valid range points and keep
+       start and end the same distance apart, so every card fades at the
+       same rate. */
+    @media (min-width: 40rem) {
+      :is(.stagger-cards, .stagger-cards-2) > :nth-child(2n) {
+        animation-range: entry 15% entry 115%;
+      }
+    }
+
+    /* Three columns from lg (.stagger-cards only). The 3n+1 reset is
+       load-bearing: the 2n rule above is still active here and children
+       4, 10, 16... are even, so without it the first column would inherit
+       the second column's lag. Equal specificity — later source order wins. */
+    @media (min-width: 64rem) {
+      .stagger-cards > :nth-child(3n + 1) {
+        animation-range: entry 0% entry 100%;
+      }
+      .stagger-cards > :nth-child(3n + 2) {
+        animation-range: entry 15% entry 115%;
+      }
+      .stagger-cards > :nth-child(3n) {
+        animation-range: entry 30% entry 130%;
+      }
     }
   }
 }

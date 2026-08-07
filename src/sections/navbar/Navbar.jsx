@@ -45,11 +45,21 @@ const COLLAPSE = {
 // re-bolding a link changes its width and shoves the whole row sideways as you
 // scroll. Accent-strong in light, accent in dark, per the small-text contrast
 // rule. The underline carries the state for anyone who cannot use the colour.
+//
+// The underline is ALWAYS present and only its colour changes:
+// text-decoration-line cannot transition, but text-decoration-color can, and
+// it is animatable throughout the site's baseline. Both states carry the same
+// decoration-2/offset-8 metrics, so activation changes zero geometry. The
+// colour is explicit (decoration-accent-strong), not currentColor:
+// transitioning to and from the currentcolor keyword is historically
+// inconsistent across engines, and an explicit value also keeps the underline
+// accent while the TEXT hovers to ink — the underline is the "you are here"
+// marker and should not follow the hover.
 const linkClass = (isActive) =>
-  `text-sm font-medium transition-[color] duration-300 motion-reduce:transition-none ${
+  `text-sm font-medium underline decoration-2 underline-offset-8 transition-[color,text-decoration-color] duration-300 motion-reduce:transition-none ${
     isActive
-      ? 'text-accent-strong underline decoration-2 underline-offset-8 hover:text-ink dark:text-accent'
-      : 'text-ink-muted hover:text-ink'
+      ? 'text-accent-strong decoration-accent-strong hover:text-ink dark:text-accent dark:decoration-accent'
+      : 'text-ink-muted decoration-transparent hover:text-ink'
   }`;
 
 // Fixed top bar: brand + live version on the left, section anchors in the
@@ -243,8 +253,17 @@ const Navbar = ({
         // can't hide the last entries; without this, eleven entries (~640px)
         // put "Author" and Install beyond reach on a 375x667 phone or any
         // phone held landscape — a fixed element does not scroll with the page.
+        //
+        // starting:opacity-0 — the dialog's @starting-style pattern as a
+        // utility: the panel mounts conditionally, and this supplies its
+        // "frame before it existed" so it fades in over 200ms. Opacity only
+        // (a slide would poke out under the fixed row and demand clipping);
+        // the close stays instant on purpose — the same deliberate asymmetry
+        // the Lightbox documents. 200ms, not 300: this is an overlay entrance
+        // (the dialog's family), not hover feedback, and a menu must not feel
+        // like a gate. Engines without @starting-style get today's pop.
         <div
-          className={`max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain border-t border-edge bg-surface ${COLLAPSE[collapse].panel}`}
+          className={`max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain border-t border-edge bg-surface transition-[opacity] duration-200 starting:opacity-0 motion-reduce:transition-none ${COLLAPSE[collapse].panel}`}
         >
           <Container className="flex flex-col gap-2 py-3">
             {sections.map((section) => (

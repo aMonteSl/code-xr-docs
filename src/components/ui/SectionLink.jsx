@@ -21,22 +21,39 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 // Icon semantics, unchanged: `right` stays on the site (in-page anchor or
 // another page of it), `up-right` leaves the site, `left` goes back. The
 // arrow sits after the label except for `left`, where it leads.
+//
+// Each arrow slides 2px ALONG its own direction on hover — right slides
+// right, up-right diagonally, left slides left ("back" backs away). 2px, not
+// more: the chip itself already lifts 2px and the icon rides on top of that;
+// anything larger reads as the icon escaping the chip.
 const ICONS = {
-  right: ArrowRight,
-  'up-right': ArrowUpRight,
-  left: ArrowLeft,
+  right: { Icon: ArrowRight, slide: 'group-hover:translate-x-0.5' },
+  'up-right': { Icon: ArrowUpRight, slide: 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5' },
+  left: { Icon: ArrowLeft, slide: 'group-hover:-translate-x-0.5' },
 };
 
 const SectionLink = ({ href, icon = 'right', className = '', children, ...rest }) => {
-  const Icon = ICONS[icon];
-  const arrow = <Icon aria-hidden="true" className="size-4.5 shrink-0" />;
+  const { Icon, slide } = ICONS[icon];
+  const arrow = (
+    <Icon
+      aria-hidden="true"
+      className={`size-4.5 shrink-0 transition-[translate] duration-300 motion-reduce:translate-none motion-reduce:transition-none ${slide}`}
+    />
+  );
 
   return (
     <a
       href={href}
       // Explicit transition list: outline-color must stay out of it (see the
       // focus-ring rules in main.css), and motion-reduce gets a static chip.
-      className={`inline-flex min-h-11 items-center gap-2 rounded-lg border border-edge bg-surface-raised px-4 py-2.5 text-base font-semibold text-accent-strong shadow-card transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:transform-none motion-reduce:transition-none dark:text-accent ${className}`}
+      // `translate`, not `transform`, in the list and the reduce reset: in
+      // Tailwind v4 the translate-* utilities write the standalone translate
+      // property, which transition-[...,transform] never transitioned (the
+      // lift snapped) and transform-none never reset.
+      // Bare `group`: no SectionLink nests inside another .group today — if
+      // one ever lands inside a grouped card, rename to group/link here and
+      // group-hover/link: on the arrows.
+      className={`group inline-flex min-h-11 items-center gap-2 rounded-lg border border-edge bg-surface-raised px-4 py-2.5 text-base font-semibold text-accent-strong shadow-card transition-[border-color,translate] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:translate-none motion-reduce:transition-none dark:text-accent ${className}`}
       {...rest}
     >
       {icon === 'left' ? arrow : null}

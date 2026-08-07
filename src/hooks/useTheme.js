@@ -19,6 +19,19 @@ const canAnimate = () =>
   typeof document.startViewTransition === 'function' &&
   !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Scopes the theme-reveal rules in main.css to THIS transition. Without it,
+// the ::view-transition-*(root) rules written for the theme circle would also
+// style every cross-document navigation (the @view-transition opt-in in
+// main.css), replaying the reveal from its 50%/50% fallback origin on every
+// page change.
+const THEME_SWITCHING_CLASS = 'theme-switching';
+
+// The most recent theme transition. A second toggle before the first finishes
+// SKIPS the first, whose `finished` promise then settles and would strip the
+// class out from under the still-running second one — only the latest owner
+// may clean up.
+let activeThemeTransition = null;
+
 export const useTheme = () => {
   const theme = useSyncExternalStore(subscribe, getTheme, () => 'light');
 
@@ -47,11 +60,31 @@ export const useTheme = () => {
     root.style.setProperty('--theme-origin-y', `${originY}px`);
     root.style.setProperty('--theme-origin-radius', `${radius}px`);
 
+    // The class goes on synchronously BEFORE startViewTransition, so it is
+    // present when the old snapshot is captured and the scoped CSS applies
+    // for the transition's whole life.
+    root.classList.add(THEME_SWITCHING_CLASS);
+
     // flushSync, not a bare call: the store notifies React, but a re-render
     // scheduled from inside a click handler would not commit until the handler
     // returns — after the "new" snapshot was taken. The sun/moon icon would
     // then be captured in its OLD state and pop once the transition ended.
-    document.startViewTransition(() => flushSync(toggleThemeStore));
+    const transition = document.startViewTransition(() => flushSync(toggleThemeStore));
+    activeThemeTransition = transition;
+
+    // `finished` settles whether the transition ran or was skipped, but it
+    // REJECTS if the update callback throws — cleanup therefore lives in
+    // finally, and the trailing catch keeps that rejection from surfacing as
+    // an unhandled one. A class left hanging would misroute the NEXT
+    // cross-document navigation into the theme keyframes.
+    transition.finished
+      .finally(() => {
+        if (activeThemeTransition === transition) {
+          root.classList.remove(THEME_SWITCHING_CLASS);
+          activeThemeTransition = null;
+        }
+      })
+      .catch(() => {});
   }, []);
 
   return { theme, toggleTheme };

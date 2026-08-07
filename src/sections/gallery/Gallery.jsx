@@ -121,7 +121,7 @@ const Gallery = () => {
     setOpenIndex((current) => (current + delta + visibleImages.length) % visibleImages.length);
 
   const renderGrid = (items) => (
-    <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2">
+    <div className="stagger-cards-2 grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2">
       {items.map((item) => {
         const badge = item.category === gallery.archive.id ? gallery.archive.badge : null;
 

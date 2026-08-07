@@ -17,7 +17,10 @@ const LinkCard = ({ href, title, description, image, alt, sizes, label }) => {
   return (
     <a
       href={href}
-      className="group flex flex-col overflow-hidden rounded-card border border-edge bg-surface-raised shadow-card transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:transform-none motion-reduce:transition-none"
+      // translate, not transform, in the transition list and the reduce
+      // reset: Tailwind v4's translate-* utilities write the standalone
+      // translate property — see SectionLink for the full note.
+      className="group flex flex-col overflow-hidden rounded-card border border-edge bg-surface-raised shadow-card transition-[border-color,translate] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:translate-none motion-reduce:transition-none"
     >
       <span className="block aspect-video w-full overflow-hidden bg-surface-sunken">
         <Picture
@@ -39,7 +42,10 @@ const LinkCard = ({ href, title, description, image, alt, sizes, label }) => {
 
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-strong transition-[color] duration-300 group-hover:text-ink motion-reduce:transition-none dark:text-accent">
           {label}
-          <ArrowRight aria-hidden="true" className="size-4" />
+          <ArrowRight
+            aria-hidden="true"
+            className="size-4 transition-[translate] duration-300 group-hover:translate-x-0.5 motion-reduce:translate-none motion-reduce:transition-none"
+          />
         </span>
       </span>
     </a>

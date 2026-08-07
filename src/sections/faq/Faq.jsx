@@ -27,7 +27,7 @@ const Faq = () => {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2">
+        <div className="stagger-cards-2 mt-8 grid gap-4 sm:mt-10 md:grid-cols-2">
           {faq.items.map((item) => (
             <div
               key={item.id}

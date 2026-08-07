@@ -34,7 +34,7 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-cards mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.properties.map((property) => {
             const Icon = ICONS[property.icon];
 

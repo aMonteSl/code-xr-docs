@@ -32,7 +32,7 @@ const InstallMethods = () => {
           card is safe there because the commands scroll inside CommandBlock.
           The recommended method stays first; the VSIX card takes the whole
           2-up row instead of sitting orphaned. */}
-      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="stagger-cards mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {methods.items.map((method) => {
           const Icon = ICONS[method.icon];
 

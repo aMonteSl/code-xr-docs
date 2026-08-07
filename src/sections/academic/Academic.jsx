@@ -38,7 +38,7 @@ const Academic = () => {
             each card 224px at 768, where the p-6 chrome left 176px for a
             full Button and the tag line. The last card spans the 2-up row so
             the band never shows an orphan. */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-cards mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {academic.resources.map((resource) => {
             const Icon = ICONS[resource.icon];
             const isExternal = resource.action.kind === 'external';

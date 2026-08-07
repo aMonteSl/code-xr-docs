@@ -114,7 +114,7 @@ const Author = () => {
         {/* Same ramp as Academic's resources: 2-up from sm, 3-up from lg,
             last card spanning the 2-up row — the straight 1→3 jump at md gave
             each highlight 224px at 768. */}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-cards mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {author.highlights.map((highlight) => {
             const Icon = ICONS[highlight.icon];
 

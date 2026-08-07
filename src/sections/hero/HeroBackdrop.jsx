@@ -6,10 +6,12 @@ import { getHeroImage, getHeroSrcSet } from '@/lib/assets';
 //
 // The gradient and the grain are static background-images (defined as
 // utilities in main.css so no color syntax leaks into JSX): painted once,
-// never animated. inset-0 layers cannot overflow the parent, so the section
-// needs no overflow-hidden — which matters, because clipping would eat the
-// focus ring of anything near the section edge, and object-fit already clips
-// the photo internally.
+// never animated. The photo is the sanctioned exception: it drifts 24px on
+// scroll (.hero-drift, main.css), a compositor-only transform. That drift is
+// what makes THIS wrapper carry overflow-hidden — the 24px that leave the
+// section's box clip here, inside an aria-hidden subtree with nothing
+// focusable, so the SECTION still needs no overflow-hidden and the focus
+// rings near its edge stay whole.
 //
 // The photo behaves two ways, switched on the VIEWPORT'S SHAPE rather than a
 // width breakpoint, because the problem is the shape of the hole it has to
@@ -32,14 +34,18 @@ import { getHeroImage, getHeroSrcSet } from '@/lib/assets';
 // accepted, see optimize-hero.mjs: no wider source exists, and at this
 // opacity under the grain layer the stretch is not visible.
 const IMAGE_CLASS = [
-  'absolute inset-0 size-full opacity-[0.14] dark:opacity-[0.12]',
+  // hero-drift: the scroll-linked 24px slide (main.css). In contain mode the
+  // drift sinks the bottom band and progressively crops its last 24px — at
+  // this opacity under the grain, imperceptible; in cover mode object-fit
+  // already crops internally and the drift only reframes.
+  'hero-drift absolute inset-0 size-full opacity-[0.14] dark:opacity-[0.12]',
   'object-contain object-bottom',
   '[@media(min-aspect-ratio:5/4)]:object-cover [@media(min-aspect-ratio:5/4)]:object-center',
 ].join(' ');
 
 const HeroBackdrop = () => {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div className="hero-gradient absolute inset-0" />
 
       <picture>
