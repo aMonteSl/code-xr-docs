@@ -35,7 +35,12 @@ const DefinitionGrid = ({ items, columns = 3, className = '' }) => {
           key={item.term}
           className="rounded-card border border-edge bg-surface-raised p-4 shadow-card"
         >
-          <dt className="text-sm font-bold tracking-tight text-balance text-ink">{item.term}</dt>
+          {/* break-words: the terms come from the analyses' real contracts
+              (long camelCase tokens are possible) and these cells run ~280px
+              — the one slot on the site whose text is not hand-curated copy. */}
+          <dt className="text-sm font-bold tracking-tight text-balance break-words text-ink">
+            {item.term}
+          </dt>
           <dd className="mt-1.5 text-sm text-pretty text-ink-muted">{item.description}</dd>
         </div>
       ))}

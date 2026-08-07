@@ -70,7 +70,7 @@ const TestedProjects = () => {
 
                   <ChevronDown
                     aria-hidden="true"
-                    className={`size-5 shrink-0 text-ink-muted transition-[color,transform] duration-300 group-hover:text-ink motion-reduce:transition-none ${
+                    className={`size-5 shrink-0 text-ink-muted transition-[color,rotate] duration-300 group-hover:text-ink motion-reduce:transition-none ${
                       isOpen ? 'rotate-180' : ''
                     }`}
                   />

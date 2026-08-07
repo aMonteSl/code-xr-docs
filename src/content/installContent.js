@@ -71,7 +71,17 @@ export const install = {
     goToStep: (n, title) => `Go to step ${n}: ${title}`,
     stepLabel: (n) => `Step ${n}`,
     minutes: (n) => `${n} min`,
-    progressLabel: (title) => `Time spent on ${title}`,
+
+    // Spoken when the READER changes step — the pills, the two arrows, the
+    // arrow and number keys. Not when the clock advances on its own: that path
+    // calls setCurrent directly and must keep doing so, or a visitor parked on
+    // this section is interrupted every few minutes by a move they did not
+    // make. See QuickStart's go(), and the wipe beside its setCurrent.
+    //
+    // Same sentence as collaboration.carousel.stepAnnouncement: two step
+    // walkthroughs on one page should not describe themselves differently.
+    stepAnnouncement: (position, total, title) => `Step ${position} of ${total}: ${title}.`,
+
     steps: [
       {
         id: 'install',

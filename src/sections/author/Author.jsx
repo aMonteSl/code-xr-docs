@@ -6,6 +6,7 @@ import LinkedinIcon from '@/components/ui/LinkedinIcon';
 import { author } from '@/content/authorContent';
 import { site } from '@/content/siteContent';
 import { getProfileImage, getProfileSrcSet } from '@/lib/assets';
+import FeedbackAsk from '@/sections/author/FeedbackAsk';
 
 const ICONS = {
   graduation: GraduationCap,
@@ -25,6 +26,12 @@ const ICONS = {
 // two rings, one of them pulsing, over a blue-to-purple gradient halo. Rings
 // that pulse and coloured glows are the two things this palette rules out, so
 // the frame is a plain edge ring.
+//
+// This band also closes the page, so it carries the site's closing ask
+// (FeedbackAsk at the bottom, #feedback). That is a deliberate lodging, not an
+// overflow: the navbar has no room for a twelfth entry and the ask reads
+// honestly only after the bio it follows. The full argument, and the reason it
+// is not called "support", is in FeedbackAsk's own header.
 const Author = () => {
   return (
     <section id="author" className="border-t border-edge py-16 sm:py-24">
@@ -111,14 +118,17 @@ const Author = () => {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {/* Same ramp as Academic's resources: 2-up from sm, 3-up from lg,
+            last card spanning the 2-up row — the straight 1→3 jump at md gave
+            each highlight 224px at 768. */}
+        <div className="stagger-cards mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {author.highlights.map((highlight) => {
             const Icon = ICONS[highlight.icon];
 
             return (
               <div
                 key={highlight.id}
-                className="rounded-card border border-edge bg-surface-raised p-5 text-center shadow-card"
+                className="rounded-card border border-edge bg-surface-raised p-5 text-center shadow-card sm:last:col-span-2 lg:last:col-span-1"
               >
                 <span
                   aria-hidden="true"
@@ -134,6 +144,14 @@ const Author = () => {
             );
           })}
         </div>
+
+        {/* Inside the Container (so it gets the gutters and the section's own
+            scroll reveal) but OUTSIDE the stagger grid, on purpose. That grid's
+            children carry `animation-fill-mode: both`, which pins
+            `transform: none` on them forever — see the .stagger-cards note in
+            main.css. A SIBLING of the grid keeps the plain section reveal and
+            stays free of that constraint. */}
+        <FeedbackAsk />
       </Container>
     </section>
   );

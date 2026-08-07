@@ -2,10 +2,11 @@ import { useMemo, useState } from 'react';
 import { Info } from 'lucide-react';
 import Container from '@/components/ui/Container';
 import Lightbox from '@/components/ui/Lightbox';
+import LiveRegion from '@/components/ui/LiveRegion';
 import MediaCard from '@/components/ui/MediaCard';
 import MediaVideo from '@/components/ui/MediaVideo';
 import { gallery } from '@/content/galleryContent';
-import { getHeroImage, getReleaseImageSources } from '@/lib/assets';
+import { getHeroImageSources, getReleaseImageSources } from '@/lib/assets';
 import { getYouTubeEmbedUrl, getYouTubeWatchUrl } from '@/lib/media';
 import GalleryFilters from '@/sections/gallery/GalleryFilters';
 
@@ -29,9 +30,11 @@ const PREVIEW_PER_CATEGORY = 2;
 
 // The shared poster for the videos rescued from the previous site, which have
 // no still of their own. The hero render is already optimised and committed,
-// and the hero backdrop has almost certainly warmed it in cache: 640px is more
-// than the ~630px a card ever renders, so it needs no variants of its own.
-const SHARED_POSTER = { src: getHeroImage(640, 'webp'), sources: [] };
+// and the hero backdrop has almost certainly warmed it in cache. With the
+// real ladder behind it: "640px is more than the ~630px a card ever renders"
+// only held at DPR 1 — a retina tile asks for ~1260 physical px and was
+// getting a 640 stretched to double.
+const SHARED_POSTER = getHeroImageSources();
 
 // Two columns from sm inside the 84rem container, 20px gap: 630px per tile
 // once the container caps at a 1344px viewport, 50vw-42px between sm and there.
@@ -55,6 +58,15 @@ const thumbFor = (item) => {
 const Gallery = () => {
   const [activeId, setActiveId] = useState('all');
   const [openIndex, setOpenIndex] = useState(null);
+  // Purely a gate on the announcer at the bottom of this file. The message
+  // itself is DERIVED from what the grid renders, which is safe here and
+  // nowhere else on the page: this section has no timer of any kind, so the
+  // only thing that can move those numbers is a click. What derivation cannot
+  // do is stay quiet on the first render — a live region that already holds
+  // text when the page loads gets read out on arrival (and gets prerendered
+  // into the HTML), and "All: showing 12 of 34 items." is not something the
+  // visitor asked to hear.
+  const [hasFiltered, setHasFiltered] = useState(false);
 
   const included = useMemo(
     () => gallery.items.filter((item) => !gallery.excluded.includes(item.file)),
@@ -100,8 +112,22 @@ const Gallery = () => {
     [byCategory]
   );
 
+  // What the announcer needs, and what the chips already show. The archive is
+  // not in `filters` — it is rendered separately, past the divider — so it gets
+  // its own branch rather than a lookup that would silently return undefined.
+  // `activeTotal` is the CHIP's figure; the announcement pairs it with
+  // visibleItems.length, and the two disagree only in the "All" view. See
+  // labels.filtered.
+  const activeFilter = filters.find((filter) => filter.id === activeId);
+  const activeLabel = isArchive ? gallery.archive.label : activeFilter?.label;
+  const activeTotal = isArchive ? archiveItems.length : (activeFilter?.count ?? 0);
+
+  // Every route into a different view lands here: the chips, the archive chip
+  // and the "View all N" links above each preview group. One function to flip
+  // the flag is exactly why the announcement cannot be missed by one of them.
   const selectFilter = (id) => {
     setActiveId(id);
+    setHasFiltered(true);
     // The open item may not exist in the new list; never leave a stale index.
     setOpenIndex(null);
   };
@@ -119,7 +145,7 @@ const Gallery = () => {
     setOpenIndex((current) => (current + delta + visibleImages.length) % visibleImages.length);
 
   const renderGrid = (items) => (
-    <div className="grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2">
+    <div className="stagger-cards-2 grid grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2">
       {items.map((item) => {
         const badge = item.category === gallery.archive.id ? gallery.archive.badge : null;
 
@@ -181,6 +207,19 @@ const Gallery = () => {
             countLabel={gallery.labels.countSuffix}
           />
         </div>
+
+        {/* Pressing a chip leaves focus on the chip and silently rebuilds the
+            grid below it — nothing in the accessible tree said the page had
+            changed, and the counts the chips carry are not the counts on screen
+            in the "All" view. Placed right after the chips so browse order
+            reads chips, then result, then grid. Pressing the SAME chip twice
+            writes the same string, which mutates nothing and is correctly
+            silent: nothing changed. */}
+        <LiveRegion
+          message={
+            hasFiltered ? gallery.labels.filtered(activeLabel, visibleItems.length, activeTotal) : ''
+          }
+        />
 
         {isArchive ? (
           <p className="mx-auto mt-6 flex max-w-2xl gap-3 rounded-card border border-edge bg-surface-raised p-4 text-sm text-pretty text-ink-muted shadow-card">

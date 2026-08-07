@@ -9,7 +9,7 @@ const TechStrip = ({ title, items, linkHint }) => {
     <div className="mt-12 sm:mt-16">
       <h3 className="text-lg font-bold tracking-tight text-ink">{title}</h3>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="stagger-cards mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <a
             key={item.id}
@@ -20,8 +20,10 @@ const TechStrip = ({ title, items, linkHint }) => {
             // The lift is the site's one signal for "this whole card
             // navigates" — same string a linked StatCard carries. These nine
             // are card-shaped external links with a corner arrow, the same
-            // role, so they get it too.
-            className="group flex items-center gap-3 rounded-card border border-edge bg-surface-raised p-3 shadow-card transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:transform-none motion-reduce:transition-none"
+            // role, so they get it too. translate, not transform, in the
+            // transition list; and motion-safe on the hover rather than a
+            // reset after it — see SectionLink for both notes.
+            className="group flex items-center gap-3 rounded-card border border-edge bg-surface-raised p-3 shadow-card transition-[border-color,translate] duration-300 hover:border-accent/40 motion-safe:hover:-translate-y-0.5 motion-reduce:transition-none"
           >
             <img
               src={getTechnologyAsset(item.logo)}
@@ -37,7 +39,7 @@ const TechStrip = ({ title, items, linkHint }) => {
                 {item.name}
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="size-3.5 text-ink-muted transition-[color] duration-300 group-hover:text-accent motion-reduce:transition-none"
+                  className="size-3.5 text-ink-muted transition-[color,translate] duration-300 group-hover:text-accent motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none"
                 />
               </span>
               <span className="mt-0.5 block text-xs text-pretty text-ink-muted">

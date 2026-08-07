@@ -122,6 +122,8 @@ export const collaboration = {
   lightbox: {
     expand: 'Expand screenshot',
     close: 'Close expanded screenshot',
+    previous: 'Previous screenshot',
+    next: 'Next screenshot',
   },
 
   carousel: {
@@ -129,5 +131,14 @@ export const collaboration = {
     nextStep: 'Next step',
     goToStep: (n, title) => `Go to step ${n}: ${title}`,
     stepAbbr: 'Step',
+
+    // Spoken on every step change, which here means every step change a person
+    // asked for: this carousel has no autoplay at all, so there is no tick to
+    // stay quiet for. It exists for the ARROWS — they keep focus on themselves
+    // while the whole card behind them becomes a different card. The pills
+    // carry aria-current, but only some screen readers re-announce a state
+    // change on the element already focused, and none of them say what the new
+    // card contains.
+    stepAnnouncement: (position, total, title) => `Step ${position} of ${total}: ${title}.`,
   },
 };

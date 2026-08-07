@@ -37,6 +37,7 @@ export const testedProjects = {
       'The real Code-XR export for this project, embedded with its own runtime and assets. It is live: pan, zoom and click inside it.',
     dashboardOpen: 'Open full view',
     dashboardLoading: 'Loading the dashboard export',
+    dashboardInteract: 'Tap to explore in 3D',
     dashboardLabel: (title) => `Interactive Code-XR dashboard for ${title}`,
     dashboardOpenLabel: (title) => `Open the full Code-XR dashboard for ${title} in a new tab`,
   },

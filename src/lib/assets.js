@@ -79,3 +79,16 @@ export const getHeroImage = (width, format) =>
 
 export const getHeroSrcSet = (format) =>
   HERO_IMAGE_WIDTHS.map((width) => `${getHeroImage(width, format)} ${width}w`).join(', ');
+
+// The hero render as a { src, sources } pair ready for Picture: the shared
+// poster for videos with no still of their own (the gallery walkthroughs, the
+// tested-projects demos). A real srcset, not a bare 640 — a ~630 CSS px
+// gallery tile at DPR 2, or the ~1232px tested-projects player, were painting
+// an upscaled 640. Same ladder the hero backdrop uses, so it is cache-warm.
+export const getHeroImageSources = () => ({
+  src: getHeroImage(640, 'webp'),
+  sources: THUMB_FORMATS.map((format) => ({
+    type: `image/${format}`,
+    srcSet: getHeroSrcSet(format),
+  })),
+});

@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import LiveRegion from '@/components/ui/LiveRegion';
 import { useCarousel } from '@/hooks/useCarousel';
 import StepCard from '@/sections/collaboration/StepCard';
 
@@ -22,10 +24,24 @@ import StepCard from '@/sections/collaboration/StepCard';
 // with the outer container.
 const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
   const { index, goTo } = useCarousel(steps.length, { autoplay: false });
+  // Empty until the reader moves, so nothing is spoken on arrival.
+  const [announcement, setAnnouncement] = useState('');
 
   // useCarousel's goTo wraps modulo-length; a tutorial must not loop, so all
   // navigation goes through this clamp and the arrows disable at the ends.
-  const goClamped = (target) => goTo(Math.min(Math.max(target, 0), steps.length - 1));
+  //
+  // Being the one chokepoint is also what makes announcing from here correct
+  // and complete: the arrows, the numbered pills and the peeking cards all come
+  // through it, and — because this carousel deliberately has no autoplay (see
+  // the top of the file) — nothing else ever does. Every message it writes was
+  // asked for by a click or a key. Re-choosing the step you are already on
+  // writes the same string and so says nothing, which is right: nothing moved.
+  const goClamped = (target) => {
+    const clamped = Math.min(Math.max(target, 0), steps.length - 1);
+
+    goTo(clamped);
+    setAnnouncement(labels.stepAnnouncement(clamped + 1, steps.length, steps[clamped].title));
+  };
 
   const arrowClass =
     'flex size-11 shrink-0 items-center justify-center rounded-full border border-edge bg-surface text-ink transition-[border-color,opacity] duration-300 hover:border-accent/40 motion-reduce:transition-none disabled:pointer-events-none disabled:opacity-40';
@@ -54,14 +70,20 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
               onClick={() => goClamped(position)}
               aria-label={labels.goToStep(position + 1, step.title)}
               aria-current={position === index ? 'step' : undefined}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-[background-color,border-color,color] duration-300 motion-reduce:transition-none sm:px-3.5 ${
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full border px-2 text-sm font-semibold transition-[background-color,border-color,color] duration-300 motion-reduce:transition-none sm:px-3.5 ${
                 position === index
                   ? 'border-transparent bg-accent text-on-accent hover:bg-accent-strong'
                   : 'border-edge text-ink-muted hover:border-accent/40 hover:text-ink'
               }`}
             >
               <span className="tabular-nums">{position + 1}</span>
-              <span className="text-xs font-medium uppercase tracking-wide opacity-80">
+              {/* Role hidden below sm: with it, six pills measure ~90-100px
+                  each and the control row stacked five deep at 320px before
+                  the first card appeared. As number-only 44px discs (min-w-11
+                  above) they fit in two rows. Nothing is lost: the aria-label
+                  already carries number + title, and the active card's own
+                  chip still names the role. */}
+              <span className="hidden text-xs font-medium uppercase tracking-wide opacity-80 sm:inline">
                 {roles[step.role]}
               </span>
             </button>
@@ -79,9 +101,16 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
         </button>
       </div>
 
+      {/* Between the controls and the track, so a reader browsing in order
+          meets the result right where the buttons that caused it are. */}
+      <LiveRegion message={announcement} />
+
       {/* The track. It clips its own overflow (the peeks); the section and the
           document never scroll horizontally because of it. */}
-      <div className="relative mt-6 overflow-hidden [--step-w:86%] sm:[--step-w:84%] lg:[--step-w:80%]">
+      {/* 94% below sm: at 320 the card's usable content box was 178px with the
+          86% slide, and the badge + role chip alone consume ~110 of it. The
+          ~3% peek per side plus the slide padding still reads as continuation. */}
+      <div className="relative mt-6 overflow-hidden [--step-w:94%] sm:[--step-w:84%] lg:[--step-w:80%]">
         <div
           className="flex items-stretch transition-transform duration-500 ease-out motion-reduce:transition-none"
           style={{
@@ -95,7 +124,7 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
               <div
                 key={step.id}
                 aria-hidden={isActive ? undefined : 'true'}
-                className={`relative w-[var(--step-w)] shrink-0 px-2 transition-[opacity,transform] duration-500 motion-reduce:transition-none sm:px-3 ${
+                className={`relative w-[var(--step-w)] shrink-0 px-2 transition-[opacity,scale] duration-500 motion-reduce:transition-none sm:px-3 ${
                   isActive ? 'opacity-100 scale-100' : 'opacity-50 sm:scale-[0.96]'
                 }`}
               >

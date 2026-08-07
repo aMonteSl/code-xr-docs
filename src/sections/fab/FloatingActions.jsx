@@ -82,9 +82,17 @@ const FloatingActions = () => {
   }, [isOpen]);
 
   return (
+    // hidden sm:flex — no FAB below 640. On a 320px phone the 56px disc plus
+    // insets covers x∈[16,72] of a 272px content box, permanently over the
+    // carousels' left arrow, QuickStart's Previous and the first gallery
+    // filter chips; all four of its actions also live in the hero, About,
+    // Tutorial and the footer. Moving it right instead would just trade that
+    // set of collisions for its mirror (carousel right arrows, QuickStart's
+    // Next, VideoEmbed's corner badges — and SectionBridge's ms-auto escape
+    // assumes the FAB is on the LEFT).
     <div
       ref={rootRef}
-      className={`fixed bottom-4 left-4 z-40 flex flex-col items-start gap-2 transition-[opacity,transform] duration-300 motion-reduce:transition-none sm:bottom-6 sm:left-6 ${
+      className={`fixed bottom-6 left-6 z-40 hidden flex-col items-start gap-2 transition-[opacity,translate] duration-300 motion-reduce:transition-none sm:flex ${
         isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >
@@ -105,7 +113,7 @@ const FloatingActions = () => {
               rel={external ? 'noopener noreferrer' : undefined}
               tabIndex={isOpen ? undefined : -1}
               onClick={() => setIsOpen(false)}
-              className={`inline-flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface-raised px-4 text-sm font-medium text-ink shadow-card transition-[opacity,transform,border-color] duration-300 hover:border-accent/40 motion-reduce:transition-none ${
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full border border-edge bg-surface-raised px-4 text-sm font-medium text-ink shadow-card transition-[opacity,translate,border-color] duration-300 hover:border-accent/40 motion-reduce:transition-none ${
                 isOpen ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
               }`}
               // Stagger from the bottom up, so the expansion reads as growing

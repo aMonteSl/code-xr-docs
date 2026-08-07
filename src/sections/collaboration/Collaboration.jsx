@@ -8,11 +8,22 @@ import StepCarousel from '@/sections/collaboration/StepCarousel';
 
 const RELEASE = 'v1-2-0';
 
+// The flat list the lightbox steps through, in step order — the same
+// whole-walkthrough scope TutorialPart uses ("moving between them is what a
+// reader who opened one of them wants"). Module scope: derived once from
+// content. StepCard hands onExpand the very objects this list holds, so
+// indexOf below is an identity lookup, never a search by value.
+const ALL_IMAGES = collaboration.steps.flatMap((step) => step.images);
+
 // The cross-network walkthrough: two roles, six steps, one security principle
 // up front and the fine print at the end. One shared Lightbox serves every
-// step image.
+// step image; its arrows cross step boundaries (the carousel behind does not
+// follow), exactly like TutorialPart's.
 const Collaboration = () => {
-  const [expanded, setExpanded] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null);
+  const open = openIndex === null ? null : ALL_IMAGES[openIndex];
+  const step = (delta) =>
+    setOpenIndex((current) => (current + delta + ALL_IMAGES.length) % ALL_IMAGES.length);
 
   return (
     <section id="collaboration" className="border-t border-edge py-16 sm:py-24">
@@ -48,7 +59,7 @@ const Collaboration = () => {
             roles={collaboration.roles}
             labels={collaboration.carousel}
             expandLabel={collaboration.lightbox.expand}
-            onExpand={setExpanded}
+            onExpand={(image) => setOpenIndex(ALL_IMAGES.indexOf(image))}
           />
         </div>
 
@@ -68,13 +79,15 @@ const Collaboration = () => {
       </Container>
 
       <Lightbox
-        isOpen={expanded !== null}
-        src={expanded ? getReleaseImageSources(RELEASE, expanded.file).src : ''}
-        sources={expanded ? getReleaseImageSources(RELEASE, expanded.file).sources : []}
-        alt={expanded?.alt ?? ''}
-        caption={expanded?.alt ?? ''}
-        onClose={() => setExpanded(null)}
-        labels={{ close: collaboration.lightbox.close }}
+        isOpen={open !== null}
+        src={open ? getReleaseImageSources(RELEASE, open.file).src : ''}
+        sources={open ? getReleaseImageSources(RELEASE, open.file).sources : []}
+        alt={open?.alt ?? ''}
+        caption={open?.alt ?? ''}
+        onClose={() => setOpenIndex(null)}
+        onPrev={() => step(-1)}
+        onNext={() => step(1)}
+        labels={collaboration.lightbox}
       />
     </section>
   );

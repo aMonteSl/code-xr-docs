@@ -34,7 +34,11 @@ const Academic = () => {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {/* 2-up from sm, 3-up from lg: the old straight 1→3 jump at md gave
+            each card 224px at 768, where the p-6 chrome left 176px for a
+            full Button and the tag line. The last card spans the 2-up row so
+            the band never shows an orphan. */}
+        <div className="stagger-cards mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {academic.resources.map((resource) => {
             const Icon = ICONS[resource.icon];
             const isExternal = resource.action.kind === 'external';
@@ -45,7 +49,7 @@ const Academic = () => {
             return (
               <div
                 key={resource.id}
-                className="flex flex-col rounded-card border border-edge bg-surface-raised p-6 text-center shadow-card"
+                className="flex flex-col rounded-card border border-edge bg-surface-raised p-6 text-center shadow-card sm:last:col-span-2 lg:last:col-span-1"
               >
                 <span
                   aria-hidden="true"
@@ -102,13 +106,20 @@ const Academic = () => {
                 of the three letters "DOI"; IEEE Xplore stays as a secondary
                 mirror. Both open in a new tab, like every other outbound link
                 in this section. */}
+            {/* A true inline link, not the -my-3 inline-flex idiom the short
+                standalone links use: this anchor is a 60-character title that
+                wraps to 3-4 lines on narrow screens, and inline-flex turns a
+                multi-line anchor into one atomic box that drops below the
+                "Paper:" label and spills its negative margins over the note
+                above and the authors below. As prose it shares line boxes;
+                WCAG's target-size rule exempts links inside sentences. */}
             <p className="mt-3 text-sm text-ink-muted">
               <span className="font-semibold text-ink">{academic.paper.label}: </span>
               <a
                 href={award.links.doi}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="-my-3 inline-flex min-h-11 items-center font-semibold text-pretty text-accent-strong underline underline-offset-4 transition-[color] duration-300 hover:text-ink motion-reduce:transition-none dark:text-accent"
+                className="font-semibold text-pretty text-accent-strong underline underline-offset-4 transition-[color] duration-300 hover:text-ink motion-reduce:transition-none dark:text-accent"
               >
                 {award.artifactTitle}
               </a>

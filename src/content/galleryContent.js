@@ -12,6 +12,11 @@
 // the eight rescued videos, which have no still of their own.
 const RELEASE_PREVIOUS = 'v1-1-0';
 
+// Hoisted so the chip's visible count and the spoken filter announcement below
+// cannot drift apart on the plural rule — the same "nothing is restated in two
+// places" reason the analysis pages look their alt text up in this file.
+const itemCount = (n) => `${n} item${n === 1 ? '' : 's'}`;
+
 export const gallery = {
   eyebrow: 'Gallery',
   heading: 'Every view, in one place',
@@ -46,7 +51,7 @@ export const gallery = {
 
   labels: {
     all: 'All',
-    countSuffix: (n) => `${n} item${n === 1 ? '' : 's'}`,
+    countSuffix: itemCount,
     viewAll: (n) => `View all ${n}`,
     openImage: 'Open screenshot',
     openVideo: 'Play video',
@@ -56,6 +61,20 @@ export const gallery = {
     watchOnYouTube: 'Watch on YouTube',
     video: 'Video',
     counter: (position, total) => `${position} / ${total}`,
+
+    // Spoken when a chip is pressed, and the only announcement on the site that
+    // reports a QUANTITY — because a quantity is what the chips change and
+    // nothing said out loud.
+    //
+    // The two-number form exists for the "All" view alone: it previews
+    // PREVIEW_PER_CATEGORY tiles per category, so the figure the chips carry
+    // (every item in every category) is not the figure on screen, and
+    // announcing the chip's number would describe a grid the visitor does not
+    // have. Everywhere else the two agree and the shorter sentence is used.
+    filtered: (label, shown, total) =>
+      shown === total
+        ? `${label}: showing ${itemCount(shown)}.`
+        : `${label}: showing ${shown} of ${itemCount(total)}.`,
   },
 
   // Editorial exclusions, kept as a list so re-including one is deleting a

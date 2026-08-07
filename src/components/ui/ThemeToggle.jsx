@@ -15,7 +15,7 @@ import { Moon, Sun } from 'lucide-react';
 const ThemeToggle = ({ theme, onToggle, label }) => {
   const isDark = theme === 'dark';
   const iconClass =
-    'col-start-1 row-start-1 size-5 transition-[opacity,transform] duration-500 motion-reduce:transition-none';
+    'col-start-1 row-start-1 size-5 transition-[opacity,rotate,scale] duration-500 motion-reduce:transition-none';
 
   return (
     <button

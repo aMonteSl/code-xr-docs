@@ -47,7 +47,7 @@ const MediaGroup = ({ group }) => {
         {/* items-start so a tile never stretches to match a taller neighbour;
             every tile is aspect-video anyway, so the rows line up by
             construction and only the caption below can differ in height. */}
-        <div className="mt-6 grid grid-cols-1 items-start gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-cards mt-6 grid grid-cols-1 items-start gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
           {group.images.map((image, index) => (
             <MediaCard
               key={image.file}

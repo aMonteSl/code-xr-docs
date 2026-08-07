@@ -19,6 +19,12 @@ import Picture from '@/components/ui/Picture';
 // screenshots run from 0.49 to 2.64 in aspect ratio. Cropping them to 16:9
 // would cut the UI text that is the whole point of the shot, and letting each
 // tile take its own height would break every row's alignment.
+//
+// NO hover lift, deliberately: the lift is the site's one signal for "this
+// surface navigates somewhere else" (LinkCard, SectionLink, TechStrip, a
+// linked StatCard). This opens a lightbox in place — "look closer", not "go
+// elsewhere" — so its feedback is the border + title colour alone. Do not
+// "unify" it.
 const MediaCard = ({ title, image, alt, badge, label, sizes, onOpen }) => {
   return (
     <button type="button" onClick={onOpen} aria-label={`${label}: ${title}`} className="group flex flex-col text-left">

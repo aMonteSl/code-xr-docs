@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock, Lightbulb, Play, Search, Settings, Zap } from 'lucide-react';
+import LiveRegion from '@/components/ui/LiveRegion';
 import { install } from '@/content/installContent';
 import { useInView } from '@/hooks/useInView';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import StepProgress from '@/sections/install/StepProgress';
 
 const ICONS = { settings: Settings, play: Play, zap: Zap, search: Search };
@@ -26,17 +28,25 @@ const QuickStart = () => {
   const { quickStart } = install;
   const ref = useRef(null);
   const isInView = useInView(ref);
+  const prefersReducedMotion = useReducedMotion();
 
   const [current, setCurrent] = useState(0);
   const [completedIds, setCompletedIds] = useState([]);
   const [elapsed, setElapsed] = useState(0);
+  // Written by go(), and wiped by the ticker below. Nothing else touches it —
+  // that pair is the entire reason this block can carry a live region at all.
+  const [announcement, setAnnouncement] = useState('');
 
   const step = quickStart.steps[current];
   const total = step.durationMinutes * 60;
   const isCompleted = completedIds.includes(step.id);
 
   useEffect(() => {
-    if (!isInView) {
+    // Reduced motion also stops the ticker: content advancing on its own
+    // under the reader is played-back motion even though no pixel animates.
+    // The walkthrough stays fully manual — the pills, arrows and keys below
+    // never touch this effect's timers.
+    if (!isInView || prefersReducedMotion) {
       return undefined;
     }
 
@@ -73,7 +83,21 @@ const QuickStart = () => {
         });
 
         if (hasNext) {
+          // setCurrent, deliberately NOT go(): go() announces, and this branch
+          // is the clock moving on by itself. A reader parked on this section
+          // would otherwise be interrupted every few minutes by a step change
+          // nobody asked for — the same bug as a live region on a rotating
+          // carousel, just slower.
           setCurrent(nextIndex);
+          // And wiping what go() last wrote is what keeps the NEXT manual move
+          // audible. A live region speaks only when its text CHANGES: pick step
+          // 2, let the clock walk on to step 3, come back to step 2, and go()
+          // would write the identical sentence, React would render the identical
+          // text node, and no screen reader would say a word. Clearing here
+          // guarantees the next manual move is always a change — and clearing
+          // is itself silent, because the default aria-relevant covers
+          // additions and text, not removals.
+          setAnnouncement('');
         }
       }
     }, 1000);
@@ -82,19 +106,29 @@ const QuickStart = () => {
       clearTimeout(seedId);
       clearInterval(tickId);
     };
-  }, [completedIds, current, isInView, quickStart.steps]);
+  }, [completedIds, current, isInView, prefersReducedMotion, quickStart.steps]);
 
   // Navigating to a step starts it over: its mark comes off so the clock runs
   // again from zero. The guard returns the same array when there was nothing
   // to remove, because a fresh array would re-run the effect and reset the
   // progress of a step you only clicked to stay on.
+  //
+  // This is also the only MANUAL route into a step change — the picker, both
+  // arrows and the arrow/number keys all call it, and the ticker above
+  // pointedly does not — which is what makes announcing from here both complete
+  // and safe. Snapshotted rather than derived from `current` during render for
+  // exactly that reason: a derived message would fire on the ticker's advance
+  // too.
   const go = (index) => {
     const target = Math.min(Math.max(index, 0), quickStart.steps.length - 1);
-    const targetId = quickStart.steps[target].id;
+    const targetStep = quickStart.steps[target];
 
     setCurrent(target);
+    setAnnouncement(
+      quickStart.stepAnnouncement(target + 1, quickStart.steps.length, targetStep.title)
+    );
     setCompletedIds((previous) =>
-      previous.includes(targetId) ? previous.filter((id) => id !== targetId) : previous
+      previous.includes(targetStep.id) ? previous.filter((id) => id !== targetStep.id) : previous
     );
   };
 
@@ -172,6 +206,12 @@ const QuickStart = () => {
         })}
       </div>
 
+      {/* Between the picker and the card it drives. Deliberately says only which
+          step you are now on: the card below is a heading, a list and a tip, and
+          reading all of it back on every arrow press would be worse than the
+          silence it replaces. */}
+      <LiveRegion message={announcement} />
+
       <div className="mt-4 rounded-card border border-edge bg-surface-raised shadow-card">
         <div className="flex flex-col gap-5 border-b border-edge p-5 sm:flex-row sm:items-center sm:p-6">
           <span
@@ -201,7 +241,6 @@ const QuickStart = () => {
             elapsed={elapsed}
             total={total}
             isCompleted={isCompleted}
-            label={quickStart.progressLabel(step.title)}
             completedLabel={quickStart.completed}
           />
         </div>
@@ -242,6 +281,12 @@ const QuickStart = () => {
             type="button"
             onClick={() => go(current - 1)}
             disabled={current === 0}
+            // The label is on the button, not only in the span: below sm the
+            // span is display:none and the chevron is aria-hidden, so the
+            // button had NO accessible name at all on a phone — two of them,
+            // both announcing as "button". Identical to the visible text where
+            // that text exists, so voice control still matches what is read.
+            aria-label={quickStart.previous}
             className={navButton}
           >
             <ChevronLeft aria-hidden="true" className="size-4" />
@@ -267,6 +312,8 @@ const QuickStart = () => {
             type="button"
             onClick={() => go(current + 1)}
             disabled={current === quickStart.steps.length - 1}
+            // See the previous button: without this it is nameless below sm.
+            aria-label={quickStart.next}
             className={navButton}
           >
             <span className="hidden sm:inline">{quickStart.next}</span>

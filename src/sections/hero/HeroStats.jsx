@@ -93,14 +93,42 @@ const HeroStats = ({ status, stats }) => {
     // out there are no reviews the card is dropped rather than showing a dash
     // or a fabricated score.
     if (isLoading || hasReviews) {
+      // Hoisted, because three things now read it: the visible value, the href
+      // gate and the accessible name. `averagerating` and `ratingcount` are
+      // INDEPENDENT Marketplace statistics and lib/marketplace.js returns each
+      // as `?? null`, so a count with no score is a shape the API can actually
+      // return. Without this null the card would link — corner arrow, hover
+      // lift, aria-label — over an empty figure, and .toFixed() would throw.
+      const ratingValue = typeof stats?.rating === 'number' ? stats.rating : null;
+
       cards.push({
         id: 'rating',
         icon: Star,
         // No count-up here: a 900ms ramp to "5.0" looks silly.
-        value: typeof stats?.rating === 'number' ? `${stats.rating.toFixed(1)}★` : null,
+        value: ratingValue === null ? null : `${ratingValue.toFixed(1)}★`,
         label: hero.stats.rating.label,
         detail: hasReviews ? hero.stats.rating.detail(stats.ratingCount) : null,
         isLoading,
+        // Linked for exactly the reason the approx-total card above is: the
+        // figure invites the click that grows it. The site DISPLAYED this count
+        // and offered no way to add to it — this is the cheap upstream twin of
+        // the ask at the bottom of the page, and the only one a visitor who
+        // never scrolls that far sees.
+        //
+        // Spread CONDITIONALLY, not always: while the skeleton is up there is no
+        // figure to click, and StatCard's href branch would draw a corner arrow
+        // and a hover lift promising a link over a grey placeholder.
+        //
+        // The aria-label restates the score and the count because it REPLACES
+        // the card's accessible name — see the note on hero.stats.rating.
+        ...(hasReviews && ratingValue !== null
+          ? {
+              href: site.links.marketplaceReview,
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              'aria-label': `${hero.stats.rating.label} ${hero.stats.rating.accessibleValue(ratingValue)}, ${hero.stats.rating.detail(stats.ratingCount)} — ${hero.stats.rating.linkHint}`,
+            }
+          : {}),
       });
     }
 
@@ -123,6 +151,10 @@ const HeroStats = ({ status, stats }) => {
           <StatCard
             key={id}
             isLoading={cardLoading}
+            // Passed unconditionally and read only by the loading branch: the
+            // alternative was repeating it inside each of the four card objects
+            // above, which is four places to forget it.
+            loadingLabel={hero.stats.loading}
             {...cardProps}
             // An odd last card spans both columns on mobile so the 2-up grid
             // reads as a deliberate arrangement rather than a broken row.

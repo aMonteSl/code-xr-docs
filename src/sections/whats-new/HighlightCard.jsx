@@ -3,9 +3,11 @@ import { useInView } from '@/hooks/useInView';
 import SectionCarousel from '@/sections/whats-new/SectionCarousel';
 
 // Half of the 84rem container minus the 24px grid gap and this card's own
-// 20px padding: 588px once the container caps at a 1344px viewport.
+// 20px padding: 588px once the container caps at a 1344px viewport. The
+// middle term starts at 768 because WhatsNew's grid splits at md — the two
+// track each other.
 const SIZES =
-  '(min-width: 1344px) 588px, (min-width: 1024px) calc(50vw - 84px), calc(100vw - 5rem)';
+  '(min-width: 1344px) 588px, (min-width: 768px) calc(50vw - 84px), calc(100vw - 5rem)';
 
 // One "rest of 1.2.0" card. Its own ref, because hooks cannot be called inside
 // the parent's map and each card decides independently whether its carousel is
