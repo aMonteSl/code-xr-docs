@@ -45,8 +45,13 @@ const StepProgress = ({ elapsed, total, isCompleted, completedLabel }) => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <div aria-hidden="true" className="relative size-16">
+    // The whole running clock is hidden, ring AND figure. Hiding only the ring
+    // left the elapsed reading below it as a bare unlabelled duration —
+    // "1min 23s" with nothing saying what it counts, which is worse than
+    // silence. It carries nothing a reader needs: the step's stated length is
+    // in the picker above and the walkthrough is fully operable without it.
+    <div aria-hidden="true" className="flex flex-col items-center gap-1">
+      <div className="relative size-16">
         <svg viewBox="0 0 64 64" className="size-16 -rotate-90">
           <circle
             cx="32"

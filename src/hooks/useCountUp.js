@@ -68,5 +68,14 @@ export const useCountUp = (target) => {
     };
   }, [target, isAnimatable, prefersReducedMotion]);
 
-  return value;
+  // Under reduced motion (and for anything not a finite number) the live
+  // target is returned directly rather than the state above. That is not
+  // belt-and-braces: the effect returns early on both of those paths, so it
+  // never calls setValue, and `value` is frozen at whatever the initializer
+  // saw on the FIRST render. On a cold cache that is `undefined` — the
+  // Marketplace figures arrive a fetch later — so a reduced-motion visitor
+  // was left with three permanently blank cards, and on a warm cache with
+  // three permanently stale ones. Reading through fixes both without adding
+  // an effect the compiler-backed lint rule would object to.
+  return isAnimatable && !prefersReducedMotion ? value : target;
 };

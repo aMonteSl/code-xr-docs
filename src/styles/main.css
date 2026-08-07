@@ -553,13 +553,24 @@
       animation-range: entry 0% entry 100%;
     }
 
-    /* Two columns from sm: the even card trails its row-mate by 15% of its
-       own entry span. Percentages past 100% are valid range points and keep
-       start and end the same distance apart, so every card fades at the
-       same rate. */
+    /* Two columns from sm: the even card trails its row-mate by staggering
+       the START. Every range still ENDS at entry 100%, which is what makes a
+       card fully opaque by the time it is fully on screen — an earlier draft
+       shifted both ends (entry 15% -> 115%) and left the trailing columns
+       visibly translucent at rest, because the last 15-30% of their fade sat
+       past the point where the card had finished entering. The trailing
+       columns simply fade faster over a shorter span, which is the cascade.
+
+       The width queries mirror sm and lg, the breakpoints MOST of the grids
+       carrying these classes split at — change them together. Two do not:
+       Faq and InstallMethods split at md, so between 40rem and 48rem they are
+       a single column whose even children start 15% later. That is harmless
+       (a lower card can never overtake the one above it, since its own entry
+       begins later in the scroll) and is the reason the offsets stagger only
+       the start: with the ends aligned, a single column still settles evenly. */
     @media (min-width: 40rem) {
       :is(.stagger-cards, .stagger-cards-2) > :nth-child(2n) {
-        animation-range: entry 15% entry 115%;
+        animation-range: entry 15% entry 100%;
       }
     }
 
@@ -572,10 +583,10 @@
         animation-range: entry 0% entry 100%;
       }
       .stagger-cards > :nth-child(3n + 2) {
-        animation-range: entry 15% entry 115%;
+        animation-range: entry 15% entry 100%;
       }
       .stagger-cards > :nth-child(3n) {
-        animation-range: entry 30% entry 130%;
+        animation-range: entry 30% entry 100%;
       }
     }
   }

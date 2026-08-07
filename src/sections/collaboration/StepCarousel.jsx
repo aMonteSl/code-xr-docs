@@ -124,7 +124,7 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
               <div
                 key={step.id}
                 aria-hidden={isActive ? undefined : 'true'}
-                className={`relative w-[var(--step-w)] shrink-0 px-2 transition-[opacity,transform] duration-500 motion-reduce:transition-none sm:px-3 ${
+                className={`relative w-[var(--step-w)] shrink-0 px-2 transition-[opacity,scale] duration-500 motion-reduce:transition-none sm:px-3 ${
                   isActive ? 'opacity-100 scale-100' : 'opacity-50 sm:scale-[0.96]'
                 }`}
               >

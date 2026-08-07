@@ -33,12 +33,14 @@ export const feedback = {
   heading: 'If Code-XR was useful, say so',
 
   // Says what a review DOES and then caps the effort, which is the whole
-  // argument. "sort and filter" rather than "rank": the store's sort control
-  // literally offers Rating, and that is a checkable claim — how the search
-  // ranking weighs reviews is not, and this site does not guess.
+  // argument. "sort" rather than "rank": the store's sort control literally
+  // offers Rating, and that is a checkable claim — how the search ranking
+  // weighs reviews is not, and this site does not guess. It does not say
+  // "filter" either: the Marketplace has no rating filter, and this module is
+  // not the place to start inventing capabilities.
   // "what got in your way" is deliberate: an ask that invites the bad review
   // too is the one that does not read as a growth hack.
-  body: 'A rating is one of the few things the VS Code Marketplace lets people sort and filter extensions by, which makes a review worth more to this project than any figure at the top of this page. A couple of honest sentences are plenty: what you analysed, what worked, and what got in your way.',
+  body: 'A rating is one of the few things the VS Code Marketplace lets people sort extensions by, which makes a review worth more to this project than any figure at the top of this page. A couple of honest sentences are plenty: what you analysed, what worked, and what got in your way.',
 
   // `linkKey` resolves against site.links in the section, the same convention
   // footerContent and authorContent use, so no URL is repeated. `primary` is

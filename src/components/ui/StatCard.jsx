@@ -23,11 +23,11 @@ import { ArrowUpRight } from 'lucide-react';
 // Explicit transition list: Tailwind's bare `transition` includes
 // outline-color, which would make the focus ring of the linked card fade in
 // from the text color instead of appearing instantly.
-// translate, not transform, in the list and the reduce reset: Tailwind v4's
-// translate-* utilities write the standalone translate property — see
-// SectionLink for the full note.
+// translate, not transform, in the transition list; and motion-safe on the
+// hover rather than a motion-reduce reset after it, which loses on
+// specificity — see SectionLink for both notes in full.
 const INTERACTIVE =
-  'transition-[border-color,translate] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:translate-none motion-reduce:transition-none';
+  'transition-[border-color,translate] duration-300 hover:border-accent/40 motion-safe:hover:-translate-y-0.5 motion-reduce:transition-none';
 
 const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, loadingLabel = '', href, className = '', ...rest }) => {
   const Tag = href ? 'a' : 'div';
@@ -45,7 +45,7 @@ const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, loading
         // motion; the 10px inset absorbs the 2px without nearing the edge.
         <ArrowUpRight
           aria-hidden="true"
-          className="absolute top-2.5 right-2.5 size-3.5 text-ink-faint transition-[color,translate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent motion-reduce:translate-none motion-reduce:transition-none"
+          className="absolute top-2.5 right-2.5 size-3.5 text-ink-faint transition-[color,translate] duration-300 group-hover:text-accent motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none"
         />
       ) : null}
 

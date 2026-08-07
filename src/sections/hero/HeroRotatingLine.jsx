@@ -39,7 +39,7 @@ const HeroRotatingLine = () => {
           <p
             key={line}
             data-rotating-line
-            className={`col-start-1 row-start-1 mx-auto max-w-2xl text-base text-pretty text-ink-muted transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none sm:text-lg ${
+            className={`col-start-1 row-start-1 mx-auto max-w-2xl text-base text-pretty text-ink-muted transition-[opacity,translate] duration-500 ease-out motion-reduce:transition-none sm:text-lg ${
               position === index
                 ? 'translate-y-0 opacity-100'
                 : 'pointer-events-none translate-y-2 opacity-0'

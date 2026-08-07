@@ -21,8 +21,9 @@ const TechStrip = ({ title, items, linkHint }) => {
             // navigates" — same string a linked StatCard carries. These nine
             // are card-shaped external links with a corner arrow, the same
             // role, so they get it too. translate, not transform, in the
-            // list and the reduce reset — see SectionLink for the note.
-            className="group flex items-center gap-3 rounded-card border border-edge bg-surface-raised p-3 shadow-card transition-[border-color,translate] duration-300 hover:-translate-y-0.5 hover:border-accent/40 motion-reduce:translate-none motion-reduce:transition-none"
+            // transition list; and motion-safe on the hover rather than a
+            // reset after it — see SectionLink for both notes.
+            className="group flex items-center gap-3 rounded-card border border-edge bg-surface-raised p-3 shadow-card transition-[border-color,translate] duration-300 hover:border-accent/40 motion-safe:hover:-translate-y-0.5 motion-reduce:transition-none"
           >
             <img
               src={getTechnologyAsset(item.logo)}
@@ -38,7 +39,7 @@ const TechStrip = ({ title, items, linkHint }) => {
                 {item.name}
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="size-3.5 text-ink-muted transition-[color,translate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent motion-reduce:translate-none motion-reduce:transition-none"
+                  className="size-3.5 text-ink-muted transition-[color,translate] duration-300 group-hover:text-accent motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none"
                 />
               </span>
               <span className="mt-0.5 block text-xs text-pretty text-ink-muted">
