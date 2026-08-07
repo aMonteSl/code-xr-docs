@@ -3,13 +3,25 @@ import { getReleaseImageSources } from '@/lib/assets';
 
 const RELEASE = 'v1-2-0';
 
-// The widest an image column gets: the track slide is 80% of the container at
-// lg, less 24px of slide padding, 48px of card padding and the 32px column gap,
-// of which the image column takes at most 5/8. Several images are capped well
-// below this by their own pixel width (the `min(100%, Wpx)` below) — which only
-// makes an overshoot here free.
+// Derived from the real track, not guessed. Formula (re-derive if StepCarousel
+// changes --step-w or its paddings, this card its own, or Container its
+// gutters):
+//   image col = frac × (stepW × (100vw − gutters) − slidePad − cardPad − colGap)
+// with, per breakpoint:
+//   gutters:  Container px-6 → 48px, sm:px-8 → 64px; content caps at 1280px
+//             (84rem − 64) once the viewport hits 1344.
+//   stepW:    --step-w 94% / sm 84% / lg 80% (StepCarousel track).
+//   slidePad: px-2 → 16px, sm:px-3 → 24px.  cardPad: p-4 → 32px, sm:p-6 → 48px.
+//   frac/gap: single column below lg (frac 1, no gap); at lg the card splits
+//             with gap-8 (32px) and the image column takes at most 5/8.
+//   ≥1344: 5/8 × (0.80 × 1280 − 24 − 48 − 32)        = 575px
+//   ≥1024: 5/8 × (0.80(100vw − 64) − 24 − 48 − 32)   = 50vw − 97px
+//   ≥640:  0.84(100vw − 64) − 24 − 48                 = 84vw − 126px
+//   base:  0.94(100vw − 48) − 16 − 32                 = 94vw − 93px
+// Several images are capped well below all of this by their own pixel width
+// (the `min(100%, Wpx)` below) — which only makes an overshoot here free.
 const SIZES =
-  '(min-width: 1344px) 575px, (min-width: 1024px) calc(48vw - 93px), calc(86vw - 105px)';
+  '(min-width: 1344px) 575px, (min-width: 1024px) calc(50vw - 97px), (min-width: 640px) calc(84vw - 126px), calc(94vw - 93px)';
 
 // Role chips differentiate by WEIGHT, not hue (the palette rule): the host is
 // the solid fill, the guest the outline, and shared steps stay neutral.
@@ -64,7 +76,7 @@ const StepCard = ({ step, position, roleLabel, expandLabel, onExpand, isActive =
 
   return (
     <div
-      className={`grid h-full grid-rows-[auto_minmax(0,1fr)] gap-6 rounded-card border border-edge bg-surface-raised p-5 shadow-card sm:p-6 lg:grid-rows-[minmax(0,1fr)] lg:gap-8 ${split}`}
+      className={`grid h-full grid-rows-[auto_minmax(0,1fr)] gap-6 rounded-card border border-edge bg-surface-raised p-4 shadow-card sm:p-6 lg:grid-rows-[minmax(0,1fr)] lg:gap-8 ${split}`}
     >
       <div className={`@container self-start ${mirrored ? 'lg:order-2' : ''}`}>
         <div className="flex flex-wrap items-center gap-3">

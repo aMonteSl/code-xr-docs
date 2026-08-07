@@ -17,7 +17,10 @@ const Hero = () => {
     // `relative isolate` scope the backdrop's -z-10; there is deliberately no
     // `overflow-hidden` — inset-0 layers cannot overflow, and clipping would
     // eat the focus ring (outline-offset: 2px) of anything near the edge.
-    <section id="hero" className="relative isolate flex min-h-svh items-center py-16 sm:py-20">
+    // pt-24 below sm: on short phones the content exceeds min-h-svh and the
+    // padding is what actually separates it from the transparent 64px navbar —
+    // py-16 left the logo flush against it, pt-24 gives it 32px of air.
+    <section id="hero" className="relative isolate flex min-h-svh items-center pt-24 pb-16 sm:py-20">
       <HeroBackdrop />
 
       <Container className="text-center">

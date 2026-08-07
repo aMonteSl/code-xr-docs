@@ -10,10 +10,12 @@ import SectionCarousel from '@/sections/whats-new/SectionCarousel';
 
 const RELEASE = 'v1-2-0';
 
-// Half of the 84rem container minus the 32px gap, so 624px once the container
-// caps at a 1344px viewport and exactly 50vw-48px between lg and there.
+// Half of the container minus the column gap, per band: 624px once the
+// container caps at a 1344px viewport, 50vw−48px between lg and there
+// (gap-8 = 32), and 50vw−44px through the md band (the grid below splits at
+// md with gap-6 = 24, Container sm:px-8 = 64: (100vw − 64 − 24) / 2).
 const SIZES =
-  '(min-width: 1344px) 624px, (min-width: 1024px) calc(50vw - 48px), calc(100vw - 3rem)';
+  '(min-width: 1344px) 624px, (min-width: 1024px) calc(50vw - 48px), (min-width: 768px) calc(50vw - 44px), calc(100vw - 3rem)';
 
 // One analysis: the copy on top at reading width, then its screenshots on the
 // left and the demo video on the right.
@@ -62,7 +64,11 @@ const AnalysisBlock = ({ analysis }) => {
         </SectionLink>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8">
+      {/* md, not lg: four of these blocks in a row stacked ~8 full-width
+          media frames through 768-1023; the carousel/video pair at ~344px
+          restores the desktop reading. SIZES above tracks this breakpoint —
+          change them together. */}
+      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:gap-8">
         <SectionCarousel
           images={analysis.images}
           isInView={isInView}

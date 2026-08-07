@@ -47,11 +47,20 @@ const ImageCarousel = ({
   };
 
   const arrowClass =
+    // The 44px hit area. The visuals live on the inner pill so it can shrink
+    // below sm without shrinking the touch target: there is no swipe, so on
+    // touch these arrows are the only way to step and cannot go — but two
+    // size-11 pills at left/right-3 covered 41% of a 272px frame; 32px pills
+    // at 4px insets cover 26%. The global :focus-visible ring lands on this
+    // button, around the full hit area.
+    'group/arrow absolute top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center transition-[opacity] duration-300 focus-visible:opacity-100 motion-reduce:transition-none max-lg:opacity-100 lg:opacity-0 lg:group-hover/frame:opacity-100';
+  const arrowPillClass =
     // hover:border-accent/40 is the shared signal for a carousel arrow, the
-    // same one StepCarousel's use. hover:bg-surface stays on top of it because
-    // it does real work here: the pill rests at /80 and solidifying it is
-    // legibility over an arbitrary screenshot, not decoration.
-    'absolute top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-edge bg-surface/80 text-ink backdrop-blur-sm transition-[background-color,border-color,opacity] duration-300 hover:border-accent/40 hover:bg-surface focus-visible:opacity-100 motion-reduce:transition-none max-lg:opacity-100 lg:opacity-0 lg:group-hover/frame:opacity-100';
+    // same one StepCarousel's use. group-hover/arrow:bg-surface stays on top
+    // of it because it does real work here: the pill rests at /80 and
+    // solidifying it is legibility over an arbitrary screenshot, not
+    // decoration.
+    'flex size-8 items-center justify-center rounded-full border border-edge bg-surface/80 text-ink backdrop-blur-sm transition-[background-color,border-color] duration-300 group-hover/arrow:border-accent/40 group-hover/arrow:bg-surface motion-reduce:transition-none sm:size-11';
 
   return (
     <figure
@@ -102,17 +111,21 @@ const ImageCarousel = ({
               type="button"
               onClick={onPrev}
               aria-label={labels.previous}
-              className={`${arrowClass} left-3`}
+              className={`${arrowClass} left-1 sm:left-3`}
             >
-              <ChevronLeft aria-hidden="true" className="size-5" />
+              <span className={arrowPillClass}>
+                <ChevronLeft aria-hidden="true" className="size-4 sm:size-5" />
+              </span>
             </button>
             <button
               type="button"
               onClick={onNext}
               aria-label={labels.next}
-              className={`${arrowClass} right-3`}
+              className={`${arrowClass} right-1 sm:right-3`}
             >
-              <ChevronRight aria-hidden="true" className="size-5" />
+              <span className={arrowPillClass}>
+                <ChevronRight aria-hidden="true" className="size-4 sm:size-5" />
+              </span>
             </button>
           </>
         )}
@@ -126,7 +139,11 @@ const ImageCarousel = ({
             <div
               key={index}
               style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
-              className="h-full origin-left bg-accent animate-carousel-progress"
+              // motion-reduce belt: today both callers derive showProgress
+              // from an autoplay that reduced motion already disables, but a
+              // dumb component must not depend on every future caller
+              // repeating that derivation.
+              className="h-full origin-left bg-accent animate-carousel-progress motion-reduce:animate-none"
             />
           </div>
         ) : null}

@@ -86,12 +86,22 @@ const Lightbox = ({ isOpen, src, sources, alt, caption, onClose, labels, onPrev,
             // panel through instead of a flat grey block.
             className="min-h-0 w-full flex-1 rounded-lg object-contain"
           />
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-sm text-pretty text-ink-muted">{caption}</p>
+          {/* Caption on its own full-width row below sm: sharing the row with
+              up to three size-11 buttons left it ~130px wide, and the long
+              `title. alt` captions ran to 8-12 lines — which the flex-1 image
+              above then shrank to accommodate. Scroll, not line-clamp: the
+              carousel caption's contract (ImageCarousel) is that the full text
+              is always available HERE. max-h-20 ≈ 4 lines of text-sm, min-h-10
+              keeps the footer steady while stepping; the themed scrollbar
+              inherits from :root. */}
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+            <div className="min-w-0 sm:flex-1">
+              <p className="max-h-20 min-h-10 overflow-y-auto overscroll-contain text-sm text-pretty text-ink-muted sm:max-h-15">
+                {caption}
+              </p>
             </div>
 
-            <div className="flex shrink-0 items-center gap-1">
+            <div className="flex shrink-0 items-center gap-1 self-end sm:self-auto">
               {onPrev ? (
                 <button
                   type="button"

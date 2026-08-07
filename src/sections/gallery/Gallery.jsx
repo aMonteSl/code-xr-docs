@@ -5,7 +5,7 @@ import Lightbox from '@/components/ui/Lightbox';
 import MediaCard from '@/components/ui/MediaCard';
 import MediaVideo from '@/components/ui/MediaVideo';
 import { gallery } from '@/content/galleryContent';
-import { getHeroImage, getReleaseImageSources } from '@/lib/assets';
+import { getHeroImageSources, getReleaseImageSources } from '@/lib/assets';
 import { getYouTubeEmbedUrl, getYouTubeWatchUrl } from '@/lib/media';
 import GalleryFilters from '@/sections/gallery/GalleryFilters';
 
@@ -29,9 +29,11 @@ const PREVIEW_PER_CATEGORY = 2;
 
 // The shared poster for the videos rescued from the previous site, which have
 // no still of their own. The hero render is already optimised and committed,
-// and the hero backdrop has almost certainly warmed it in cache: 640px is more
-// than the ~630px a card ever renders, so it needs no variants of its own.
-const SHARED_POSTER = { src: getHeroImage(640, 'webp'), sources: [] };
+// and the hero backdrop has almost certainly warmed it in cache. With the
+// real ladder behind it: "640px is more than the ~630px a card ever renders"
+// only held at DPR 1 — a retina tile asks for ~1260 physical px and was
+// getting a 640 stretched to double.
+const SHARED_POSTER = getHeroImageSources();
 
 // Two columns from sm inside the 84rem container, 20px gap: 630px per tile
 // once the container caps at a 1344px viewport, 50vw-42px between sm and there.

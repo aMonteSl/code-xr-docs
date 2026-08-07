@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ImageCarousel from '@/components/ui/ImageCarousel';
 import Lightbox from '@/components/ui/Lightbox';
 import { about } from '@/content/aboutContent';
@@ -64,24 +64,6 @@ const AboutCarousel = () => {
     autoplay,
   });
 
-  // While expanded, the arrow keys keep navigating the sequence.
-  useEffect(() => {
-    if (!isExpanded) {
-      return undefined;
-    }
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowRight') {
-        next();
-      } else if (event.key === 'ArrowLeft') {
-        prev();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isExpanded, next, prev]);
-
   const current = slides[index];
 
   return (
@@ -103,6 +85,12 @@ const AboutCarousel = () => {
         labels={about.carousel}
       />
 
+      {/* onPrev/onNext give the expanded view its arrows AND its arrow keys —
+          the dialog's own onKeyDown handles both. A document-level key
+          listener used to live here instead; wiring the props without
+          removing it would have fired every keystroke twice (the dialog's
+          preventDefault does not stop the bubble to document). Touch users
+          get navigation at all only through these arrows. */}
       <Lightbox
         isOpen={isExpanded}
         src={current.src}
@@ -110,6 +98,8 @@ const AboutCarousel = () => {
         alt={current.alt}
         caption={`${about.carousel.counter(index + 1, slides.length)}  ${current.alt}`}
         onClose={() => setIsExpanded(false)}
+        onPrev={prev}
+        onNext={next}
         labels={about.carousel}
       />
     </div>

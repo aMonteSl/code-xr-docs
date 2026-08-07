@@ -54,14 +54,20 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
               onClick={() => goClamped(position)}
               aria-label={labels.goToStep(position + 1, step.title)}
               aria-current={position === index ? 'step' : undefined}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-[background-color,border-color,color] duration-300 motion-reduce:transition-none sm:px-3.5 ${
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full border px-2 text-sm font-semibold transition-[background-color,border-color,color] duration-300 motion-reduce:transition-none sm:px-3.5 ${
                 position === index
                   ? 'border-transparent bg-accent text-on-accent hover:bg-accent-strong'
                   : 'border-edge text-ink-muted hover:border-accent/40 hover:text-ink'
               }`}
             >
               <span className="tabular-nums">{position + 1}</span>
-              <span className="text-xs font-medium uppercase tracking-wide opacity-80">
+              {/* Role hidden below sm: with it, six pills measure ~90-100px
+                  each and the control row stacked five deep at 320px before
+                  the first card appeared. As number-only 44px discs (min-w-11
+                  above) they fit in two rows. Nothing is lost: the aria-label
+                  already carries number + title, and the active card's own
+                  chip still names the role. */}
+              <span className="hidden text-xs font-medium uppercase tracking-wide opacity-80 sm:inline">
                 {roles[step.role]}
               </span>
             </button>
@@ -81,7 +87,10 @@ const StepCarousel = ({ steps, roles, labels, expandLabel, onExpand }) => {
 
       {/* The track. It clips its own overflow (the peeks); the section and the
           document never scroll horizontally because of it. */}
-      <div className="relative mt-6 overflow-hidden [--step-w:86%] sm:[--step-w:84%] lg:[--step-w:80%]">
+      {/* 94% below sm: at 320 the card's usable content box was 178px with the
+          86% slide, and the badge + role chip alone consume ~110 of it. The
+          ~3% peek per side plus the slide padding still reads as continuation. */}
+      <div className="relative mt-6 overflow-hidden [--step-w:94%] sm:[--step-w:84%] lg:[--step-w:80%]">
         <div
           className="flex items-stretch transition-transform duration-500 ease-out motion-reduce:transition-none"
           style={{

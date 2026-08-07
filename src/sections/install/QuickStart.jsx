@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock, Lightbulb, Play, Search, Settings, Zap } from 'lucide-react';
 import { install } from '@/content/installContent';
 import { useInView } from '@/hooks/useInView';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import StepProgress from '@/sections/install/StepProgress';
 
 const ICONS = { settings: Settings, play: Play, zap: Zap, search: Search };
@@ -26,6 +27,7 @@ const QuickStart = () => {
   const { quickStart } = install;
   const ref = useRef(null);
   const isInView = useInView(ref);
+  const prefersReducedMotion = useReducedMotion();
 
   const [current, setCurrent] = useState(0);
   const [completedIds, setCompletedIds] = useState([]);
@@ -36,7 +38,11 @@ const QuickStart = () => {
   const isCompleted = completedIds.includes(step.id);
 
   useEffect(() => {
-    if (!isInView) {
+    // Reduced motion also stops the ticker: content advancing on its own
+    // under the reader is played-back motion even though no pixel animates.
+    // The walkthrough stays fully manual — the pills, arrows and keys below
+    // never touch this effect's timers.
+    if (!isInView || prefersReducedMotion) {
       return undefined;
     }
 
@@ -82,7 +88,7 @@ const QuickStart = () => {
       clearTimeout(seedId);
       clearInterval(tickId);
     };
-  }, [completedIds, current, isInView, quickStart.steps]);
+  }, [completedIds, current, isInView, prefersReducedMotion, quickStart.steps]);
 
   // Navigating to a step starts it over: its mark comes off so the clock runs
   // again from zero. The guard returns the same array when there was nothing

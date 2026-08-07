@@ -57,8 +57,10 @@ const StatCard = ({ icon: Icon, value, label, detail, isLoading = false, href, c
       )}
 
       {/* 11px below sm: in the 2-up mobile grid the content box is ~96px and
-          the single word DISTINGUISHED measures 97.8px at 12px + tracking. */}
-      <p className="mt-1 text-[11px] font-semibold tracking-wide text-accent-strong uppercase sm:text-xs dark:text-accent">
+          the single word DISTINGUISHED measures 97.8px at 12px + tracking.
+          break-words is the belt: a longer future label wraps ugly but
+          contained, instead of overflowing the card — the one hard rule. */}
+      <p className="mt-1 text-[11px] font-semibold tracking-wide break-words text-accent-strong uppercase sm:text-xs dark:text-accent">
         {label}
       </p>
 

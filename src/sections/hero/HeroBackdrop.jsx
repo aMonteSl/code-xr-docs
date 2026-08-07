@@ -27,6 +27,10 @@ import { getHeroImage, getHeroSrcSet } from '@/lib/assets';
 // the muted text at 4.54:1 against a 4.5 floor, which is not a margin. 0.14
 // lands it at 5.0 and the large accent headline at 4.58 (needs 3). Dark has
 // room to spare at 0.12 (worst case 5.69).
+//
+// sizes=100vw with a 1672px ceiling upscales ~1.5x on 2560+ viewports —
+// accepted, see optimize-hero.mjs: no wider source exists, and at this
+// opacity under the grain layer the stretch is not visible.
 const IMAGE_CLASS = [
   'absolute inset-0 size-full opacity-[0.14] dark:opacity-[0.12]',
   'object-contain object-bottom',

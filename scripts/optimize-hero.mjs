@@ -19,6 +19,9 @@ const SOURCE = join(root, 'assets-src/releases/v1-2-0/hero.png');
 const OUT_DIR = join(root, 'public/assets/hero');
 
 // The source is 1672px wide; generating anything larger would just upscale.
+// On 2560+ viewports the browser stretches the 1672 ~1.5x — accepted: at
+// opacity 0.14 under the grain layer the difference is not visible, and a
+// fabricated 2560 variant would only add weight for the same pixels.
 const WIDTHS = [640, 1024, 1672];
 const FORMATS = [
   { ext: 'avif', encode: (pipeline) => pipeline.avif({ quality: 55 }) },

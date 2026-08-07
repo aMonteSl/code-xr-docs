@@ -50,7 +50,10 @@ const WhatsNew = () => {
           {whatsNew.highlightsHeading}
         </h3>
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* md, not lg: 344px cards work at 768 and spare the tablet band a
+            long single-column stretch. HighlightCard's SIZES tracks this
+            breakpoint — change them together. */}
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
           {whatsNew.highlights.map((highlight) => (
             <HighlightCard key={highlight.id} highlight={highlight} />
           ))}

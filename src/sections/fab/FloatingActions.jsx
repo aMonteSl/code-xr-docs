@@ -82,9 +82,17 @@ const FloatingActions = () => {
   }, [isOpen]);
 
   return (
+    // hidden sm:flex — no FAB below 640. On a 320px phone the 56px disc plus
+    // insets covers x∈[16,72] of a 272px content box, permanently over the
+    // carousels' left arrow, QuickStart's Previous and the first gallery
+    // filter chips; all four of its actions also live in the hero, About,
+    // Tutorial and the footer. Moving it right instead would just trade that
+    // set of collisions for its mirror (carousel right arrows, QuickStart's
+    // Next, VideoEmbed's corner badges — and SectionBridge's ms-auto escape
+    // assumes the FAB is on the LEFT).
     <div
       ref={rootRef}
-      className={`fixed bottom-4 left-4 z-40 flex flex-col items-start gap-2 transition-[opacity,transform] duration-300 motion-reduce:transition-none sm:bottom-6 sm:left-6 ${
+      className={`fixed bottom-6 left-6 z-40 hidden flex-col items-start gap-2 transition-[opacity,transform] duration-300 motion-reduce:transition-none sm:flex ${
         isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >

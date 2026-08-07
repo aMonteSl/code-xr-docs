@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react';
 //
 // Matches `scroll-padding-top: 4.5rem` in main.css (72px): an anchor jump
 // leaves the target's top at 72, so the line sits just below that and the
-// section it landed on is active the moment it arrives.
+// section it landed on is active the moment it arrives. Both values assume a
+// one-line 64px bar, which the COLLAPSE thresholds in Navbar.jsx guarantee.
 const OFFSET = 88;
 
 // `ids` must be a stable reference — a fresh array every render would re-run

@@ -5,14 +5,22 @@ import DashboardEmbed from '@/components/ui/DashboardEmbed';
 import VideoEmbed from '@/components/ui/VideoEmbed';
 import { testedProjects } from '@/content/testedProjectsContent';
 import { useInView } from '@/hooks/useInView';
-import { getAssetPath, getHeroImage } from '@/lib/assets';
+import { getAssetPath, getHeroImageSources } from '@/lib/assets';
 import { getYouTubeEmbedUrl, getYouTubeWatchUrl } from '@/lib/media';
 
 // These demos have no still of their own, so they share the hero render as a
-// poster, the same way the walkthroughs in the gallery do. Already optimised
-// and almost certainly cache-warm from the hero backdrop, so it carries no
-// variants of its own.
-const SHARED_POSTER = { src: getHeroImage(640, 'webp'), sources: [] };
+// poster, the same way the walkthroughs in the gallery do. With the real
+// hero ladder behind it: this player spans the accordion body — up to 1232
+// CSS px — where a bare 640 was painted upscaled (and worse than that at
+// DPR 2).
+const SHARED_POSTER = getHeroImageSources();
+
+// The player spans the accordion body: Container content (100vw − 48,
+// sm: 100vw − 64, capped at 1280 once the viewport hits 1344) minus this
+// panel's own p-5 → 40 / sm:p-6 → 48. The article's 1px borders are ignored,
+// same convention as every other sizes literal on the site.
+const POSTER_SIZES =
+  '(min-width: 1344px) 1232px, (min-width: 640px) calc(100vw - 112px), calc(100vw - 88px)';
 
 // The open half of one project. Its own component so it can hold the useInView
 // that starts the demo video, and so nothing inside it — neither the ~1.7 MB
@@ -50,6 +58,7 @@ const ProjectPanel = ({ project }) => {
             title={labels.videoTitle(project.title)}
             poster={SHARED_POSTER}
             posterAlt=""
+            posterSizes={POSTER_SIZES}
             onActivate={() => setWasActivated(true)}
             playLabel={labels.playVideo(project.title)}
             className="mt-3"
@@ -66,6 +75,7 @@ const ProjectPanel = ({ project }) => {
               labels={{
                 open: labels.dashboardOpen,
                 loading: labels.dashboardLoading,
+                interact: labels.dashboardInteract,
                 frameLabel: labels.dashboardLabel,
                 openLabel: labels.dashboardOpenLabel,
               }}

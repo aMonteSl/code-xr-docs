@@ -105,6 +105,19 @@ const normaliseForCrawlers = async (projectPublicDir, projectId) => {
       html = html.replace(/<html(\s[^>]*)?>/i, (_, attrs = '') => `<html lang="en"${attrs ?? ''}>`);
     }
 
+    // The exports also ship no viewport meta, so phones lay the embedded
+    // scene out at the legacy 980px virtual width and scale it down — it
+    // arrives pre-shrunk inside DashboardEmbed's iframe. A-Frame injects a
+    // viewport meta at runtime, but only after ~500 KB of JS boots; the first
+    // layout has already happened by then. The guides carry one, so the test
+    // makes this a no-op there.
+    if (!/<meta\s+name=["']viewport["']/i.test(html)) {
+      html = html.replace(
+        /<head(\s[^>]*)?>/i,
+        (head) => `${head}\n<meta name="viewport" content="width=device-width, initial-scale=1">`
+      );
+    }
+
     if (html !== original) {
       await writeFile(pagePath, html, 'utf8');
       patched += 1;
@@ -112,7 +125,7 @@ const normaliseForCrawlers = async (projectPublicDir, projectId) => {
   }
 
   if (patched > 0) {
-    console.log(`[dashboards] ${projectId}: marked ${patched} page(s) noindex and set lang.`);
+    console.log(`[dashboards] ${projectId}: marked ${patched} page(s) noindex, set lang and viewport.`);
   }
 };
 

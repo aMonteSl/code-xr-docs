@@ -163,7 +163,8 @@
   html {
     /* Anchor jumps land below the fixed 4rem navbar instead of under it.
        Layout, not motion — it stays unconditional, or a reduced-motion reader
-       gets their anchor target parked underneath the bar. */
+       gets their anchor target parked underneath the bar. Assumes the bar is
+       one 64px line, which the COLLAPSE thresholds in Navbar.jsx guarantee. */
     scroll-padding-top: 4.5rem;
   }
 
@@ -192,11 +193,22 @@
     color: var(--ink);
     font-family: var(--font-sans);
     line-height: 1.6;
-    /* Only reaches the body's own two colours, so on its own it makes the
-       theme switch disagree with itself — everything else flips in one frame.
-       It stays as the fallback for browsers without view transitions; where
-       those exist it runs underneath the snapshot and is never seen. */
-    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Only reaches the body's own two colours, so on its own it makes the
+     theme switch disagree with itself — everything else flips in one frame.
+     It stays as the fallback for browsers without view transitions; where
+     those exist it runs underneath the snapshot and is never seen.
+
+     Gated on reduced motion: useTheme already skips the view transition
+     there, so without this guard the 300ms fade would be the one animated
+     fragment of an otherwise instant flip. Plain CSS, so motion-reduce:
+     utilities cannot reach it — unlike the scroll progress bar, it has no
+     documented exemption. */
+  @media (prefers-reduced-motion: no-preference) {
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
   }
 
   /* One keyboard-focus style for the whole site, defined once here rather

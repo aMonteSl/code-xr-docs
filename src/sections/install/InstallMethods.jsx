@@ -28,14 +28,18 @@ const InstallMethods = () => {
     <div>
       <h3 className="text-lg font-bold tracking-tight text-ink">{methods.title}</h3>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+      {/* 2-up at md so 768-1023 is not a full-width single column: 344px per
+          card is safe there because the commands scroll inside CommandBlock.
+          The recommended method stays first; the VSIX card takes the whole
+          2-up row instead of sitting orphaned. */}
+      <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {methods.items.map((method) => {
           const Icon = ICONS[method.icon];
 
           return (
             <div
               key={method.id}
-              className={`@container flex flex-col rounded-card bg-surface-raised p-5 shadow-card ${
+              className={`@container flex flex-col rounded-card bg-surface-raised p-5 shadow-card md:last:col-span-2 lg:last:col-span-1 ${
                 method.recommended ? 'border border-accent' : 'border border-edge'
               }`}
             >

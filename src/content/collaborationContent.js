@@ -122,6 +122,8 @@ export const collaboration = {
   lightbox: {
     expand: 'Expand screenshot',
     close: 'Close expanded screenshot',
+    previous: 'Previous screenshot',
+    next: 'Next screenshot',
   },
 
   carousel: {

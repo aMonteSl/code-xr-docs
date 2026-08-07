@@ -20,6 +20,27 @@ const SCROLL_THRESHOLD = 8;
 // render. Callers pass a module-scope array for the same reason.
 const NO_SECTIONS = [];
 
+// Where the inline links take over from the menu, per page. Eleven home
+// entries need ~820px at gap-x-3 and only clear it from 1280 up, so the home
+// collapses at xl; the subpages (5-8 short entries) fit from lg. Keeping the
+// bar to one 64px line at every width is what scroll-padding-top (4.5rem),
+// useActiveSection's OFFSET and the subpages' pt-16 are calibrated against —
+// this map is that guarantee, so a new page picks a threshold its own list
+// actually fits in. Full literals per variant: Tailwind only sees classes
+// written out in source.
+const COLLAPSE = {
+  lg: {
+    links: 'hidden min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 lg:flex',
+    burger: 'lg:hidden',
+    panel: 'lg:hidden',
+  },
+  xl: {
+    links: 'hidden min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 xl:flex',
+    burger: 'xl:hidden',
+    panel: 'xl:hidden',
+  },
+};
+
 // The active link differentiates by colour and an underline, never by weight:
 // re-bolding a link changes its width and shoves the whole row sideways as you
 // scroll. Accent-strong in light, accent in dark, per the small-text contrast
@@ -46,10 +67,18 @@ const linkClass = (isActive) =>
 // highlight the LAST home section. With an empty list `[].at(-1) ?? null` is
 // null and nothing highlights, which is correct.
 //
+// `collapse` picks the breakpoint where the inline links replace the menu —
+// see the COLLAPSE map above for why it is per page.
+//
 // This is the second consumer of useMarketplaceStats; the module-level
 // in-flight promise and the sessionStorage cache mean it costs no extra
 // network request — the exact case that layer was designed for.
-const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '/' }) => {
+const Navbar = ({
+  sections = NO_SECTIONS,
+  sectionIds = NO_SECTIONS,
+  homeHref = '/',
+  collapse = 'lg',
+}) => {
   const { stats } = useMarketplaceStats();
   const { theme, toggleTheme } = useTheme();
   const activeSection = useActiveSection(sectionIds);
@@ -86,9 +115,12 @@ const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '
           THIS ROW. On the nav itself it would ride down to the bottom of the
           open mobile menu, i.e. jump ~200px the moment the menu opens. */}
       <div className="relative">
-        {/* min-h rather than a fixed height: with eight sections the link group
-            no longer fits on one line at every width, and the bar is allowed to
-            grow to hold a second line instead of cramming them into 64px. */}
+        {/* min-h rather than a fixed height. The COLLAPSE thresholds are what
+            keep this row to one 64px line — the wrap below is only a safety
+            net for the ~10px of slack at each threshold (a wider font
+            rasterizer could still spill), not an expected state: a two-line
+            bar breaks the scroll-padding/OFFSET calibration documented on the
+            COLLAPSE map. */}
         <Container className="flex min-h-16 items-center justify-between gap-4 py-2">
           {/* shrink-0 and nowrap: squeezed by the link row, the brand was
               breaking "Code-XR" across two lines. */}
@@ -106,22 +138,21 @@ const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '
             <span className="hidden text-xs text-ink-muted sm:block">{version}</span>
           </a>
 
-          {/* Inline links only from lg: at 768 the bar measured exactly full
-              with two entries, so a third overflows — tablet portrait uses the
-              menu instead.
-              The group wraps and can shrink (min-w-0), so between lg and the
-              width where they all fit on one line they lay out on two rows and
-              the bar grows with them.
+          {/* Inline links only from the page's collapse threshold (see the
+              COLLAPSE map): below it the menu takes over — at 768 the bar
+              measured exactly full with two entries, and between 1024 and 1279
+              the home's eleven don't fit on one line either.
 
               gap-x-3, not gap-x-4. Measured: with eleven entries the row wants
               860px at 1280 and has 827, so 16px gaps left "Author" alone on a
-              second line. Ten gaps at 12px buy back 40px and it fits again.
+              second line. Ten gaps at 12px buy back 40px and it fits again —
+              that 1280 measurement is exactly why the home collapses at xl.
               Tightening the gap was preferred over shortening a label, because
               every label here is already the shortest honest name for its
-              section. If a twelfth is ever added, this is the measurement to
-              redo rather than the number to shrink further. */}
+              section. If a twelfth is ever added, redo this measurement rather
+              than shrinking the number further. */}
           {hasSections ? (
-            <div className="hidden min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 lg:flex">
+            <div className={COLLAPSE[collapse].links}>
               {sections.map((section) => (
                 <a
                   key={section.id}
@@ -153,11 +184,14 @@ const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '
             </a>
 
             {/* Below sm the bar only has room for brand + theme + menu, so the
-                CTA moves into the mobile panel instead of overflowing.
-                Visibility goes on a wrapper: Button's base class already sets
-                `inline-flex`, and a `hidden` passed through className loses to
-                it on stylesheet order rather than class order. */}
-            <div className="hidden sm:block">
+                CTA moves into the mobile panel instead of overflowing — except
+                on pages with no sections, where there IS no panel (no burger)
+                and hiding this would leave the bar with no Install anywhere;
+                brand + theme + button measure ~236px of the 272 available at
+                320. Visibility goes on a wrapper: Button's base class already
+                sets `inline-flex`, and a `hidden` passed through className
+                loses to it on stylesheet order rather than class order. */}
+            <div className={hasSections ? 'hidden sm:block' : ''}>
               <Button
                 href={site.links.marketplace}
                 target="_blank"
@@ -176,7 +210,7 @@ const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '
                 aria-label={isMenuOpen ? nav.menu.close : nav.menu.open}
                 // Same treatment as the ThemeToggle and the GitHub link it sits
                 // beside — three siblings in one row, one behaviour.
-                className="flex size-11 items-center justify-center rounded-lg text-ink-muted transition-[background-color,color] duration-300 hover:bg-surface-raised hover:text-ink motion-reduce:transition-none lg:hidden"
+                className={`flex size-11 items-center justify-center rounded-lg text-ink-muted transition-[background-color,color] duration-300 hover:bg-surface-raised hover:text-ink motion-reduce:transition-none ${COLLAPSE[collapse].burger}`}
               >
                 {isMenuOpen ? (
                   <X aria-hidden="true" className="size-5" />
@@ -200,7 +234,18 @@ const Navbar = ({ sections = NO_SECTIONS, sectionIds = NO_SECTIONS, homeHref = '
       </div>
 
       {hasSections && isMenuOpen ? (
-        <div className="border-t border-edge bg-surface lg:hidden">
+        // max-h + scroll on this wrapper, not on the nav (the top row and its
+        // progress edge must not move) and not on the Container (this div owns
+        // the opaque bg-surface, and the scrollport's own background is what
+        // paints the full scrollable extent — a child scrolling inside a
+        // styled parent would draw links "outside the panel"). The 4rem is the
+        // one-line top row COLLAPSE guarantees; svh so mobile browser chrome
+        // can't hide the last entries; without this, eleven entries (~640px)
+        // put "Author" and Install beyond reach on a 375x667 phone or any
+        // phone held landscape — a fixed element does not scroll with the page.
+        <div
+          className={`max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain border-t border-edge bg-surface ${COLLAPSE[collapse].panel}`}
+        >
           <Container className="flex flex-col gap-2 py-3">
             {sections.map((section) => (
               <a

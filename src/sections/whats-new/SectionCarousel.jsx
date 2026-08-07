@@ -66,6 +66,11 @@ const SectionCarousel = ({ images, isInView = true, frameClassName, sizes }) => 
             : `${whatsNew.carousel.counter(index + 1, slides.length)}  ${current.alt}`
         }
         onClose={() => setIsExpanded(false)}
+        // undefined when static keeps the figure rule above: no arrows for a
+        // list of one. For real decks this is the touch user's only way to
+        // step through the expanded view (keyboard rides the same props).
+        onPrev={isStatic ? undefined : prev}
+        onNext={isStatic ? undefined : next}
         labels={whatsNew.carousel}
       />
     </div>

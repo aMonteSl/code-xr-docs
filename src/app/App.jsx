@@ -33,8 +33,15 @@ const App = () => {
       </a>
 
       {/* The home is the only page with in-page section anchors. `SECTION_IDS`
-          is module scope because useActiveSection keys its effect on it. */}
-      <Navbar sections={nav.sections} sectionIds={SECTION_IDS} homeHref="#hero" />
+          is module scope because useActiveSection keys its effect on it.
+          collapse="xl": eleven entries only fit on one bar line from 1280 up —
+          see the COLLAPSE map in Navbar for the measurement. */}
+      <Navbar
+        sections={nav.sections}
+        sectionIds={SECTION_IDS}
+        homeHref="#hero"
+        collapse="xl"
+      />
 
       {/* Tutorial sits right after What's new, high on the page: the release
           section is what makes a reader want the thing, and the twelve-minute
