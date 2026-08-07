@@ -71,7 +71,6 @@ export const install = {
     goToStep: (n, title) => `Go to step ${n}: ${title}`,
     stepLabel: (n) => `Step ${n}`,
     minutes: (n) => `${n} min`,
-    progressLabel: (title) => `Time spent on ${title}`,
 
     // Spoken when the READER changes step — the pills, the two arrows, the
     // arrow and number keys. Not when the clock advances on its own: that path

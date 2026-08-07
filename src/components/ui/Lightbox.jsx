@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import LiveRegion from '@/components/ui/LiveRegion';
 import Picture from '@/components/ui/Picture';
@@ -24,6 +24,18 @@ const SIZES = '(min-width: 1200px) 1120px, 96vw';
 
 const Lightbox = ({ isOpen, src, sources, alt, caption, onClose, labels, onPrev, onNext }) => {
   const dialogRef = useRef(null);
+  // Names the dialog after the caption it already shows, so opening one
+  // announces "Classic analysis. The scene…, dialog" instead of a bare
+  // "dialog". aria-labelledby rather than an aria-label string because the
+  // caption is the only text that describes THIS image, and pointing at it
+  // needs no new copy in the six content modules that mount a Lightbox.
+  //
+  // useId, not a hand-rolled counter: the home mounts twelve of these, ids have
+  // to be unique, and useId is the one generator that agrees between the
+  // prerender pass and hydration. While closed the target does not exist (the
+  // panel is behind `isOpen`), which is harmless — a closed dialog is not in
+  // the accessibility tree to be named.
+  const captionId = useId();
   // The only state this component holds, and it is trivial UI state: has the
   // visitor stepped since this dialog opened. It gates the announcer at the
   // bottom — see the note there.
@@ -95,6 +107,7 @@ const Lightbox = ({ isOpen, src, sources, alt, caption, onClose, labels, onPrev,
   return (
     <dialog
       ref={dialogRef}
+      aria-labelledby={captionId}
       onCancel={(event) => {
         // Keep React the owner of the open state: cancel the native close and
         // route it through close() — which is onClose plus the announcer reset.
@@ -147,7 +160,10 @@ const Lightbox = ({ isOpen, src, sources, alt, caption, onClose, labels, onPrev,
               inherits from :root. */}
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             <div className="min-w-0 sm:flex-1">
-              <p className="max-h-20 min-h-10 overflow-y-auto overscroll-contain text-sm text-pretty text-ink-muted sm:max-h-15">
+              <p
+                id={captionId}
+                className="max-h-20 min-h-10 overflow-y-auto overscroll-contain text-sm text-pretty text-ink-muted sm:max-h-15"
+              >
                 {caption}
               </p>
 

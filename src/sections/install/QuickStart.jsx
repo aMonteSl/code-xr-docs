@@ -241,7 +241,6 @@ const QuickStart = () => {
             elapsed={elapsed}
             total={total}
             isCompleted={isCompleted}
-            label={quickStart.progressLabel(step.title)}
             completedLabel={quickStart.completed}
           />
         </div>
@@ -282,6 +281,12 @@ const QuickStart = () => {
             type="button"
             onClick={() => go(current - 1)}
             disabled={current === 0}
+            // The label is on the button, not only in the span: below sm the
+            // span is display:none and the chevron is aria-hidden, so the
+            // button had NO accessible name at all on a phone — two of them,
+            // both announcing as "button". Identical to the visible text where
+            // that text exists, so voice control still matches what is read.
+            aria-label={quickStart.previous}
             className={navButton}
           >
             <ChevronLeft aria-hidden="true" className="size-4" />
@@ -307,6 +312,8 @@ const QuickStart = () => {
             type="button"
             onClick={() => go(current + 1)}
             disabled={current === quickStart.steps.length - 1}
+            // See the previous button: without this it is nameless below sm.
+            aria-label={quickStart.next}
             className={navButton}
           >
             <span className="hidden sm:inline">{quickStart.next}</span>

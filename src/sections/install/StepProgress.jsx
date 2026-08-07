@@ -17,7 +17,17 @@ const formatTime = (seconds) => {
 // Done is the solid accent circle, not a green one. Introducing a second hue
 // for one state would break the palette, which differentiates by weight; the
 // filled disc against the outlined ring already reads as finished.
-const StepProgress = ({ elapsed, total, isCompleted, label, completedLabel }) => {
+//
+// The ring is aria-hidden and is deliberately NOT a progressbar. It used to be
+// one, with aria-valuenow rewritten once a second for the whole length of a
+// step — and a progressbar whose value moves is reported by screen readers on
+// their own initiative: NVDA beeps on every change, JAWS speaks a percentage.
+// That is an interruption per second, for minutes, four steps running. Nothing
+// is lost by hiding it: the step's stated length is in the picker above, the
+// elapsed figure below the ring stays exposed as ordinary text, and "Completed"
+// is on the picker's own button. A graphic that duplicates text it sits next to
+// does not need a role.
+const StepProgress = ({ elapsed, total, isCompleted, completedLabel }) => {
   if (isCompleted) {
     return (
       <div className="flex flex-col items-center gap-1">
@@ -36,14 +46,7 @@ const StepProgress = ({ elapsed, total, isCompleted, label, completedLabel }) =>
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <div
-        role="progressbar"
-        aria-label={label}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-valuenow={elapsed}
-        className="relative size-16"
-      >
+      <div aria-hidden="true" className="relative size-16">
         <svg viewBox="0 0 64 64" className="size-16 -rotate-90">
           <circle
             cx="32"
