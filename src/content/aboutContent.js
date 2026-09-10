@@ -6,7 +6,7 @@ export const about = {
   eyebrow: 'Overview',
   heading: 'What is Code-XR?',
   paragraphs: [
-    'Code-XR is a Visual Studio Code extension that turns static analysis into a place you can explore. It measures your code (complexity, size, structure, dependencies and history) and serves the result as a live 3D scene in the browser you already have.',
+    'Code-XR is a Visual Studio Code extension that turns code analysis into a place you can explore. It measures your code (complexity, size, structure, dependencies and history) as you edit, and serves the result as a live 3D scene in the browser you already have.',
     'Walk your codebase like a city and watch it update as you save. Step inside the dependency graph to see the architecture rather than the files, compare two points of your Git history on one table, or replay the whole evolution as a film.',
     'No VR headset required: a normal desktop is enough, and the same scene becomes immersive when you want it. Everything runs on your machine, with local analysis, local servers, no telemetry and no account.',
   ],

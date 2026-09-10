@@ -274,13 +274,13 @@ export const analysisPages = {
       breadcrumb: 'Dependency graph',
       seoTitle: 'Dependency graph in 3D | Code-XR',
       seoDescription:
-        'See what depends on what as a navigable 3D graph in VS Code: three layouts, seven relation kinds, fan-in and fan-out, cycles and instability, extracted statically from your working directory.',
+        'See what depends on what as a navigable 3D graph in VS Code: three layouts, seven relation kinds, fan-in and fan-out, cycles and instability, read from your source without running it and kept up to date as you save.',
       summary: 'What depends on what, and what a change will touch before you make it.',
 
       overview: {
         heading: OVERVIEW_HEADING,
         paragraphs: [
-          'The dependency graph answers a different question from the other three: not how big or how complex a file is, but what depends on what, and what happens if you touch it. The relations are extracted statically from your working directory, so nothing has to run.',
+          'The dependency graph answers a different question from the other three: not how big or how complex a file is, but what depends on what, and what happens if you touch it. The relations are read straight from your source, so nothing has to run, and they are re-extracted as you save, so the graph follows the code you are writing rather than a snapshot of it.',
           'Nodes are files, folders and symbols; edges are the relations between them. The shape of a node tells you what it is: a sphere is a function, a cylinder a method, a pyramid a class, a diamond an interface and a box a folder. Click any node to pin its card and read its coupling, its cycle and how much depends on it; click again to release it.',
           'Unlike the other analyses this is not a chart you swap. It is one graph you look at three ways, and the layout is the thing you change. External packages collapse into a single portal so they do not crowd your own code, and large projects open grouped so you drill down into folders rather than meeting every node at once.',
         ],
@@ -620,12 +620,3 @@ for (const page of analysisPages.pages) {
   page.sections = sections;
   page.sectionIds = ids;
 }
-
-// For scripts/build-analysis-pages.mjs, which reads this module through Vite's
-// SSR loader (the `@/` import above cannot be resolved by bare Node).
-//
-// vite.config.js deliberately does NOT import this: it is the file that defines
-// the `@/` alias, so it cannot use it. It globs the generated entry HTML off
-// disk instead, which makes the generator the single source and the config a
-// follower.
-export const ANALYSIS_SLUGS = analysisPages.pages.map((page) => page.slug);

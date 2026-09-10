@@ -7,6 +7,7 @@
     "dev": "vite",
     "sync:dashboards": "node scripts/sync-dashboards.mjs",
     "optimize:hero": "node scripts/optimize-hero.mjs",
+    "optimize:profile": "node scripts/optimize-profile-image.mjs",
     "optimize:screenshots": "node scripts/optimize-screenshots.mjs",
     "build:pages": "node scripts/build-pages.mjs",
     "prebuild": "npm run sync:dashboards && npm run build:pages",

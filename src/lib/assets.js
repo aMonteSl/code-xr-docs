@@ -18,7 +18,7 @@ const THUMB_FORMATS = ['avif', 'webp'];
 
 const stripExtension = (filename) => filename.replace(/\.[^./]+$/, '');
 
-export const getReleaseThumb = (version, filename, width, format) =>
+const getReleaseThumb = (version, filename, width, format) =>
   getAssetPath(`assets/thumbs/${version}/${stripExtension(filename)}-${width}.${format}`);
 
 // Everything a <picture> needs, ready to spread onto components/ui/Picture.
@@ -58,11 +58,13 @@ export const getTechnologyAsset = (filename) =>
 
 export const getDocumentPath = (filename) => getAssetPath(`documents/${filename}`);
 
-// The author portrait, committed at three square sizes. srcset lets the
+// The author portrait, committed at three square sizes, produced by
+// scripts/optimize-profile-image.mjs from the master in assets-src/profile/.
+// srcset lets the
 // browser pick by its own density and slot width, which the previous site did
 // with media queries pinned to viewport breakpoints instead.
 const PROFILE_BASE = 'adrian-montes-linares';
-export const PROFILE_WIDTHS = { small: 256, medium: 512, large: 1024 };
+const PROFILE_WIDTHS = { small: 256, medium: 512, large: 1024 };
 
 export const getProfileImage = (size) => getAssetPath(`profile/${PROFILE_BASE}-${size}.jpg`);
 
@@ -72,7 +74,7 @@ export const getProfileSrcSet = () =>
     .join(', ');
 
 // Responsive variants of the hero backdrop, produced by scripts/optimize-hero.mjs.
-export const HERO_IMAGE_WIDTHS = [640, 1024, 1672];
+const HERO_IMAGE_WIDTHS = [640, 1024, 1672];
 
 export const getHeroImage = (width, format) =>
   getAssetPath(`assets/hero/hero-${width}.${format}`);

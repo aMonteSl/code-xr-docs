@@ -45,6 +45,8 @@ const run = async () => {
     const { tutorial, TUTORIAL_VIDEO } = await vite.ssrLoadModule(
       '/src/content/tutorialContent.js'
     );
+    const { getYouTubeWatchUrl, getYouTubeEmbedBaseUrl, getYouTubeThumbnailUrl } =
+      await vite.ssrLoadModule('/src/lib/media.js');
 
     // FAQPage belongs to the home alone — it describes questions only that page
     // answers, and duplicating it onto the detail pages would claim the same
@@ -95,6 +97,10 @@ const run = async () => {
       })),
     });
 
+    // The URLs come from src/lib/media.js, the same module the iframes use, so
+    // a domain change lands in one place. embedUrl is deliberately the bare
+    // embed (no autoplay/mute/loop query): that is what should be declared to
+    // search engines, and the playback parameters belong to the iframe alone.
     const videoLd = ({ id, title, description, duration, uploadDate }) =>
       compact({
         '@type': 'VideoObject',
@@ -102,9 +108,9 @@ const run = async () => {
         description,
         duration,
         uploadDate,
-        embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
-        contentUrl: `https://www.youtube.com/watch?v=${id}`,
-        thumbnailUrl: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+        embedUrl: getYouTubeEmbedBaseUrl(id),
+        contentUrl: getYouTubeWatchUrl(id),
+        thumbnailUrl: getYouTubeThumbnailUrl(id),
       });
 
     const graph = (nodes) => ({ '@context': 'https://schema.org', '@graph': nodes });

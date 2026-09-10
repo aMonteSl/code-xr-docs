@@ -6,7 +6,7 @@
 // the hero section paints as its full-bleed backdrop.
 //
 // Run by hand (`npm run optimize:hero`) and commit the output, the same way
-// scripts/optimize-profile-image.py works. It is deliberately NOT part of
+// scripts/optimize-profile-image.mjs works. It is deliberately NOT part of
 // prebuild: sharp ships native binaries and CI has no reason to build them for
 // an asset that changes once in a blue moon.
 import { mkdir, readdir, stat, writeFile } from 'node:fs/promises';

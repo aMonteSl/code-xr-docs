@@ -103,7 +103,7 @@ export const whatsNew = {
       id: 'dependency',
       title: 'Dependency graph: see the architecture, not just the files',
       description:
-        'A new analysis that answers what depends on what, and what happens if you touch it. Relations are extracted statically from your working directory and rendered as a navigable 3D graph.',
+        'A new analysis that answers what depends on what, and what happens if you touch it. Relations are read from your source without running it and rendered as a navigable 3D graph that keeps up as you save.',
       points: [
         'Three layouts: force-3d, hierarchical, and metric-space with real axes.',
         'Any node metric (fan-in, fan-out, cycle size, blast radius) can drive size, height, colour or position.',

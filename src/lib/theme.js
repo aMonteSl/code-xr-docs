@@ -47,7 +47,7 @@ const notify = () => {
   }
 };
 
-export const setTheme = (theme) => {
+const setTheme = (theme) => {
   writeOverride(theme);
   applyTheme(theme);
   notify();
